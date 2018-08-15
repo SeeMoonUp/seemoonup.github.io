@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="maven,jetty,idea,jrebel,java," />
+  <meta name="keywords" content="java,maven,jetty,idea,jrebel," />
 
 
 
@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="maven+jetty+idea+jrebel 实现项目热部署 开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea  实现步骤 打开idea中的settings–&amp;gt;plugins 搜索">
-<meta name="keywords" content="maven,jetty,idea,jrebel,java">
+<meta name="description" content="开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea  实现步骤 打开idea中的settings–&amp;gt;plugins 搜索jrebel –&amp;gt; browse repositories">
+<meta name="keywords" content="java,maven,jetty,idea,jrebel">
 <meta property="og:type" content="article">
-<meta property="og:title" content="lemon blog">
+<meta property="og:title" content="maven+jetty+idea+jrebel 实现项目热部署">
 <meta property="og:url" content="http://SeeMoonUp.github.io/2017/12/19/tech/java/maven+jetty+idea+jrebel 实现项目热部署/index.html">
 <meta property="og:site_name" content="lemon blog">
-<meta property="og:description" content="maven+jetty+idea+jrebel 实现项目热部署 开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea  实现步骤 打开idea中的settings–&amp;gt;plugins 搜索">
+<meta property="og:description" content="开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea  实现步骤 打开idea中的settings–&amp;gt;plugins 搜索jrebel –&amp;gt; browse repositories">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3753cd461f7?w=953&h=50&f=png&s=5009">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3a1012861c9?w=538&h=655&f=png&s=120578">
@@ -96,10 +96,10 @@
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3b6f58ffb98?w=1064&h=537&f=png&s=130745">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3ba9562f5f8?w=910&h=147&f=png&s=53482">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3bfa8a3f08b?w=877&h=66&f=png&s=16810">
-<meta property="og:updated_time" content="2017-12-19T10:10:29.318Z">
+<meta property="og:updated_time" content="2018-08-15T05:27:06.487Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="lemon blog">
-<meta name="twitter:description" content="maven+jetty+idea+jrebel 实现项目热部署 开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea  实现步骤 打开idea中的settings–&amp;gt;plugins 搜索">
+<meta name="twitter:title" content="maven+jetty+idea+jrebel 实现项目热部署">
+<meta name="twitter:description" content="开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea  实现步骤 打开idea中的settings–&amp;gt;plugins 搜索jrebel –&amp;gt; browse repositories">
 <meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3753cd461f7?w=953&h=50&f=png&s=5009">
 
 
@@ -136,7 +136,7 @@
 
 
 
-  <title> | lemon blog</title>
+  <title>maven+jetty+idea+jrebel 实现项目热部署 | lemon blog</title>
   
 
 
@@ -260,7 +260,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">maven+jetty+idea+jrebel 实现项目热部署</h1>
         
 
         <div class="post-meta">
@@ -310,8 +310,7 @@
       
 
       
-        <p>maven+jetty+idea+jrebel 实现项目热部署</p>
-<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><p>开发过程中：<br>修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受</p>
+        <h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><p>开发过程中：<br>修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受</p>
 <p>如何实现一次部署之后，后面的修改全部热部署呢？</p>
 <ol>
 <li>使用jrebel实现</li>
@@ -377,6 +376,8 @@
       
         <div class="post-tags">
           
+            <a href="/tags/java/" rel="tag"># java</a>
+          
             <a href="/tags/maven/" rel="tag"># maven</a>
           
             <a href="/tags/jetty/" rel="tag"># jetty</a>
@@ -384,8 +385,6 @@
             <a href="/tags/idea/" rel="tag"># idea</a>
           
             <a href="/tags/jrebel/" rel="tag"># jrebel</a>
-          
-            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
@@ -398,8 +397,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/18/tech/java/Session的持久化策略/" rel="next" title="">
-                <i class="fa fa-chevron-left"></i> 
+              <a href="/2017/12/18/tech/java/Session的持久化策略/" rel="next" title="Session的持久化策略">
+                <i class="fa fa-chevron-left"></i> Session的持久化策略
               </a>
             
           </div>
@@ -408,8 +407,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/20/tech/tools/进程的查询与关闭/" rel="prev" title="">
-                 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/20/tech/tools/进程的查询与关闭/" rel="prev" title="进程的查询与关闭">
+                进程的查询与关闭 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

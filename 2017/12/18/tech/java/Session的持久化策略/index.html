@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Session的持久化策略对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序">
+<meta name="description" content="对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序列化的形式存放，这就是为什">
 <meta name="keywords" content="java,Spring,session,tomcat">
 <meta property="og:type" content="article">
-<meta property="og:title" content="lemon blog">
+<meta property="og:title" content="Session的持久化策略">
 <meta property="og:url" content="http://SeeMoonUp.github.io/2017/12/18/tech/java/Session的持久化策略/index.html">
 <meta property="og:site_name" content="lemon blog">
-<meta property="og:description" content="Session的持久化策略对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序">
+<meta property="og:description" content="对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序列化的形式存放，这就是为什">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-12-18T08:40:16.168Z">
+<meta property="og:updated_time" content="2018-08-15T05:27:27.524Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="lemon blog">
-<meta name="twitter:description" content="Session的持久化策略对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序">
+<meta name="twitter:title" content="Session的持久化策略">
+<meta name="twitter:description" content="对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序列化的形式存放，这就是为什">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title> | lemon blog</title>
+  <title>Session的持久化策略 | lemon blog</title>
   
 
 
@@ -250,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">Session的持久化策略</h1>
         
 
         <div class="post-meta">
@@ -300,7 +300,7 @@
       
 
       
-        <h1 id="Session的持久化策略"><a href="#Session的持久化策略" class="headerlink" title="Session的持久化策略"></a>Session的持久化策略</h1><p>对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序列化的形式存放，这就是为什么一般存放在Session中的数据需要实 现可序列化接口（java.io.Serializable）的原因了。</p>
+        <p>对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序列化的形式存放，这就是为什么一般存放在Session中的数据需要实 现可序列化接口（java.io.Serializable）的原因了。</p>
 <pre><code>当一个Session开始时，Servlet容器会为Session创建一个HttpSession对象。Servlet容器在某些情况下把这些 HttpSession对象从内存中转移到文件系统或数据库中，在需要访问 HttpSession信息时再把它们加载到内存中。
 </code></pre><h1 id="实现："><a href="#实现：" class="headerlink" title="实现："></a>实现：</h1><p>要完成session持久化，存放在session里的对象必须要实现<strong>java.io.Serializable </strong>接口。 </p>
 <p>Session的持久化是由Session Manager来管理的。Tomcat提供了两个实现类：</p>
@@ -374,8 +374,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/13/tech/java/使用filter可以做哪些事情/" rel="next" title="">
-                <i class="fa fa-chevron-left"></i> 
+              <a href="/2017/12/13/tech/java/使用filter可以做哪些事情/" rel="next" title="使用filter可以做哪些事情">
+                <i class="fa fa-chevron-left"></i> 使用filter可以做哪些事情
               </a>
             
           </div>
@@ -384,8 +384,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/19/tech/java/maven+jetty+idea+jrebel 实现项目热部署/" rel="prev" title="">
-                 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/19/tech/java/maven+jetty+idea+jrebel 实现项目热部署/" rel="prev" title="maven+jetty+idea+jrebel 实现项目热部署">
+                maven+jetty+idea+jrebel 实现项目热部署 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -509,7 +509,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Session的持久化策略"><span class="nav-number">1.</span> <span class="nav-text">Session的持久化策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现："><span class="nav-number">2.</span> <span class="nav-text">实现：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置："><span class="nav-number">3.</span> <span class="nav-text">配置：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1．StandardManager"><span class="nav-number">3.1.</span> <span class="nav-text">1．StandardManager</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2．PersistentManager"><span class="nav-number">3.2.</span> <span class="nav-text">2．PersistentManager</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#形式一：存储在本地文件中需要配置conf目录里的context-xml文件"><span class="nav-number">3.2.1.</span> <span class="nav-text">形式一：存储在本地文件中需要配置conf目录里的context.xml文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#形式二：存储在数据库中需要配置store节点"><span class="nav-number">3.2.2.</span> <span class="nav-text">形式二：存储在数据库中需要配置store节点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数说明："><span class="nav-number">3.3.</span> <span class="nav-text">参数说明：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可能出现的问题："><span class="nav-number">4.</span> <span class="nav-text">可能出现的问题：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、序列化问题"><span class="nav-number">4.1.</span> <span class="nav-text">1、序列化问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、启动的tomcat在启动的时候警告："><span class="nav-number">4.2.</span> <span class="nav-text">2、启动的tomcat在启动的时候警告：</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#实现："><span class="nav-number">1.</span> <span class="nav-text">实现：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置："><span class="nav-number">2.</span> <span class="nav-text">配置：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1．StandardManager"><span class="nav-number">2.1.</span> <span class="nav-text">1．StandardManager</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2．PersistentManager"><span class="nav-number">2.2.</span> <span class="nav-text">2．PersistentManager</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#形式一：存储在本地文件中需要配置conf目录里的context-xml文件"><span class="nav-number">2.2.1.</span> <span class="nav-text">形式一：存储在本地文件中需要配置conf目录里的context.xml文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#形式二：存储在数据库中需要配置store节点"><span class="nav-number">2.2.2.</span> <span class="nav-text">形式二：存储在数据库中需要配置store节点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数说明："><span class="nav-number">2.3.</span> <span class="nav-text">参数说明：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可能出现的问题："><span class="nav-number">3.</span> <span class="nav-text">可能出现的问题：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、序列化问题"><span class="nav-number">3.1.</span> <span class="nav-text">1、序列化问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、启动的tomcat在启动的时候警告："><span class="nav-number">3.2.</span> <span class="nav-text">2、启动的tomcat在启动的时候警告：</span></a></li></ol></li></ol></div>
             
 
           </div>

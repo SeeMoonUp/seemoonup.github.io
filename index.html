@@ -379,7 +379,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/14/tech/data/订单数据分析/" itemprop="url">Untitled</a></h1>
+                <a class="post-title-link" href="/2018/03/14/tech/data/订单数据分析/" itemprop="url">订单数据分析</a></h1>
         
 
         <div class="post-meta">
@@ -431,7 +431,7 @@
       
         
           
-            <h1 id="订单数据分析"><a href="#订单数据分析" class="headerlink" title="订单数据分析"></a>订单数据分析</h1><p> 支付金额占比<br> 购物车支付占比</p>
+            <h4 id="支付金额占比"><a href="#支付金额占比" class="headerlink" title="支付金额占比"></a>支付金额占比</h4><p> 购物车支付占比</p>
 <ol>
 <li><p>商品上级页面 route<br>1.1 首页列表<br>1.2 首页活动 - 新品优选 本月热卖 活动<br>1.3 搜索页面<br>1.4 商品分类<br>1.5 订单页面<br>1.6 轮播地址</p>
 </li>
@@ -505,7 +505,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/14/tech/data/分享数据分析/" itemprop="url">Untitled</a></h1>
+                <a class="post-title-link" href="/2018/03/14/tech/data/分享数据分析/" itemprop="url">分享数据分析</a></h1>
         
 
         <div class="post-meta">
@@ -557,7 +557,7 @@
       
         
           
-            <h1 id="分享数据分析"><a href="#分享数据分析" class="headerlink" title="分享数据分析"></a>分享数据分析</h1><ol>
+            <ol>
 <li>通过分享进行下单的用户<br>2.分享之后再次转发的数据<br>3.分享源 影响数据</li>
 </ol>
 
@@ -627,7 +627,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/01/tech/java/线程的协作/" itemprop="url">Untitled</a></h1>
+                <a class="post-title-link" href="/2018/03/01/tech/java/线程的协作/" itemprop="url">线程的协作</a></h1>
         
 
         <div class="post-meta">
@@ -679,7 +679,7 @@
       
         
           
-            <h1 id="线程的协作"><a href="#线程的协作" class="headerlink" title="线程的协作"></a>线程的协作</h1>
+            
           
         
       
@@ -746,7 +746,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/02/24/tech/java/Synchronized/" itemprop="url">Untitled</a></h1>
+                <a class="post-title-link" href="/2018/02/24/tech/java/Synchronized/" itemprop="url">Synchronized</a></h1>
         
 
         <div class="post-meta">
@@ -798,8 +798,7 @@
       
         
           
-            <p>Synchronized</p>
-<h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>多线程共享内存的两个问题，一个是竞态条件，另一个是内存可见性</p>
+            <h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>多线程共享内存的两个问题，一个是竞态条件，另一个是内存可见性</p>
 <h2 id="竞态条件"><a href="#竞态条件" class="headerlink" title="竞态条件"></a>竞态条件</h2><p>所谓竞态条件(race condition)是指，当多个线程访问和操作同一个对象时，最终执行结果与执行时序有关，可能正确也可能不正确，我们看一个例子：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class CounterThread extends Thread &#123;</span><br><span class="line">    private static int counter = 0;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        for (int i = 0; i &lt; 1000; i++) &#123;</span><br><span class="line">            counter++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        int num = 1000;</span><br><span class="line">        Thread[] threads = new Thread[num];</span><br><span class="line">        for (int i = 0; i &lt; num; i++) &#123;</span><br><span class="line">            threads[i] = new CounterThread();</span><br><span class="line">            threads[i].start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; num; i++) &#123;</span><br><span class="line">            threads[i].join();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(counter);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这段代码容易理解，有一个共享静态变量counter，初始值为0，在main方法中创建了1000个线程，每个线程对counter循环加1000次，main线程等待所有线程结束后输出counter的值。</p>
@@ -933,7 +932,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/02/24/tech/java/线程详解/" itemprop="url">Untitled</a></h1>
+                <a class="post-title-link" href="/2018/02/24/tech/java/线程详解/" itemprop="url">线程详解 (java实现线程的两种方式)</a></h1>
         
 
         <div class="post-meta">
@@ -985,8 +984,7 @@
       
         
           
-            <p>线程详解</p>
-<h1 id="java实现线程的两种方式"><a href="#java实现线程的两种方式" class="headerlink" title="java实现线程的两种方式"></a>java实现线程的两种方式</h1><ol>
+            <ol>
 <li>继承Thread类</li>
 <li>实现Runnable接口<br>注意点：</li>
 </ol>
@@ -1098,7 +1096,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/20/tech/tools/进程的查询与关闭/" itemprop="url">Untitled</a></h1>
+                <a class="post-title-link" href="/2017/12/20/tech/tools/进程的查询与关闭/" itemprop="url">进程的查询与关闭</a></h1>
         
 
         <div class="post-meta">
@@ -1150,8 +1148,7 @@
       
         
           
-            <p>进程的查询与关闭</p>
-<h1 id="查询某个端口是否被使用"><a href="#查询某个端口是否被使用" class="headerlink" title="查询某个端口是否被使用"></a>查询某个端口是否被使用</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS C:\WINDOWS\system32&gt; netstat -aon|findstr 8001</span><br><span class="line">  TCP    0.0.0.0:8001           0.0.0.0:0              LISTENING       6964</span><br><span class="line">  TCP    [::]:8001              [::]:0                 LISTENING       6964</span><br></pre></td></tr></table></figure>
+            <h1 id="查询某个端口是否被使用"><a href="#查询某个端口是否被使用" class="headerlink" title="查询某个端口是否被使用"></a>查询某个端口是否被使用</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS C:\WINDOWS\system32&gt; netstat -aon|findstr 8001</span><br><span class="line">  TCP    0.0.0.0:8001           0.0.0.0:0              LISTENING       6964</span><br><span class="line">  TCP    [::]:8001              [::]:0                 LISTENING       6964</span><br></pre></td></tr></table></figure>
 <h1 id="查询占用的进程"><a href="#查询占用的进程" class="headerlink" title="查询占用的进程"></a>查询占用的进程</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PS C:\WINDOWS\system32&gt; tasklist|findstr 6964</span><br><span class="line">java.exe                      6964 Console                    1    607,468 K</span><br></pre></td></tr></table></figure>
 <h1 id="强制关闭进行"><a href="#强制关闭进行" class="headerlink" title="强制关闭进行"></a>强制关闭进行</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PS C:\WINDOWS\system32&gt; TASKKILL /pid 6964</span><br><span class="line">错误: 无法终止 PID 为 6964 的进程。</span><br><span class="line">原因: 只能强行终止这个进程(带 /F 选项)。</span><br><span class="line">PS C:\WINDOWS\system32&gt; TASKKILL /f /pid 6964</span><br><span class="line">成功: 已终止 PID 为 6964 的进程。</span><br></pre></td></tr></table></figure>
 <h1 id="备注：-查询tasklist-如何使用"><a href="#备注：-查询tasklist-如何使用" class="headerlink" title="备注： 查询tasklist 如何使用"></a>备注： 查询tasklist 如何使用</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">PS C:\WINDOWS\system32&gt; TASKKILL /?</span><br><span class="line"></span><br><span class="line">TASKKILL [/S system [/U username [/P [password]]]]</span><br><span class="line">         &#123; [/FI filter] [/PID processid | /IM imagename] &#125; [/T] [/F]</span><br><span class="line"></span><br><span class="line">描述:</span><br><span class="line">    使用该工具按照进程 ID (PID) 或映像名称终止任务。</span><br><span class="line"></span><br><span class="line">参数列表:</span><br><span class="line">    /S    system           指定要连接的远程系统。</span><br><span class="line"></span><br><span class="line">    /U    [domain\]user    指定应该在哪个用户上下文执行这个命令。</span><br><span class="line"></span><br><span class="line">    /P    [password]       为提供的用户上下文指定密码。如果忽略，提示</span><br><span class="line">                           输入。</span><br><span class="line"></span><br><span class="line">    /FI   filter           应用筛选器以选择一组任务。</span><br><span class="line">                           允许使用 &quot;*&quot;。例如，映像名称 eq acme*</span><br><span class="line"></span><br><span class="line">    /PID  processid        指定要终止的进程的 PID。</span><br><span class="line">                           使用 TaskList 取得 PID。</span><br><span class="line"></span><br><span class="line">    /IM   imagename        指定要终止的进程的映像名称。通配符 &apos;*&apos;可用来</span><br><span class="line">                           指定所有任务或映像名称。</span><br><span class="line"></span><br><span class="line">    /T                     终止指定的进程和由它启用的子进程。</span><br><span class="line"></span><br><span class="line">    /F                     指定强制终止进程。</span><br><span class="line"></span><br><span class="line">    /?                     显示帮助消息。</span><br><span class="line"></span><br><span class="line">筛选器:</span><br><span class="line">    筛选器名      有效运算符                有效值</span><br><span class="line">    -----------   ---------------           -------------------------</span><br><span class="line">    STATUS        eq, ne                    RUNNING |</span><br><span class="line">                                            NOT RESPONDING | UNKNOWN</span><br><span class="line">    IMAGENAME     eq, ne                    映像名称</span><br><span class="line">    PID           eq, ne, gt, lt, ge, le    PID 值</span><br><span class="line">    SESSION       eq, ne, gt, lt, ge, le    会话编号。</span><br><span class="line">    CPUTIME       eq, ne, gt, lt, ge, le    CPU 时间，格式为</span><br><span class="line">                                            hh:mm:ss。</span><br><span class="line">                                            hh - 时，</span><br><span class="line">                                            mm - 分，ss - 秒</span><br><span class="line">    MEMUSAGE      eq, ne, gt, lt, ge, le    内存使用量，单位为 KB</span><br><span class="line">    USERNAME      eq, ne                    用户名，格式为 [domain\]user</span><br><span class="line">    MODULES       eq, ne                    DLL 名称</span><br><span class="line">    SERVICES      eq, ne                    服务名称</span><br><span class="line">    WINDOWTITLE   eq, ne                    窗口标题</span><br><span class="line"></span><br><span class="line">    说明</span><br><span class="line">    ----</span><br><span class="line">    1) 只有在应用筛选器的情况下，/IM 切换才能使用通配符 &apos;*&apos;。</span><br><span class="line">    2) 远程进程总是要强行 (/F) 终止。</span><br><span class="line">    3) 当指定远程机器时，不支持 &quot;WINDOWTITLE&quot; 和 &quot;STATUS&quot; 筛选器。</span><br><span class="line"></span><br><span class="line">例如:</span><br><span class="line">    TASKKILL /IM notepad.exe</span><br><span class="line">    TASKKILL /PID 1230 /PID 1241 /PID 1253 /T</span><br><span class="line">    TASKKILL /F /IM cmd.exe /T</span><br><span class="line">    TASKKILL /F /FI &quot;PID ge 1000&quot; /FI &quot;WINDOWTITLE ne untitle*&quot;</span><br><span class="line">    TASKKILL /F /FI &quot;USERNAME eq NT AUTHORITY\SYSTEM&quot; /IM notepad.exe</span><br><span class="line">    TASKKILL /S system /U 域\用户名 /FI &quot;用户名 ne NT*&quot; /IM *</span><br><span class="line">    TASKKILL /S system /U username /P password /FI &quot;IMAGENAME eq note*&quot;</span><br></pre></td></tr></table></figure>
@@ -1222,7 +1219,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/19/tech/java/maven+jetty+idea+jrebel 实现项目热部署/" itemprop="url">Untitled</a></h1>
+                <a class="post-title-link" href="/2017/12/19/tech/java/maven+jetty+idea+jrebel 实现项目热部署/" itemprop="url">maven+jetty+idea+jrebel 实现项目热部署</a></h1>
         
 
         <div class="post-meta">
@@ -1274,8 +1271,7 @@
       
         
           
-            <p>maven+jetty+idea+jrebel 实现项目热部署</p>
-<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><p>开发过程中：<br>修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受</p>
+            <h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><p>开发过程中：<br>修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受</p>
 <p>如何实现一次部署之后，后面的修改全部热部署呢？</p>
 <ol>
 <li>使用jrebel实现</li>
@@ -1391,7 +1387,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/18/tech/java/Session的持久化策略/" itemprop="url">Untitled</a></h1>
+                <a class="post-title-link" href="/2017/12/18/tech/java/Session的持久化策略/" itemprop="url">Session的持久化策略</a></h1>
         
 
         <div class="post-meta">
@@ -1443,7 +1439,7 @@
       
         
           
-            <h1 id="Session的持久化策略"><a href="#Session的持久化策略" class="headerlink" title="Session的持久化策略"></a>Session的持久化策略</h1><p>对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序列化的形式存放，这就是为什么一般存放在Session中的数据需要实 现可序列化接口（java.io.Serializable）的原因了。</p>
+            <p>对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序列化的形式存放，这就是为什么一般存放在Session中的数据需要实 现可序列化接口（java.io.Serializable）的原因了。</p>
 <pre><code>当一个Session开始时，Servlet容器会为Session创建一个HttpSession对象。Servlet容器在某些情况下把这些 HttpSession对象从内存中转移到文件系统或数据库中，在需要访问 HttpSession信息时再把它们加载到内存中。
 </code></pre><h1 id="实现："><a href="#实现：" class="headerlink" title="实现："></a>实现：</h1><p>要完成session持久化，存放在session里的对象必须要实现<strong>java.io.Serializable </strong>接口。 </p>
 <p>Session的持久化是由Session Manager来管理的。Tomcat提供了两个实现类：</p>
@@ -1548,7 +1544,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/13/tech/java/使用filter可以做哪些事情/" itemprop="url">Untitled</a></h1>
+                <a class="post-title-link" href="/2017/12/13/tech/java/使用filter可以做哪些事情/" itemprop="url">使用filter可以做哪些事情</a></h1>
         
 
         <div class="post-meta">
@@ -1600,7 +1596,7 @@
       
         
           
-            <h1 id="使用filter可以做哪些事情"><a href="#使用filter可以做哪些事情" class="headerlink" title="使用filter可以做哪些事情"></a>使用filter可以做哪些事情</h1><h2 id="权限校验"><a href="#权限校验" class="headerlink" title="权限校验"></a>权限校验</h2><h2 id="通用参数存储"><a href="#通用参数存储" class="headerlink" title="通用参数存储"></a>通用参数存储</h2><p>## </p>
+            <h2 id="权限校验"><a href="#权限校验" class="headerlink" title="权限校验"></a>权限校验</h2><h2 id="通用参数存储"><a href="#通用参数存储" class="headerlink" title="通用参数存储"></a>通用参数存储</h2><p>## </p>
 <p>select DISTINCT(op.bizOrderNo) from lwt_supplier_package_detail spd<br>left join gcw_mall_order_package op on op.bizOrderNo = spd.orderPackageBizNo<br>left join lwt_supplier_package sp on spd.supBizNo = sp.bizNo<br>where ((op.status &gt; 21 and op.status &lt; 35 ))<br>and sp.status = 15</p>
 <p>select count(1) from lwt_supplier_package sp left join lwt_supplier_split_package ssp on ssp.supBizNo = sp.bizNo left join lwt_supplier_package_detail pd on sp.bizNo = pd.supBizNo  where supplierId = 605 \G</p>
 
