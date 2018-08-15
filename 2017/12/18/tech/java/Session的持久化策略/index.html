@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java,Spring,session,tomcat," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Session的持久化策略对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序">
+<meta name="keywords" content="java,Spring,session,tomcat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lemon blog">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2017/12/18/tech/java/Session的持久化策略/index.html">
+<meta property="og:site_name" content="lemon blog">
+<meta property="og:description" content="Session的持久化策略对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-18T08:40:16.168Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="lemon blog">
+<meta name="twitter:description" content="Session的持久化策略对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2017/12/18/tech/java/Session的持久化策略/"/>
+
+
+
+
+
+  <title> | lemon blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">lemon blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">this is lemon website</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2017/12/18/tech/java/Session的持久化策略/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lemon blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-18T16:32:04+08:00">
+                2017-12-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Session的持久化策略"><a href="#Session的持久化策略" class="headerlink" title="Session的持久化策略"></a>Session的持久化策略</h1><p>对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序列化的形式存放，这就是为什么一般存放在Session中的数据需要实 现可序列化接口（java.io.Serializable）的原因了。</p>
+<pre><code>当一个Session开始时，Servlet容器会为Session创建一个HttpSession对象。Servlet容器在某些情况下把这些 HttpSession对象从内存中转移到文件系统或数据库中，在需要访问 HttpSession信息时再把它们加载到内存中。
+</code></pre><h1 id="实现："><a href="#实现：" class="headerlink" title="实现："></a>实现：</h1><p>要完成session持久化，存放在session里的对象必须要实现<strong>java.io.Serializable </strong>接口。 </p>
+<p>Session的持久化是由Session Manager来管理的。Tomcat提供了两个实现类：</p>
+<p>org.apache.catalina.session.StandardManager  (默认)</p>
+<p>org.apache.catalina.session.PersistentManager</p>
+<p>下面分别就StandardManager和PersistentManager两种实现进行介绍。</p>
+<h1 id="配置："><a href="#配置：" class="headerlink" title="配置："></a>配置：</h1><p>Tomcat默认是已经启用持久化配置，若要禁用持久化功能，则只需要在<context>节点里配置</context></p>
+<p><manager pathname="">；</manager></p>
+<pre><code>持久化配置可进行全局配置和针对某一站点进行配置。全局配置需要在cof文件夹context.xml的
+</code></pre><p><context>节点中配置<manager>，若要针对某一站点配置则需要在cof文件夹server.xml的<host><context></context></host></manager></context></p>
+<p>节点中添加<manager>配置。</manager></p>
+<h2 id="1．StandardManager"><a href="#1．StandardManager" class="headerlink" title="1．StandardManager"></a>1．StandardManager</h2><p>  StandardManager是默认的Session Manager。它的实现机制为：当Tomcat服务器关闭或重启，或者Web应用被重新加载时，会对在内存中的HttpSession对象进行持久化， 并把它们保存到文件系统中，默认的文件为&lt;CATALINA_HOME&gt;/work/Catalina/hostname/ applicationname/SESSIONS.ser。</p>
+<manager classname="”org.apache.catalina.session.StandardManager”" debug="”0”" maxinactiveinterval="”-1″">
+
+<p>注：如果突然终止该服务器，则所有会话都将丧失，因为StandardManager没有机会实现存盘处理。</p>
+<h2 id="2．PersistentManager"><a href="#2．PersistentManager" class="headerlink" title="2．PersistentManager"></a>2．PersistentManager</h2><p>  PersistentManager能够把Session对象保存到Session Store中，它提供了比 StandardManager更为灵活的Session管理功能，它具有以下功能：</p>
+<p>  对内存中的HttpSession对象进行持久化，把它们保存到Session Store中。</p>
+<p>  具有容错功能，可以及时把Session备份到Session Store中，当Tomcat服务器意外关闭后再重启时，可以从Session Store中恢复Session对象。</p>
+<p>  可以灵活控制在内存中的Session数目，将部分Session转移到Session Store中。</p>
+<p>通过使用Store,将内存中的session备份到文件或数据库中。当备份一个session对象时，该session对象会被复制到存储器中，而原对象仍然留在内存中。因此如果服务器崩溃，就可以从存储器中获取活动的session对象。当session被换出时，他会被移动到存储器中，因为当前活动的session对象超过了上限值，或者session对象闲置了过长时间。换出session节省内存空间。</p>
+<p>   Tomcat实现持久化Session Store的接口为org.apache.Catalina.store，目前提供了两个实现这一接口的类，即 org.apache.Catalina.FileStore和org.apache.Catalina.JDBCStore。</p>
+<p>实现配置PersistentManager大多是两种形式</p>
+<h3 id="形式一：存储在本地文件中需要配置conf目录里的context-xml文件"><a href="#形式一：存储在本地文件中需要配置conf目录里的context-xml文件" class="headerlink" title="形式一：存储在本地文件中需要配置conf目录里的context.xml文件"></a>形式一：存储在本地文件中需要配置conf目录里的context.xml文件</h3><p>在<context>节点下添加如下<manager>节点：</manager></context></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;Manager className=&quot;org.apache.catalina.session.PersistentManager&quot; </span><br><span class="line"></span><br><span class="line">debug=&quot;0&quot;</span><br><span class="line"></span><br><span class="line">saveOnRestart=&quot;false&quot;</span><br><span class="line"></span><br><span class="line">maxActiveSession=&quot;-1&quot;</span><br><span class="line"></span><br><span class="line">minIdleSwap=&quot;-1&quot;</span><br><span class="line"></span><br><span class="line">maxIdleSwap=&quot;-1&quot;</span><br><span class="line"></span><br><span class="line">maxIdleBackup=&quot;-1&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;Store className=&quot;org.apache.catalina.session.FileStore&quot; directory=&quot;../session&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/Manager&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="形式二：存储在数据库中需要配置store节点"><a href="#形式二：存储在数据库中需要配置store节点" class="headerlink" title="形式二：存储在数据库中需要配置store节点"></a>形式二：存储在数据库中需要配置store节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;Store </span><br><span class="line"></span><br><span class="line">calssName=&quot;org.apache.catalina.JDBCStore&quot;</span><br><span class="line"></span><br><span class="line">driverName=&quot;com.mysql.jdbc.Driver&quot; </span><br><span class="line">connectionURL=&quot;jdbc:mysql://localhost/tomsessionDB?user=root&amp;password=&quot; </span><br><span class="line">sessionTable=&quot;tomcat_session&quot; </span><br><span class="line"></span><br><span class="line">sessionIdCol=&quot;session_id&quot; </span><br><span class="line"></span><br><span class="line">sessionDataCol=&quot;session_data&quot; </span><br><span class="line">sessionValidCol=&quot;session_valid&quot; </span><br><span class="line"></span><br><span class="line">sessionMaxInactiveCol=&quot;max_inactive&quot; </span><br><span class="line">sessionLastAccessedCol=&quot;last_access&quot;</span><br><span class="line"></span><br><span class="line">sessionAppCol=&quot;app_name&quot; </span><br><span class="line"></span><br><span class="line">checkInterval=&quot;60&quot; </span><br><span class="line"></span><br><span class="line">debug=&quot;99&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p> |</p>
+<h2 id="参数说明："><a href="#参数说明：" class="headerlink" title="参数说明："></a>参数说明：</h2><p>maxActiveSessions－可处于活动状态的session数，default -1 不限制</p>
+<p>checkInterval － 检查session是否过期的时间间隔，default 60s</p>
+<p>saveOnRestart－服务器关闭时，是否将所有的session保存到文件中； minIdleSwap/maxIdleSwap－session处于不活动状态最短/长时间(s)，sesson对象转移到File Store中；(－1表示没有限制)<br>maxIdleBackup－超过这一时间，将session备份。(－1表示没有限制)</p>
+<p>directory－文件存储位置work\Catalina\host name\web app\session\文件名.session</p>
+<h1 id="可能出现的问题："><a href="#可能出现的问题：" class="headerlink" title="可能出现的问题："></a>可能出现的问题：</h1><h2 id="1、序列化问题"><a href="#1、序列化问题" class="headerlink" title="1、序列化问题"></a>1、序列化问题</h2><p>严重: Cannot serialize session attribute ‘/test/ip/testAction!send.action for session 1B2631B649053493F0C787FB62917E3A.tomcatA<br>严重:   storing attribute ‘/test/ip/testAction!send.action’ with value NOT_SERIALIZED </p>
+<p>也就是说程序在运行的时候会把访问路径放到session中，但这个数据是没有序列化过的，导致反序列化的时候出错。 </p>
+<h2 id="2、启动的tomcat在启动的时候警告："><a href="#2、启动的tomcat在启动的时候警告：" class="headerlink" title="2、启动的tomcat在启动的时候警告："></a>2、启动的tomcat在启动的时候警告：</h2><p>警告: Manager [ org.apache.catalina.session.PersistentManager@1cc5d23] does not implement ClusterManager, addition to cluster has been aborted.</p>
+<p>在关闭和重启Tomcat 5时, tomcat 会试图 serialize存在的session资源. 如果 sessions中相关的对象没有实现 serializable 接口, 就会出现Cannot serialize session attribute XXX  for  异常. </p>
+<p>如果你不想看到该异常, 也不想保存session. 那么你可以在项目部署描述文件中(如. test.xml,)(instead of just exploding the war)  的  <context> tags中间 加上 : </context></p>
+<p><manager classname="org.apache.catalina.session.PersistentManager" saveonrestart="false"><br>这样 tomcat 在关闭的时候就不会保存session资源了. </manager></p>
+<p>你也可以在server.xml中指定上面的值. 这也所有的程序都使用这个设置了.</p>
+</manager>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+            <a href="/tags/session/" rel="tag"># session</a>
+          
+            <a href="/tags/tomcat/" rel="tag"># tomcat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/13/tech/java/使用filter可以做哪些事情/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/19/tech/java/maven+jetty+idea+jrebel 实现项目热部署/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">lemon</p>
+              <p class="site-description motion-element" itemprop="description">website java lemon</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Session的持久化策略"><span class="nav-number">1.</span> <span class="nav-text">Session的持久化策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现："><span class="nav-number">2.</span> <span class="nav-text">实现：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置："><span class="nav-number">3.</span> <span class="nav-text">配置：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1．StandardManager"><span class="nav-number">3.1.</span> <span class="nav-text">1．StandardManager</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2．PersistentManager"><span class="nav-number">3.2.</span> <span class="nav-text">2．PersistentManager</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#形式一：存储在本地文件中需要配置conf目录里的context-xml文件"><span class="nav-number">3.2.1.</span> <span class="nav-text">形式一：存储在本地文件中需要配置conf目录里的context.xml文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#形式二：存储在数据库中需要配置store节点"><span class="nav-number">3.2.2.</span> <span class="nav-text">形式二：存储在数据库中需要配置store节点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数说明："><span class="nav-number">3.3.</span> <span class="nav-text">参数说明：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可能出现的问题："><span class="nav-number">4.</span> <span class="nav-text">可能出现的问题：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、序列化问题"><span class="nav-number">4.1.</span> <span class="nav-text">1、序列化问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、启动的tomcat在启动的时候警告："><span class="nav-number">4.2.</span> <span class="nav-text">2、启动的tomcat在启动的时候警告：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lemon</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
