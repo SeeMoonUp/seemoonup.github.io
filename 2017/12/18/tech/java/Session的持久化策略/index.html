@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="不爱更新的博客">
 <meta property="og:description" content="对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序列化的形式存放，这就是为什">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-15T13:21:55.818Z">
+<meta property="og:updated_time" content="2018-08-18T13:58:52.109Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Session的持久化策略">
 <meta name="twitter:description" content="对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序列化的形式存放，这就是为什">
@@ -322,7 +322,8 @@
       
         <p>对 于一个企业级应用而言，Session对象的管理十分重要。Sessio对象的信息一般情况下置于服务器的内存中，当服务器由于故障重启，或应用重新加载 时候，此时的Session信息将全部丢失。为了避免这样的情况，在某些场合可以将服务器的Session数据存放在文件系统或数据库中，这样的操作称为 Session对象的持久化。Session对象在持久化时，存放在其中的对象以序列化的形式存放，这就是为什么一般存放在Session中的数据需要实 现可序列化接口（java.io.Serializable）的原因了。</p>
 <pre><code>当一个Session开始时，Servlet容器会为Session创建一个HttpSession对象。Servlet容器在某些情况下把这些 HttpSession对象从内存中转移到文件系统或数据库中，在需要访问 HttpSession信息时再把它们加载到内存中。
-</code></pre><h1 id="实现："><a href="#实现：" class="headerlink" title="实现："></a>实现：</h1><p>要完成session持久化，存放在session里的对象必须要实现<strong>java.io.Serializable </strong>接口。 </p>
+</code></pre><a id="more"></a>
+<h1 id="实现："><a href="#实现：" class="headerlink" title="实现："></a>实现：</h1><p>要完成session持久化，存放在session里的对象必须要实现<strong>java.io.Serializable </strong>接口。 </p>
 <p>Session的持久化是由Session Manager来管理的。Tomcat提供了两个实现类：</p>
 <p>org.apache.catalina.session.StandardManager  (默认)</p>
 <p>org.apache.catalina.session.PersistentManager</p>

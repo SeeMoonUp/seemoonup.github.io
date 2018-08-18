@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea  实现步骤 打开idea中的settings–&amp;gt;plugins 搜索jrebel –&amp;gt; browse repositories">
+<meta name="description" content="开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea">
 <meta name="keywords" content="java,maven,jetty,idea,jrebel">
 <meta property="og:type" content="article">
 <meta property="og:title" content="maven+jetty+idea+jrebel 实现项目热部署">
 <meta property="og:url" content="http://SeeMoonUp.github.io/2017/12/19/tech/java/maven+jetty+idea+jrebel 实现项目热部署/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea  实现步骤 打开idea中的settings–&amp;gt;plugins 搜索jrebel –&amp;gt; browse repositories">
+<meta property="og:description" content="开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3753cd461f7?w=953&h=50&f=png&s=5009">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3a1012861c9?w=538&h=655&f=png&s=120578">
@@ -96,10 +96,10 @@
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3b6f58ffb98?w=1064&h=537&f=png&s=130745">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3ba9562f5f8?w=910&h=147&f=png&s=53482">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3bfa8a3f08b?w=877&h=66&f=png&s=16810">
-<meta property="og:updated_time" content="2018-08-15T05:27:06.487Z">
+<meta property="og:updated_time" content="2018-08-18T13:58:14.368Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="maven+jetty+idea+jrebel 实现项目热部署">
-<meta name="twitter:description" content="开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea  实现步骤 打开idea中的settings–&amp;gt;plugins 搜索jrebel –&amp;gt; browse repositories">
+<meta name="twitter:description" content="开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea">
 <meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3753cd461f7?w=953&h=50&f=png&s=5009">
 
 
@@ -338,6 +338,7 @@
 <li>项目管理使用的maven</li>
 <li>ide使用的是idea</li>
 </ol>
+<a id="more"></a>
 <h1 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h1><ol>
 <li>打开idea中的settings–&gt;plugins 搜索jrebel –&gt; browse repositories</li>
 <li>install 开始进入下载 下载完成之后应用上 并且重启idea</li>
