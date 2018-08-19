@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="js,trello,ctrl+c," />
+  <meta name="keywords" content="redis," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="对网页上的内容实现复制粘贴的功能 痛点：需要支持多种不同的浏览器 主要有IE，Firefox  IE浏览器下的解决方案：window.clipboardData.setData(&amp;quot;Text&amp;quot;, text); 通用浏览器的解决方案：选中元素之后执行：document.execCommand(&amp;#39;copy&amp;#39;) Firefox下的解决方案两种折中的方案a. 监听hove">
-<meta name="keywords" content="js,trello,ctrl+c">
+<meta name="description" content="基本数据结构及数据模型string（字符串）Redis 的字符串是动态字符串，是可以修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字">
+<meta name="keywords" content="redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="网页内容复制黏贴">
-<meta property="og:url" content="http://SeeMoonUp.github.io/2017/12/11/tech/fe/网页内容复制粘贴(三种方案 兼容多种浏览器)/index.html">
+<meta property="og:title" content="日志处理">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2018/08/19/tech/redis/基本数据结构/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="对网页上的内容实现复制粘贴的功能 痛点：需要支持多种不同的浏览器 主要有IE，Firefox  IE浏览器下的解决方案：window.clipboardData.setData(&amp;quot;Text&amp;quot;, text); 通用浏览器的解决方案：选中元素之后执行：document.execCommand(&amp;#39;copy&amp;#39;) Firefox下的解决方案两种折中的方案a. 监听hove">
+<meta property="og:description" content="基本数据结构及数据模型string（字符串）Redis 的字符串是动态字符串，是可以修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-18T13:58:27.475Z">
+<meta property="og:updated_time" content="2018-08-19T07:06:22.442Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="网页内容复制黏贴">
-<meta name="twitter:description" content="对网页上的内容实现复制粘贴的功能 痛点：需要支持多种不同的浏览器 主要有IE，Firefox  IE浏览器下的解决方案：window.clipboardData.setData(&amp;quot;Text&amp;quot;, text); 通用浏览器的解决方案：选中元素之后执行：document.execCommand(&amp;#39;copy&amp;#39;) Firefox下的解决方案两种折中的方案a. 监听hove">
+<meta name="twitter:title" content="日志处理">
+<meta name="twitter:description" content="基本数据结构及数据模型string（字符串）Redis 的字符串是动态字符串，是可以修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://SeeMoonUp.github.io/2017/12/11/tech/fe/网页内容复制粘贴(三种方案 兼容多种浏览器)/"/>
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/08/19/tech/redis/基本数据结构/"/>
 
 
 
 
 
-  <title>网页内容复制黏贴 | 不爱更新的博客</title>
+  <title>日志处理 | 不爱更新的博客</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2017/12/11/tech/fe/网页内容复制粘贴(三种方案 兼容多种浏览器)/">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/08/19/tech/redis/基本数据结构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lemon">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">网页内容复制黏贴</h1>
+          <h1 class="post-title" itemprop="name headline">日志处理</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-11T20:43:32+08:00">
-                2017-12-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-19T14:24:02+08:00">
+                2018-08-19
               </time>
             
 
@@ -305,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe/" itemprop="url" rel="index">
-                    <span itemprop="name">fe</span>
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
                   </a>
                 </span>
 
@@ -342,24 +342,35 @@
       
 
       
-        <p>对网页上的内容实现复制粘贴的功能</p>
-<p>痛点：需要支持多种不同的浏览器 主要有IE，Firefox</p>
-<ol>
-<li>IE浏览器下的解决方案：<br><code>window.clipboardData.setData(&quot;Text&quot;, text);</code></li>
-<li>通用浏览器的解决方案：<br>选中元素之后执行：<br><code>document.execCommand(&#39;copy&#39;)</code></li>
-<li>Firefox下的解决方案<br>两种折中的方案<br>a. 监听hover事件 当鼠标移动至需要复制的文本上时 用户按下ctrl+c 实现复制<br>b.<code>window.prompt(&quot;Copy to clipboard: Ctrl+C, Enter&quot;, text);</code> 弹出框内容为选中的文案，用户按下ctrl+c 实现复制</li>
-</ol>
+        <h3 id="基本数据结构及数据模型"><a href="#基本数据结构及数据模型" class="headerlink" title="基本数据结构及数据模型"></a>基本数据结构及数据模型</h3><h4 id="string（字符串）"><a href="#string（字符串）" class="headerlink" title="string（字符串）"></a>string（字符串）</h4><p>Redis 的字符串是动态字符串，是可以修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字符串最大长度为 512M。</p>
 <a id="more"></a>
-<p>整合之后的代码为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">function copyToClipboard(text) &#123;</span><br><span class="line">  if (window.clipboardData) &#123; // Internet Explorer</span><br><span class="line">    window.clipboardData.setData(&quot;Text&quot;, text);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    var textArea = document.createElement(&quot;textarea&quot;);</span><br><span class="line">    textArea.style.background = &apos;transparent&apos;;</span><br><span class="line">    textArea.value = text;</span><br><span class="line">    document.body.appendChild(textArea);</span><br><span class="line">    textArea.select();</span><br><span class="line">    try &#123;</span><br><span class="line">      if (!document.execCommand(&apos;copy&apos;)) &#123;</span><br><span class="line">        copyToClipboardMozilla(text);</span><br><span class="line">	  &#125; else &#123;</span><br><span class="line">        showInfo(&quot;提示&quot;, &quot;复制成功&quot;)</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">    &#125; catch (err) &#123;</span><br><span class="line">      console.log(&apos;Oops, unable to copy&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">      document.body.removeChild(textArea);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function copyToClipboardMozilla(text) &#123;</span><br><span class="line">  window.prompt(&quot;Copy to clipboard: Ctrl+C, Enter&quot;, text);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$(&quot;.copy&quot;).on(&quot;mouseenter&quot;, function () &#123;</span><br><span class="line">  $(this).css(&quot;background-color&quot;, &quot;#c8c9c8&quot;);</span><br><span class="line">  $(this).focus();</span><br><span class="line">  var textArea = document.createElement(&quot;textarea&quot;);</span><br><span class="line">  textArea.style.background = &apos;transparent&apos;;</span><br><span class="line">  textArea.id = &quot;copyContent&quot;;</span><br><span class="line">  textArea.value = $(this).text();</span><br><span class="line">  document.body.appendChild(textArea);</span><br><span class="line">  textArea.select(); </span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">$(&quot;.copy&quot;).on(&quot;mouseleave&quot;, function () &#123;</span><br><span class="line">  $(this).css(&quot;background-color&quot;, &quot;&quot;);</span><br><span class="line"> document.body.removeChild(document.getElementById(&quot;copyContent&quot;)); </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.cnblogs.com/xhyu/p/5370111.html" target="_blank" rel="noopener">几个通用的解决复制的方法</a>：</li>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand" target="_blank" rel="noopener">document.execCommand API</a><br><a href="https://w3c.github.io/clipboard-apis/" target="_blank" rel="noopener">W3C API</a></li>
-<li><a href="https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript" target="_blank" rel="noopener">How do I copy to the clipboard in JavaScript?</a></li>
-<li><a href="https://stackoverflow.com/questions/17527870/how-does-trello-access-the-users-clipboard" target="_blank" rel="noopener">How does Trello access the user’s clipboard?</a></li>
-<li><a href="http://www.weixinnu.com/v/00BsH1" target="_blank" rel="noopener">20 行 JS 代码，实现复制到剪贴板功能</a></li>
-</ol>
+<p>字符串结构使用非常广泛，一个常见的用途就是缓存用户信息。我们将用户信息结构体使用 JSON 序列化成字符串，然后将序列化后的字符串塞进 Redis 来缓存。同样，取用户信息会经过一次反序列化的过程。</p>
+<h4 id="list（列表）"><a href="#list（列表）" class="headerlink" title="list（列表）"></a>list（列表）</h4><p>Redis 的列表相当于 Java 语言里面的 LinkedList，注意它是链表而不是数组。这意味着 list 的插入和删除操作非常快，时间复杂度为 O(1)，但是索引定位很慢，时间复杂度为 O(n)，这点让人非常意外。</p>
+<h4 id="set-集合"><a href="#set-集合" class="headerlink" title="set (集合)"></a>set (集合)</h4><p>Redis 的集合相当于 Java 语言里面的 HashSet，它内部的键值对是无序的唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值<code>NULL</code>。</p>
+<h4 id="zset-有序列表"><a href="#zset-有序列表" class="headerlink" title="zset (有序列表)"></a>zset (有序列表)</h4><p>zset 可能是 Redis 提供的最为特色的数据结构，它也是在面试中面试官最爱问的数据结构。它类似于 Java 的 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以给每个 value 赋予一个 score，代表这个 value 的排序权重。它的内部实现用的是一种叫做「跳跃列表」的数据结构。</p>
+<h4 id="hash-字典"><a href="#hash-字典" class="headerlink" title="hash (字典)"></a>hash (字典)</h4><p>Redis 的字典相当于 Java 语言里面的 HashMap，它是无序字典。内部实现结构上同 Java 的 HashMap 也是一致的，同样的数组 + 链表二维结构。</p>
+<h3 id="容器型数据结构的通用规则"><a href="#容器型数据结构的通用规则" class="headerlink" title="容器型数据结构的通用规则"></a>容器型数据结构的通用规则</h3><p>list/set/hash/zset 这四种数据结构是容器型数据结构，它们共享下面两条通用规则：</p>
+<p>create if not exists</p>
+<p>如果容器不存在，那就创建一个，再进行操作。比如 rpush 操作刚开始是没有列表的，Redis 就会自动创建一个，然后再 rpush 进去新元素。</p>
+<p>drop if no elements</p>
+<p>如果容器里元素没有了，那么立即删除元素，释放内存。这意味着 lpop 操作到最后一个元素，列表就消失了。</p>
+<h3 id="存结构体信息到底该使用-hash-还是-string？"><a href="#存结构体信息到底该使用-hash-还是-string？" class="headerlink" title="存结构体信息到底该使用 hash 还是 string？"></a>存结构体信息到底该使用 hash 还是 string？</h3><p>这取决于您访问数据的方式：</p>
+<p>选择1使用简单的字符串键和值：</p>
+<ul>
+<li>如果您在大多数访问中使用大多数字段。</li>
+<li>如果可能的键有差异</li>
+</ul>
+<p>选择2使用哈希：</p>
+<ul>
+<li>如果您在大多数访问中仅使用单个字段。</li>
+<li>如果您始终知道哪些字段可用</li>
+</ul>
+<p>PS：根据经验，请选择在大多数用例中需要较少查询的选项。<br>上面提到了 关于字符创存储用户信息 试想一下是否可以使用hash来存储用户信息</p>
+<p>大部分摘自：<a href="https://juejin.im/book/5afc2e5f6fb9a07a9b362527/section/5afc2e5f51882542714ff291" target="_blank" rel="noopener">https://juejin.im/book/5afc2e5f6fb9a07a9b362527/section/5afc2e5f51882542714ff291</a></p>
+<blockquote>
+<p>有不足之处还望不吝赐教 欢迎关注</p>
+<p>未经作者允许 请勿转载，谢谢 :)</p>
+</blockquote>
 
       
     </div>
@@ -414,11 +425,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/js/" rel="tag"># js</a>
-          
-            <a href="/tags/trello/" rel="tag"># trello</a>
-          
-            <a href="/tags/ctrl-c/" rel="tag"># ctrl+c</a>
+            <a href="/tags/redis/" rel="tag"># redis</a>
           
         </div>
       
@@ -431,15 +438,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/08/15/tech/go/日志处理/" rel="next" title="日志处理">
+                <i class="fa fa-chevron-left"></i> 日志处理
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/13/tech/java/使用filter可以做哪些事情/" rel="prev" title="使用filter可以做哪些事情">
-                使用filter可以做哪些事情 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -491,8 +498,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -572,6 +588,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本数据结构及数据模型"><span class="nav-number">1.</span> <span class="nav-text">基本数据结构及数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#string（字符串）"><span class="nav-number">1.1.</span> <span class="nav-text">string（字符串）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#list（列表）"><span class="nav-number">1.2.</span> <span class="nav-text">list（列表）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-集合"><span class="nav-number">1.3.</span> <span class="nav-text">set (集合)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zset-有序列表"><span class="nav-number">1.4.</span> <span class="nav-text">zset (有序列表)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hash-字典"><span class="nav-number">1.5.</span> <span class="nav-text">hash (字典)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器型数据结构的通用规则"><span class="nav-number">2.</span> <span class="nav-text">容器型数据结构的通用规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存结构体信息到底该使用-hash-还是-string？"><span class="nav-number">3.</span> <span class="nav-text">存结构体信息到底该使用 hash 还是 string？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
