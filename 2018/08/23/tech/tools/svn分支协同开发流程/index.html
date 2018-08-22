@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="svn,tools," />
 
 
 
@@ -79,17 +79,20 @@
 
 
 
-<meta name="description" content="通过分享进行下单的用户2.分享之后再次转发的数据3.分享源 影响数据">
+<meta name="description" content="开发场景面向trunk开发比如4人开发团队 每2人负责一个功能模块，两个功能模块在同一个项目中，此时如果4个人都是在主分支trunk上进行开发 那么必须等两个功能模块全部ok 才能上线 （操作比较简单 不进行赘述） 缺点：  开发耦合性过大  项目代码不易管理  面向branches开发分支开发 对trunk进行分支开发 按照上面的逻辑 新建两个分支2个人编辑一个分支 当其中一个分支开发完成 可以">
+<meta name="keywords" content="svn,tools">
 <meta property="og:type" content="article">
-<meta property="og:title" content="分享数据分析">
-<meta property="og:url" content="http://SeeMoonUp.github.io/2018/03/14/tech/data/分享数据分析/index.html">
+<meta property="og:title" content="svn分支协同开发流程">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2018/08/23/tech/tools/svn分支协同开发流程/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="通过分享进行下单的用户2.分享之后再次转发的数据3.分享源 影响数据">
+<meta property="og:description" content="开发场景面向trunk开发比如4人开发团队 每2人负责一个功能模块，两个功能模块在同一个项目中，此时如果4个人都是在主分支trunk上进行开发 那么必须等两个功能模块全部ok 才能上线 （操作比较简单 不进行赘述） 缺点：  开发耦合性过大  项目代码不易管理  面向branches开发分支开发 对trunk进行分支开发 按照上面的逻辑 新建两个分支2个人编辑一个分支 当其中一个分支开发完成 可以">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-15T05:37:58.171Z">
+<meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/svn%E5%88%86%E6%94%AF%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B.jpg">
+<meta property="og:updated_time" content="2018-08-22T16:40:00.269Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="分享数据分析">
-<meta name="twitter:description" content="通过分享进行下单的用户2.分享之后再次转发的数据3.分享源 影响数据">
+<meta name="twitter:title" content="svn分支协同开发流程">
+<meta name="twitter:description" content="开发场景面向trunk开发比如4人开发团队 每2人负责一个功能模块，两个功能模块在同一个项目中，此时如果4个人都是在主分支trunk上进行开发 那么必须等两个功能模块全部ok 才能上线 （操作比较简单 不进行赘述） 缺点：  开发耦合性过大  项目代码不易管理  面向branches开发分支开发 对trunk进行分支开发 按照上面的逻辑 新建两个分支2个人编辑一个分支 当其中一个分支开发完成 可以">
+<meta name="twitter:image" content="http://ok6q2poob.bkt.clouddn.com/svn%E5%88%86%E6%94%AF%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B.jpg">
 
 
 
@@ -119,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/03/14/tech/data/分享数据分析/"/>
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/08/23/tech/tools/svn分支协同开发流程/"/>
 
 
 
 
 
-  <title>分享数据分析 | 不爱更新的博客</title>
+  <title>svn分支协同开发流程 | 不爱更新的博客</title>
   
 
 
@@ -252,7 +255,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/03/14/tech/data/分享数据分析/">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/08/23/tech/tools/svn分支协同开发流程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lemon">
@@ -269,7 +272,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">分享数据分析</h1>
+          <h1 class="post-title" itemprop="name headline">svn分支协同开发流程</h1>
         
 
         <div class="post-meta">
@@ -281,8 +284,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-14T16:40:12+08:00">
-                2018-03-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T00:05:19+08:00">
+                2018-08-23
               </time>
             
 
@@ -291,6 +294,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/svn/" itemprop="url" rel="index">
+                    <span itemprop="name">svn</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -319,9 +344,46 @@
       
 
       
-        <ol>
-<li>通过分享进行下单的用户<br>2.分享之后再次转发的数据<br>3.分享源 影响数据</li>
+        <h3 id="开发场景"><a href="#开发场景" class="headerlink" title="开发场景"></a>开发场景</h3><h4 id="面向trunk开发"><a href="#面向trunk开发" class="headerlink" title="面向trunk开发"></a>面向trunk开发</h4><p>比如4人开发团队 每2人负责一个功能模块，两个功能模块在同一个项目中，此时如果4个人都是在主分支trunk上进行开发 那么必须等两个功能模块全部ok 才能上线 （操作比较简单 不进行赘述）</p>
+<p>缺点：</p>
+<ul>
+<li>开发耦合性过大 </li>
+<li>项目代码不易管理</li>
+</ul>
+<h4 id="面向branches开发"><a href="#面向branches开发" class="headerlink" title="面向branches开发"></a>面向branches开发</h4><p>分支开发 对trunk进行分支开发 按照上面的逻辑 新建两个分支<br>2个人编辑一个分支 当其中一个分支开发完成 可以直接发布<br>另外两人开发完成后再发布</p>
+<p>优点：</p>
+<ul>
+<li>减少团队作业之间的耦合性</li>
+<li>代码管理更加方便</li>
+</ul>
+<h3 id="svn使用流程"><a href="#svn使用流程" class="headerlink" title="svn使用流程"></a>svn使用流程</h3><h4 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h4><p><img src="http://ok6q2poob.bkt.clouddn.com/svn%E5%88%86%E6%94%AF%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B.jpg" alt="svn分支开发流程"></p>
+<h4 id="步骤详解"><a href="#步骤详解" class="headerlink" title="步骤详解"></a>步骤详解</h4><h5 id="开发过程"><a href="#开发过程" class="headerlink" title="开发过程"></a>开发过程</h5><ol>
+<li><p>针对trunk进行 branches or tag的操作 创建新的分支 命名比如：</p>
+<p>20180822_test_demoproject 规则：时间_功能模块__项目名称</p>
+</li>
+<li><p>将新建的分支 checkout 至本地</p>
+</li>
+<li><p>开发新的功能 并做本地测试 （这个过程会有多次commit）</p>
+</li>
+<li><p>本地测试完成 将代码提交到svn 对应的branches上面</p>
+</li>
+<li><p>在beta服务器上面进行发布branches的代码并进行测试</p>
+</li>
 </ol>
+<h5 id="准备发布过程（同步trunk）"><a href="#准备发布过程（同步trunk）" class="headerlink" title="准备发布过程（同步trunk）"></a>准备发布过程（同步trunk）</h5><p>在开发过程中 trunk可能已经被别的小组修改 所以此时需要同步trunk代码</p>
+<ol start="6">
+<li>使用本地branches作为工作空间 merge from trunk 将trunk上面新增的代码 merge到本地 （此时本地branches中的代码是最完整的）</li>
+<li>将新增的代码 提交至svn branches  （此时可以进行一次beta上面的回归测试）</li>
+</ol>
+<h5 id="review代码-发布"><a href="#review代码-发布" class="headerlink" title="review代码 发布"></a>review代码 发布</h5><p>此时如何进行代码的review是一个问题 比如在3的步骤中 进行了多次提交 开发者已经不知道在开发新功能的时候提交了哪些代码 此时如果贸然进行发布 可能会出现一些意想不到的情况 比如修改了配置文件 没有修改回来 会导致线上出现很大的问题， 那么如何进行代码的review请看下面的步骤</p>
+<ol start="8">
+<li>将svn trunk上的代码checkout至本地 merge from svn branches 此时相当于将branches中的这个功能模块所有的新增或者修改的代码 merge到了本地的trunk上面</li>
+<li>此时进行commit 在提交之前 一定记得仔细review每一个提交的代码文件 是否正确 review完成确定没有问题再提交 这一步为重中之重！！！ 不可省略，切记！</li>
+</ol>
+<blockquote>
+<p>有不足之处还望不吝赐教 欢迎关注</p>
+<p>未经作者允许 请勿转载，谢谢 :)</p>
+</blockquote>
 
       
     </div>
@@ -374,6 +436,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/svn/" rel="tag"># svn</a>
+          
+            <a href="/tags/tools/" rel="tag"># tools</a>
+          
+        </div>
+      
 
       
       
@@ -383,8 +453,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/01/tech/java/线程的协作/" rel="next" title="线程的协作">
-                <i class="fa fa-chevron-left"></i> 线程的协作
+              <a href="/2018/08/19/tech/redis/基本数据结构/" rel="next" title="redis基本数据结构">
+                <i class="fa fa-chevron-left"></i> redis基本数据结构
               </a>
             
           </div>
@@ -392,10 +462,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/14/tech/data/订单数据分析/" rel="prev" title="订单数据分析">
-                订单数据分析 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -447,8 +513,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -528,6 +603,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#开发场景"><span class="nav-number">1.</span> <span class="nav-text">开发场景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#面向trunk开发"><span class="nav-number">1.1.</span> <span class="nav-text">面向trunk开发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#面向branches开发"><span class="nav-number">1.2.</span> <span class="nav-text">面向branches开发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#svn使用流程"><span class="nav-number">2.</span> <span class="nav-text">svn使用流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#流程图"><span class="nav-number">2.1.</span> <span class="nav-text">流程图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#步骤详解"><span class="nav-number">2.2.</span> <span class="nav-text">步骤详解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开发过程"><span class="nav-number">2.2.1.</span> <span class="nav-text">开发过程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#准备发布过程（同步trunk）"><span class="nav-number">2.2.2.</span> <span class="nav-text">准备发布过程（同步trunk）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#review代码-发布"><span class="nav-number">2.2.3.</span> <span class="nav-text">review代码 发布</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
