@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="js,trello,ctrl+c," />
+  <meta name="keywords" content="redis,分布式锁," />
 
 
 
@@ -79,18 +79,22 @@
 
 
 
-<meta name="description" content="对网页上的内容实现复制粘贴的功能 痛点：需要支持多种不同的浏览器 主要有IE，Firefox  IE浏览器下的解决方案：window.clipboardData.setData(&amp;quot;Text&amp;quot;, text); 通用浏览器的解决方案：选中元素之后执行：document.execCommand(&amp;#39;copy&amp;#39;) Firefox下的解决方案两种折中的方案a. 监听hove">
-<meta name="keywords" content="js,trello,ctrl+c">
+<meta name="description" content="分布式锁的理解所谓分布式锁 说到底就是多个进程或者线程去获取同一个资源 但是只有一个会获取成功 实现了这样的功能就是分布式锁 分布式锁的redis实现setnx命令Redis Setnx（SET if Not eXists） 命令在指定的 key 不存在时，为 key 设置指定的值。 实际操作如下：  如果此时再次进行setnx的操作  那么此时是不是有点思路了 比如多个线程或者进程 去争夺某一个">
+<meta name="keywords" content="redis,分布式锁">
 <meta property="og:type" content="article">
-<meta property="og:title" content="网页内容复制黏贴">
-<meta property="og:url" content="http://SeeMoonUp.github.io/2017/12/11/tech/fe/网页内容复制粘贴(三种方案 兼容多种浏览器)/index.html">
+<meta property="og:title" content="redis分布式锁">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2018/08/25/tech/redis/redis分布式锁/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="对网页上的内容实现复制粘贴的功能 痛点：需要支持多种不同的浏览器 主要有IE，Firefox  IE浏览器下的解决方案：window.clipboardData.setData(&amp;quot;Text&amp;quot;, text); 通用浏览器的解决方案：选中元素之后执行：document.execCommand(&amp;#39;copy&amp;#39;) Firefox下的解决方案两种折中的方案a. 监听hove">
+<meta property="og:description" content="分布式锁的理解所谓分布式锁 说到底就是多个进程或者线程去获取同一个资源 但是只有一个会获取成功 实现了这样的功能就是分布式锁 分布式锁的redis实现setnx命令Redis Setnx（SET if Not eXists） 命令在指定的 key 不存在时，为 key 设置指定的值。 实际操作如下：  如果此时再次进行setnx的操作  那么此时是不是有点思路了 比如多个线程或者进程 去争夺某一个">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-18T13:58:27.475Z">
+<meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180825153518052744214.png">
+<meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180825153518067083122.png">
+<meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180825153518171998712.png">
+<meta property="og:updated_time" content="2018-08-25T08:09:35.672Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="网页内容复制黏贴">
-<meta name="twitter:description" content="对网页上的内容实现复制粘贴的功能 痛点：需要支持多种不同的浏览器 主要有IE，Firefox  IE浏览器下的解决方案：window.clipboardData.setData(&amp;quot;Text&amp;quot;, text); 通用浏览器的解决方案：选中元素之后执行：document.execCommand(&amp;#39;copy&amp;#39;) Firefox下的解决方案两种折中的方案a. 监听hove">
+<meta name="twitter:title" content="redis分布式锁">
+<meta name="twitter:description" content="分布式锁的理解所谓分布式锁 说到底就是多个进程或者线程去获取同一个资源 但是只有一个会获取成功 实现了这样的功能就是分布式锁 分布式锁的redis实现setnx命令Redis Setnx（SET if Not eXists） 命令在指定的 key 不存在时，为 key 设置指定的值。 实际操作如下：  如果此时再次进行setnx的操作  那么此时是不是有点思路了 比如多个线程或者进程 去争夺某一个">
+<meta name="twitter:image" content="http://ok6q2poob.bkt.clouddn.com/20180825153518052744214.png">
 
 
 
@@ -120,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://SeeMoonUp.github.io/2017/12/11/tech/fe/网页内容复制粘贴(三种方案 兼容多种浏览器)/"/>
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/08/25/tech/redis/redis分布式锁/"/>
 
 
 
 
 
-  <title>网页内容复制黏贴 | 不爱更新的博客</title>
+  <title>redis分布式锁 | 不爱更新的博客</title>
   
 
 
@@ -253,7 +257,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2017/12/11/tech/fe/网页内容复制粘贴(三种方案 兼容多种浏览器)/">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/08/25/tech/redis/redis分布式锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lemon">
@@ -270,7 +274,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">网页内容复制黏贴</h1>
+          <h1 class="post-title" itemprop="name headline">redis分布式锁</h1>
         
 
         <div class="post-meta">
@@ -282,8 +286,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-11T20:43:32+08:00">
-                2017-12-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-25T14:16:27+08:00">
+                2018-08-25
               </time>
             
 
@@ -305,8 +309,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe/" itemprop="url" rel="index">
-                    <span itemprop="name">fe</span>
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
                   </a>
                 </span>
 
@@ -342,24 +346,41 @@
       
 
       
-        <p>对网页上的内容实现复制粘贴的功能</p>
-<p>痛点：需要支持多种不同的浏览器 主要有IE，Firefox</p>
+        <h3 id="分布式锁的理解"><a href="#分布式锁的理解" class="headerlink" title="分布式锁的理解"></a>分布式锁的理解</h3><p>所谓分布式锁 说到底就是多个进程或者线程去获取同一个资源 但是只有一个会获取成功 实现了这样的功能就是分布式锁</p>
+<h3 id="分布式锁的redis实现"><a href="#分布式锁的redis实现" class="headerlink" title="分布式锁的redis实现"></a>分布式锁的redis实现</h3><h4 id="setnx命令"><a href="#setnx命令" class="headerlink" title="setnx命令"></a>setnx命令</h4><p>Redis Setnx（<strong>SET</strong> if <strong>N</strong>ot e<strong>X</strong>ists） 命令在指定的 key 不存在时，为 key 设置指定的值。</p>
+<p>实际操作如下：</p>
+<p><img src="http://ok6q2poob.bkt.clouddn.com/20180825153518052744214.png" alt="setnx.png"></p>
+<p>如果此时再次进行setnx的操作</p>
+<p><img src="http://ok6q2poob.bkt.clouddn.com/20180825153518067083122.png" alt="20180825153518067083122.png"></p>
+<p>那么此时是不是有点思路了</p>
+<p>比如多个线程或者进程 去争夺某一个资源的时候 先去redis中设置一个key 比如上例中的“seemoonup”</p>
+<p>这样只有返回1的这个表示成功其他的进程/线程 均为0表示抢夺资源失败</p>
+<p>这样就相当于利用了setnx的唯一性 来进行了分布式锁的实现</p>
+<p>当得到锁（也就是返回1）的那个线程处理完逻辑了之后将这个锁释放掉 使用方法del seemoonup 让其他的进程/线程获得锁</p>
+<p>完整的实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (redis.setnx(&quot;seemoonup&quot;, &quot;true&quot;) ==1) &#123;</span><br><span class="line">	//do some thing </span><br><span class="line">	redis.del(&quot;seemoonup&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="会出现的问题"><a href="#会出现的问题" class="headerlink" title="会出现的问题"></a>会出现的问题</h4><p>当或得到锁的那个线程 处理逻辑的过程中发生了宕机 那么redis中的seemooup永远不会释放锁 如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if (redis.setnx(&quot;seemoonup&quot;, &quot;true&quot;) ==1) &#123;</span><br><span class="line">	//do some thing </span><br><span class="line">	int i = 1/0; //这里会抛出异常导致下面的del没有被执行</span><br><span class="line">	redis.del(&quot;seemoonup&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="如何解决这个问题呢？"><a href="#如何解决这个问题呢？" class="headerlink" title="如何解决这个问题呢？"></a>如何解决这个问题呢？</h4><h5 id="设置过期时间"><a href="#设置过期时间" class="headerlink" title="设置过期时间"></a>设置过期时间</h5><p>第一个想到的就是 对这个key进行一个过期时间的设置 比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (redis.setnx(&quot;seemoonup&quot;, &quot;true&quot;) ==1) &#123;</span><br><span class="line">	redis.expire(&quot;seemoonup&quot;, 5); //设置为5秒钟过期</span><br><span class="line">	//do some thing </span><br><span class="line">	int i = 1/0; //这里会抛出异常导致下面的del没有被执行</span><br><span class="line">	redis.del(&quot;seemoonup&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是因为在setnx和expire还是有可能被中断掉，这种问题的根源就在于 setnx 和 expire 是两条指令而不是原子指令。</p>
+<h5 id="redis2-8-扩展参数"><a href="#redis2-8-扩展参数" class="headerlink" title="redis2.8 扩展参数"></a>redis2.8 扩展参数</h5><p>如果这两条指令可以一起执行就不会出现问题。所以在Redis 2.8 版本中作者加入了 set 指令的扩展参数，使得 setnx 和 expire 指令可以一起执行 如下图</p>
+<p><img src="http://ok6q2poob.bkt.clouddn.com/20180825153518171998712.png" alt="redisSet2.8.png"></p>
+<p>这个命令的完整意思就是 如果“seemoonup“这个key不存在设置为”false“并且设置过期时间5秒</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (StringUtils.equals(&quot;OK&quot;, redis.set(&quot;seemoonup&quot;, &quot;false&quot;, &quot;NX&quot;, &quot;EX&quot;, 5))) &#123;</span><br><span class="line">	//处理业务逻辑</span><br><span class="line">	.....</span><br><span class="line">	//处理完业务逻辑 将锁释放掉</span><br><span class="line">    JedisUtil.del(&quot;seemoonup&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此基于redis的分布式锁就已经实现了</p>
+<h3 id="遗留问题"><a href="#遗留问题" class="headerlink" title="遗留问题"></a>遗留问题</h3><p>上例中此时释放锁的可能性有两种：</p>
 <ol>
-<li>IE浏览器下的解决方案：<br><code>window.clipboardData.setData(&quot;Text&quot;, text);</code></li>
-<li>通用浏览器的解决方案：<br>选中元素之后执行：<br><code>document.execCommand(&#39;copy&#39;)</code></li>
-<li>Firefox下的解决方案<br>两种折中的方案<br>a. 监听hover事件 当鼠标移动至需要复制的文本上时 用户按下ctrl+c 实现复制<br>b.<code>window.prompt(&quot;Copy to clipboard: Ctrl+C, Enter&quot;, text);</code> 弹出框内容为选中的文案，用户按下ctrl+c 实现复制</li>
+<li>超过5秒 自动过期释放锁</li>
+<li>处理业务逻辑完成 del释放锁</li>
 </ol>
-<a id="more"></a>
-<p>整合之后的代码为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">function copyToClipboard(text) &#123;</span><br><span class="line">  if (window.clipboardData) &#123; // Internet Explorer</span><br><span class="line">    window.clipboardData.setData(&quot;Text&quot;, text);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    var textArea = document.createElement(&quot;textarea&quot;);</span><br><span class="line">    textArea.style.background = &apos;transparent&apos;;</span><br><span class="line">    textArea.value = text;</span><br><span class="line">    document.body.appendChild(textArea);</span><br><span class="line">    textArea.select();</span><br><span class="line">    try &#123;</span><br><span class="line">      if (!document.execCommand(&apos;copy&apos;)) &#123;</span><br><span class="line">        copyToClipboardMozilla(text);</span><br><span class="line">	  &#125; else &#123;</span><br><span class="line">        showInfo(&quot;提示&quot;, &quot;复制成功&quot;)</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">    &#125; catch (err) &#123;</span><br><span class="line">      console.log(&apos;Oops, unable to copy&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">      document.body.removeChild(textArea);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function copyToClipboardMozilla(text) &#123;</span><br><span class="line">  window.prompt(&quot;Copy to clipboard: Ctrl+C, Enter&quot;, text);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$(&quot;.copy&quot;).on(&quot;mouseenter&quot;, function () &#123;</span><br><span class="line">  $(this).css(&quot;background-color&quot;, &quot;#c8c9c8&quot;);</span><br><span class="line">  $(this).focus();</span><br><span class="line">  var textArea = document.createElement(&quot;textarea&quot;);</span><br><span class="line">  textArea.style.background = &apos;transparent&apos;;</span><br><span class="line">  textArea.id = &quot;copyContent&quot;;</span><br><span class="line">  textArea.value = $(this).text();</span><br><span class="line">  document.body.appendChild(textArea);</span><br><span class="line">  textArea.select(); </span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">$(&quot;.copy&quot;).on(&quot;mouseleave&quot;, function () &#123;</span><br><span class="line">  $(this).css(&quot;background-color&quot;, &quot;&quot;);</span><br><span class="line"> document.body.removeChild(document.getElementById(&quot;copyContent&quot;)); </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<hr>
+<p>比如线程1 获得锁 执行业务逻辑时间过长比如达到了8秒 那么5秒钟的时候已经将锁释放 此时线程2可以获得锁 执行到第3秒的时候 线程1执行了del的方法 释放了锁 此时线程3又可以获得锁。</p>
+<p>为了避免这个问题，Redis 分布式锁不要用于较长时间的任务。如果真的偶尔出现了，数据出现的小波错乱可能需要人工介入解决。</p>
 <p>参考资料：</p>
-<ol>
-<li><a href="https://www.cnblogs.com/xhyu/p/5370111.html" target="_blank" rel="noopener">几个通用的解决复制的方法</a>：</li>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand" target="_blank" rel="noopener">document.execCommand API</a><br><a href="https://w3c.github.io/clipboard-apis/" target="_blank" rel="noopener">W3C API</a></li>
-<li><a href="https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript" target="_blank" rel="noopener">How do I copy to the clipboard in JavaScript?</a></li>
-<li><a href="https://stackoverflow.com/questions/17527870/how-does-trello-access-the-users-clipboard" target="_blank" rel="noopener">How does Trello access the user’s clipboard?</a></li>
-<li><a href="http://www.weixinnu.com/v/00BsH1" target="_blank" rel="noopener">20 行 JS 代码，实现复制到剪贴板功能</a></li>
-</ol>
+<p><a href="https://juejin.im/book/5afc2e5f6fb9a07a9b362527" target="_blank" rel="noopener">Redis 深度历险：核心原理与应用实践</a></p>
+<blockquote>
+<p>有不足之处还望不吝赐教 欢迎关注</p>
+<p>未经作者允许 请勿转载，谢谢 :)</p>
+</blockquote>
 
       
     </div>
@@ -414,11 +435,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/js/" rel="tag"># js</a>
+            <a href="/tags/redis/" rel="tag"># redis</a>
           
-            <a href="/tags/trello/" rel="tag"># trello</a>
-          
-            <a href="/tags/ctrl-c/" rel="tag"># ctrl+c</a>
+            <a href="/tags/分布式锁/" rel="tag"># 分布式锁</a>
           
         </div>
       
@@ -431,15 +450,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/08/23/tech/tools/svn分支协同开发流程/" rel="next" title="svn分支协同开发流程">
+                <i class="fa fa-chevron-left"></i> svn分支协同开发流程
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/13/tech/java/使用filter可以做哪些事情/" rel="prev" title="使用filter可以做哪些事情">
-                使用filter可以做哪些事情 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -491,8 +510,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -572,6 +600,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式锁的理解"><span class="nav-number">1.</span> <span class="nav-text">分布式锁的理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式锁的redis实现"><span class="nav-number">2.</span> <span class="nav-text">分布式锁的redis实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#setnx命令"><span class="nav-number">2.1.</span> <span class="nav-text">setnx命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#会出现的问题"><span class="nav-number">2.2.</span> <span class="nav-text">会出现的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决这个问题呢？"><span class="nav-number">2.3.</span> <span class="nav-text">如何解决这个问题呢？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#设置过期时间"><span class="nav-number">2.3.1.</span> <span class="nav-text">设置过期时间</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#redis2-8-扩展参数"><span class="nav-number">2.3.2.</span> <span class="nav-text">redis2.8 扩展参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遗留问题"><span class="nav-number">3.</span> <span class="nav-text">遗留问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
