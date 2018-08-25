@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="分布式锁的理解所谓分布式锁 说到底就是多个进程或者线程去获取同一个资源 但是只有一个会获取成功 实现了这样的功能就是分布式锁 分布式锁的redis实现setnx命令Redis Setnx（SET if Not eXists） 命令在指定的 key 不存在时，为 key 设置指定的值。 实际操作如下：  如果此时再次进行setnx的操作  那么此时是不是有点思路了 比如多个线程或者进程 去争夺某一个">
+<meta name="description" content="分布式锁的理解所谓分布式锁 说到底就是多个进程或者线程去获取同一个资源 但是只有一个会获取成功 实现了这样的功能就是分布式锁 分布式锁的redis实现setnx命令Redis Setnx（SET if Not eXists） 命令在指定的 key 不存在时，为 key 设置指定的值。  实际操作如下：">
 <meta name="keywords" content="redis,分布式锁">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis分布式锁">
 <meta property="og:url" content="http://SeeMoonUp.github.io/2018/08/25/tech/redis/redis分布式锁/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="分布式锁的理解所谓分布式锁 说到底就是多个进程或者线程去获取同一个资源 但是只有一个会获取成功 实现了这样的功能就是分布式锁 分布式锁的redis实现setnx命令Redis Setnx（SET if Not eXists） 命令在指定的 key 不存在时，为 key 设置指定的值。 实际操作如下：  如果此时再次进行setnx的操作  那么此时是不是有点思路了 比如多个线程或者进程 去争夺某一个">
+<meta property="og:description" content="分布式锁的理解所谓分布式锁 说到底就是多个进程或者线程去获取同一个资源 但是只有一个会获取成功 实现了这样的功能就是分布式锁 分布式锁的redis实现setnx命令Redis Setnx（SET if Not eXists） 命令在指定的 key 不存在时，为 key 设置指定的值。  实际操作如下：">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180825153518052744214.png">
 <meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180825153518067083122.png">
 <meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180825153518171998712.png">
-<meta property="og:updated_time" content="2018-08-25T08:09:35.672Z">
+<meta property="og:updated_time" content="2018-08-25T08:21:24.336Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis分布式锁">
-<meta name="twitter:description" content="分布式锁的理解所谓分布式锁 说到底就是多个进程或者线程去获取同一个资源 但是只有一个会获取成功 实现了这样的功能就是分布式锁 分布式锁的redis实现setnx命令Redis Setnx（SET if Not eXists） 命令在指定的 key 不存在时，为 key 设置指定的值。 实际操作如下：  如果此时再次进行setnx的操作  那么此时是不是有点思路了 比如多个线程或者进程 去争夺某一个">
+<meta name="twitter:description" content="分布式锁的理解所谓分布式锁 说到底就是多个进程或者线程去获取同一个资源 但是只有一个会获取成功 实现了这样的功能就是分布式锁 分布式锁的redis实现setnx命令Redis Setnx（SET if Not eXists） 命令在指定的 key 不存在时，为 key 设置指定的值。  实际操作如下：">
 <meta name="twitter:image" content="http://ok6q2poob.bkt.clouddn.com/20180825153518052744214.png">
 
 
@@ -347,8 +347,9 @@
 
       
         <h3 id="分布式锁的理解"><a href="#分布式锁的理解" class="headerlink" title="分布式锁的理解"></a>分布式锁的理解</h3><p>所谓分布式锁 说到底就是多个进程或者线程去获取同一个资源 但是只有一个会获取成功 实现了这样的功能就是分布式锁</p>
-<h3 id="分布式锁的redis实现"><a href="#分布式锁的redis实现" class="headerlink" title="分布式锁的redis实现"></a>分布式锁的redis实现</h3><h4 id="setnx命令"><a href="#setnx命令" class="headerlink" title="setnx命令"></a>setnx命令</h4><p>Redis Setnx（<strong>SET</strong> if <strong>N</strong>ot e<strong>X</strong>ists） 命令在指定的 key 不存在时，为 key 设置指定的值。</p>
+<h3 id="分布式锁的redis实现"><a href="#分布式锁的redis实现" class="headerlink" title="分布式锁的redis实现"></a>分布式锁的redis实现</h3><h4 id="setnx命令"><a href="#setnx命令" class="headerlink" title="setnx命令"></a>setnx命令</h4><p>Redis Setnx（<strong>SET</strong> if <strong>N</strong>ot e<strong>X</strong>ists） 命令在指定的 key 不存在时，为 key 设置指定的值。 </p>
 <p>实际操作如下：</p>
+<a id="more"></a>
 <p><img src="http://ok6q2poob.bkt.clouddn.com/20180825153518052744214.png" alt="setnx.png"></p>
 <p>如果此时再次进行setnx的操作</p>
 <p><img src="http://ok6q2poob.bkt.clouddn.com/20180825153518067083122.png" alt="20180825153518067083122.png"></p>

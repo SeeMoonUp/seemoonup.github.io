@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="开发场景面向trunk开发比如4人开发团队 每2人负责一个功能模块，两个功能模块在同一个项目中，此时如果4个人都是在主分支trunk上进行开发 那么必须等两个功能模块全部ok 才能上线 （操作比较简单 不进行赘述） 缺点：  开发耦合性过大  项目代码不易管理  面向branches开发分支开发 对trunk进行分支开发 按照上面的逻辑 新建两个分支2个人编辑一个分支 当其中一个分支开发完成 可以">
+<meta name="description" content="开发场景面向trunk开发比如4人开发团队 每2人负责一个功能模块，两个功能模块在同一个项目中，此时如果4个人都是在主分支trunk上进行开发 那么必须等两个功能模块全部ok 才能上线 （操作比较简单 不进行赘述） 缺点：  开发耦合性过大  项目代码不易管理">
 <meta name="keywords" content="svn,tools">
 <meta property="og:type" content="article">
 <meta property="og:title" content="svn分支协同开发流程">
 <meta property="og:url" content="http://SeeMoonUp.github.io/2018/08/23/tech/tools/svn分支协同开发流程/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="开发场景面向trunk开发比如4人开发团队 每2人负责一个功能模块，两个功能模块在同一个项目中，此时如果4个人都是在主分支trunk上进行开发 那么必须等两个功能模块全部ok 才能上线 （操作比较简单 不进行赘述） 缺点：  开发耦合性过大  项目代码不易管理  面向branches开发分支开发 对trunk进行分支开发 按照上面的逻辑 新建两个分支2个人编辑一个分支 当其中一个分支开发完成 可以">
+<meta property="og:description" content="开发场景面向trunk开发比如4人开发团队 每2人负责一个功能模块，两个功能模块在同一个项目中，此时如果4个人都是在主分支trunk上进行开发 那么必须等两个功能模块全部ok 才能上线 （操作比较简单 不进行赘述） 缺点：  开发耦合性过大  项目代码不易管理">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/svn%E5%88%86%E6%94%AF%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B.jpg">
-<meta property="og:updated_time" content="2018-08-22T16:49:24.768Z">
+<meta property="og:updated_time" content="2018-08-25T08:21:16.087Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="svn分支协同开发流程">
-<meta name="twitter:description" content="开发场景面向trunk开发比如4人开发团队 每2人负责一个功能模块，两个功能模块在同一个项目中，此时如果4个人都是在主分支trunk上进行开发 那么必须等两个功能模块全部ok 才能上线 （操作比较简单 不进行赘述） 缺点：  开发耦合性过大  项目代码不易管理  面向branches开发分支开发 对trunk进行分支开发 按照上面的逻辑 新建两个分支2个人编辑一个分支 当其中一个分支开发完成 可以">
+<meta name="twitter:description" content="开发场景面向trunk开发比如4人开发团队 每2人负责一个功能模块，两个功能模块在同一个项目中，此时如果4个人都是在主分支trunk上进行开发 那么必须等两个功能模块全部ok 才能上线 （操作比较简单 不进行赘述） 缺点：  开发耦合性过大  项目代码不易管理">
 <meta name="twitter:image" content="http://ok6q2poob.bkt.clouddn.com/svn%E5%88%86%E6%94%AF%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B.jpg">
 
 
@@ -350,6 +350,7 @@
 <li>开发耦合性过大 </li>
 <li>项目代码不易管理</li>
 </ul>
+<a id="more"></a>
 <h4 id="面向branches开发"><a href="#面向branches开发" class="headerlink" title="面向branches开发"></a>面向branches开发</h4><p>分支开发 对trunk进行分支开发 按照上面的逻辑 新建两个分支<br>2个人编辑一个分支 当其中一个分支开发完成 可以直接发布<br>另外两人开发完成后再发布</p>
 <p>优点：</p>
 <ul>
