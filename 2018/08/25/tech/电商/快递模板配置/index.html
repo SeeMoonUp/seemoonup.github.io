@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="js,电商,快递," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="######开发条件：安装bootstrap-treeview插件，具体操作见：bootstrap-treeview ######实现功能：  1.一个模板可指定子模板（包含多个地区、价格等）2.编辑子模板地区时，动态改变tree的地区（其他子模板选中的地区disabled,此模板之前选中的地区默认选中）3.tree选择时，父级和子集的联动（如父级选中子集全部选中，取消一个子集的时候，父级也取消）">
+<meta name="keywords" content="js,电商,快递">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快递模板配置">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2018/08/25/tech/电商/快递模板配置/index.html">
+<meta property="og:site_name" content="不爱更新的博客">
+<meta property="og:description" content="######开发条件：安装bootstrap-treeview插件，具体操作见：bootstrap-treeview ######实现功能：  1.一个模板可指定子模板（包含多个地区、价格等）2.编辑子模板地区时，动态改变tree的地区（其他子模板选中的地区disabled,此模板之前选中的地区默认选中）3.tree选择时，父级和子集的联动（如父级选中子集全部选中，取消一个子集的时候，父级也取消）">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1329783-9384c647d523f55c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1329783-e791fb21521652f2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/540">
+<meta property="og:updated_time" content="2018-08-25T10:33:09.999Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="快递模板配置">
+<meta name="twitter:description" content="######开发条件：安装bootstrap-treeview插件，具体操作见：bootstrap-treeview ######实现功能：  1.一个模板可指定子模板（包含多个地区、价格等）2.编辑子模板地区时，动态改变tree的地区（其他子模板选中的地区disabled,此模板之前选中的地区默认选中）3.tree选择时，父级和子集的联动（如父级选中子集全部选中，取消一个子集的时候，父级也取消）">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1329783-9384c647d523f55c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/08/25/tech/电商/快递模板配置/"/>
+
+
+
+
+
+  <title>快递模板配置 | 不爱更新的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">不爱更新的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">代码是写不完的<br>bug是改不完的<br>下班 回家</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/08/25/tech/电商/快递模板配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ok6q2poob.bkt.clouddn.com/IMG489.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不爱更新的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">快递模板配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-25T18:30:16+08:00">
+                2018-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe/" itemprop="url" rel="index">
+                    <span itemprop="name">fe</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe/plugin/" itemprop="url" rel="index">
+                    <span itemprop="name">plugin</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe/plugin/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>######开发条件：<br>安装bootstrap-treeview插件，具体操作见：<br><a href="http://www.bootcdn.cn/bootstrap-treeview/readme/" target="_blank" rel="noopener">bootstrap-treeview</a></p>
+<p>######实现功能：</p>
+<blockquote>
+<p>1.一个模板可指定子模板（包含多个地区、价格等）<br>2.编辑子模板地区时，动态改变tree的地区（其他子模板选中的地区disabled,此模板之前选中的地区默认选中）<br>3.tree选择时，父级和子集的联动（如父级选中子集全部选中，取消一个子集的时候，父级也取消）<br>4.维护子模板数据（展示选中的地区格式 如（安徽、北京（昌平 回龙观）） 存储选中节点）</p>
+</blockquote>
+<a id="more"></a>
+<p>其他说明</p>
+<blockquote>
+<p>数据源格式：[{text:’展示名称1’,nodes:[{text:’子级’}]},{text:’展示名称2’}]<br>bootstrap-trview会动态的为数据源添加nodeId,parentId这两个属性（很重要的属性），可自定义添加其他属性用来标记当前节点</p>
+</blockquote>
+<hr>
+<p>编辑过程中维护的数据</p>
+<blockquote>
+<p>数组对象templates包含：<br>1.模板的名称<br>2.每个子模板对应的 价格 件数 排序<br>3.子模板的地区Id、节点id、展示名称</p>
+</blockquote>
+<p>实现上述数据需要维护的数组和对象</p>
+<blockquote>
+<p><code>var templates = [];</code>    //保存最终储存的数据<br><code>var selectedNodeId = [];</code>    //用来存储单个模板选择的nodeId 用于展示<br><code>var editingTemplate = null;</code>    //用于标记正在处理的是第几个地区模板<br><code>var selectedAreaId = [];</code>   //保存当前选择的地区<br><code>var selectedAreaName = [];</code> //保存当前选中的地区名称用于展示<br><code>var defaultData = [];</code>//数据源</p>
+</blockquote>
+<hr>
+<p>######实现功能一</p>
+<blockquote>
+<p>一个模板指定多个子模板<br>主要是维护templates[]数组 push进入多个template即可 下面会详细讲解如何维护template</p>
+</blockquote>
+<hr>
+<p>######实现功能二（动态修改tree） </p>
+<blockquote>
+<p>原理：通过维护的templates和editingTemplate 拿到当前编辑的子模板数据和其他子模板数据，将当前模板的node默认选中，其他的数据置为disabled</p>
+</blockquote>
+<p>编辑子模板</p>
+<blockquote>
+<p>uncheckAll方法：<code>$(&#39;#tree&#39;).treeview(&#39;uncheckAll&#39;, { silent: true });</code><br>disAbled方法：<code>$(&#39;#tree&#39;).treeview(&#39;disableNode&#39;, [ nodeId, { silent: true } ]);</code><br>默认选中的方法<code>$(&#39;#tree&#39;).treeview(&#39;checkNode&#39;, [ template.nodeIds[i], { silent: true } ]);</code></p>
+</blockquote>
+<hr>
+<p>######实现功能三：父级和子级的联动（主要操作在点击选中和取消选中上面 来分析两种情况）<br>第一种 选中</p>
+<blockquote>
+<p>1.选择父节点 将子节点全部选中<br>根据父节点返回的nodes得到所有的子节点 并且将子节点全部选中<br>选中的方法<code>$(&#39;#tree&#39;).treeview(&#39;checkNode&#39;, [ nodeId, { silent: true } ]);</code><br>可以封装为一个方法selectAllChildren()</p>
+</blockquote>
+<blockquote>
+<p>2.如果选中的为子节点<br>判断父节点中的子节点是否全部选中如果全部选中则将父节点选中</p>
+</blockquote>
+<p>第二种 取消</p>
+<blockquote>
+<p>1.选中的为父节点，将所有的子节点取消选中<br>取消选中的方法<code>$(&#39;#tree&#39;).treeview(&#39;uncheckNode&#39;, [ nodeId, { silent: true } ]);</code></p>
+<p>2选中的为子节点，判断父节点中的子节点是否选中 如果选中 则取消选中</p>
+</blockquote>
+<p>判断是否选中的方法</p>
+<blockquote>
+<p><code>$(&#39;#tree&#39;).treeview(&#39;selectNode&#39;, [ nodeId, { silent: true } ]);</code><br>根据获取到元素获取是否选中</p>
+</blockquote>
+<hr>
+<p>######实现功能四（维护template数据）</p>
+<blockquote>
+<p>1.正在编辑的editingTemplate<br>2.当前层级选中的所有selectedNodeId<br>3.展示需要的字符串数组selectedNodeName<br>3.存储字符串数组selectedAreaId对应数据库中的areaId<br>4.将上面的三个数组存入template，并将template push进入templates</p>
+</blockquote>
+<p>逻辑</p>
+<blockquote>
+<p>1.获取到所有的被选中的元素<br>2.遍历所有的元素 判断当前节点是否有nodes（即子元素），如果有则直接操作，并改变index，将其子元素全部跳过，将节点名称保存进areaNames，如”安徽”<br>3.遍历所有的元素 如果没有子元素，取出父级元素如”北京(“,将node元素添加至后面，如”北京(昌平区”,判断下一个元素的父节点是否发生改变，如果发生改变则结束维护字符串为”北京（昌平区）”，并将其添加至areaNames，继续遍历下一个节点<br>4.其他三个数组在遍历的同时维护</p>
+</blockquote>
+<hr>
+<p>######实现结果展示：<br>1.主页面展示：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1329783-9384c647d523f55c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="主页面.png"></p>
+<p>2.tree展示：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1329783-e791fb21521652f2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/540" alt="选择地区.png"></p>
+<hr>
+<p>小结</p>
+<blockquote>
+<p>本文提供简单的实现方案思路，具体的代码根据业务实现，不足之处不能动态处理数据源，优点bootstrap开放的api接口较多，可自定义实现。</p>
+<p>未经作者授权 请勿转载</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="http://ok6q2poob.bkt.clouddn.com/dyh.jpg" alt="lemon wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎大家关注我的订阅号 SeeMoonUp</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>写的不错？鼓励一下？不差钱？</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://ok6q2poob.bkt.clouddn.com/wechatmoney.png" alt="lemon 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://ok6q2poob.bkt.clouddn.com/alimoney.png" alt="lemon 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+            <a href="/tags/电商/" rel="tag"># 电商</a>
+          
+            <a href="/tags/快递/" rel="tag"># 快递</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/25/tech/电商/购物车-订单-返回问题/" rel="next" title="购物车下单 返回问题">
+                <i class="fa fa-chevron-left"></i> 购物车下单 返回问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/25/tech/电商/App嵌入H5页面JsBridge失效问题/" rel="prev" title="购物车下单 返回问题">
+                购物车下单 返回问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://ok6q2poob.bkt.clouddn.com/IMG489.jpeg"
+                alt="lemon" />
+            
+              <p class="site-author-name" itemprop="name">lemon</p>
+              <p class="site-description motion-element" itemprop="description">不那么差劲的程序员</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/SeeMoonUp" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://juejin.im/user/57d034de0e3dd90069b96e65" target="_blank" title="掘金">
+                      
+                        <i class="fa fa-fw fa-bookmark"></i>掘金</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lemon</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
