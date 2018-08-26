@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180825153518052744214.png">
 <meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180825153518067083122.png">
 <meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180825153518171998712.png">
-<meta property="og:updated_time" content="2018-08-25T08:21:24.336Z">
+<meta property="og:updated_time" content="2018-08-25T14:56:52.246Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis分布式锁">
 <meta name="twitter:description" content="分布式锁的理解所谓分布式锁 说到底就是多个进程或者线程去获取同一个资源 但是只有一个会获取成功 实现了这样的功能就是分布式锁 分布式锁的redis实现setnx命令Redis Setnx（SET if Not eXists） 命令在指定的 key 不存在时，为 key 设置指定的值。  实际操作如下：">
@@ -378,6 +378,8 @@
 <p>为了避免这个问题，Redis 分布式锁不要用于较长时间的任务。如果真的偶尔出现了，数据出现的小波错乱可能需要人工介入解决。</p>
 <p>参考资料：</p>
 <p><a href="https://juejin.im/book/5afc2e5f6fb9a07a9b362527" target="_blank" rel="noopener">Redis 深度历险：核心原理与应用实践</a></p>
+<p>思考问题：</p>
+<p>是否可以使用这种方式来处理 用户重复提交 比如下单接口 设置2秒的过期时间 即两秒内只允许一次请求进来？</p>
 <blockquote>
 <p>有不足之处还望不吝赐教 欢迎关注</p>
 <p>未经作者允许 请勿转载，谢谢 :)</p>
@@ -544,7 +546,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -566,7 +568,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

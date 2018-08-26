@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="js,trello,ctrl+c," />
+  <meta name="keywords" content="redis,IO模型," />
 
 
 
@@ -79,18 +79,22 @@
 
 
 
-<meta name="description" content="对网页上的内容实现复制粘贴的功能 痛点：需要支持多种不同的浏览器 主要有IE，Firefox  IE浏览器下的解决方案：window.clipboardData.setData(&amp;quot;Text&amp;quot;, text); 通用浏览器的解决方案：选中元素之后执行：document.execCommand(&amp;#39;copy&amp;#39;) Firefox下的解决方案两种折中的方案a. 监听hove">
-<meta name="keywords" content="js,trello,ctrl+c">
+<meta name="description" content="Redis 是个单线程程序这点必须铭记。 也许你会怀疑高并发的 Redis 中间件怎么可能是单线程。很抱歉，它就是单线程，你的怀疑暴露了你基础知识的不足。莫要瞧不起单线程，除了 Redis 之外，Node.js 也是单线程，Nginx 也是单线程，但是它们都是服务器高性能的典范。 Redis为什么这么快 完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于HashMap，H">
+<meta name="keywords" content="redis,IO模型">
 <meta property="og:type" content="article">
-<meta property="og:title" content="网页内容复制黏贴">
-<meta property="og:url" content="http://SeeMoonUp.github.io/2017/12/11/tech/fe/网页内容复制粘贴(三种方案 兼容多种浏览器)/index.html">
+<meta property="og:title" content="Redis线程模型">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2018/08/26/tech/redis/Redis线程IO模型/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="对网页上的内容实现复制粘贴的功能 痛点：需要支持多种不同的浏览器 主要有IE，Firefox  IE浏览器下的解决方案：window.clipboardData.setData(&amp;quot;Text&amp;quot;, text); 通用浏览器的解决方案：选中元素之后执行：document.execCommand(&amp;#39;copy&amp;#39;) Firefox下的解决方案两种折中的方案a. 监听hove">
+<meta property="og:description" content="Redis 是个单线程程序这点必须铭记。 也许你会怀疑高并发的 Redis 中间件怎么可能是单线程。很抱歉，它就是单线程，你的怀疑暴露了你基础知识的不足。莫要瞧不起单线程，除了 Redis 之外，Node.js 也是单线程，Nginx 也是单线程，但是它们都是服务器高性能的典范。 Redis为什么这么快 完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于HashMap，H">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-25T10:51:51.433Z">
+<meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180826153527162776600.png">
+<meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180826153527227269311.png">
+<meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180826153527852532546.png">
+<meta property="og:updated_time" content="2018-08-26T10:27:52.926Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="网页内容复制黏贴">
-<meta name="twitter:description" content="对网页上的内容实现复制粘贴的功能 痛点：需要支持多种不同的浏览器 主要有IE，Firefox  IE浏览器下的解决方案：window.clipboardData.setData(&amp;quot;Text&amp;quot;, text); 通用浏览器的解决方案：选中元素之后执行：document.execCommand(&amp;#39;copy&amp;#39;) Firefox下的解决方案两种折中的方案a. 监听hove">
+<meta name="twitter:title" content="Redis线程模型">
+<meta name="twitter:description" content="Redis 是个单线程程序这点必须铭记。 也许你会怀疑高并发的 Redis 中间件怎么可能是单线程。很抱歉，它就是单线程，你的怀疑暴露了你基础知识的不足。莫要瞧不起单线程，除了 Redis 之外，Node.js 也是单线程，Nginx 也是单线程，但是它们都是服务器高性能的典范。 Redis为什么这么快 完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于HashMap，H">
+<meta name="twitter:image" content="http://ok6q2poob.bkt.clouddn.com/20180826153527162776600.png">
 
 
 
@@ -120,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://SeeMoonUp.github.io/2017/12/11/tech/fe/网页内容复制粘贴(三种方案 兼容多种浏览器)/"/>
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/08/26/tech/redis/Redis线程IO模型/"/>
 
 
 
 
 
-  <title>网页内容复制黏贴 | 不爱更新的博客</title>
+  <title>Redis线程模型 | 不爱更新的博客</title>
   
 
 
@@ -253,7 +257,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2017/12/11/tech/fe/网页内容复制粘贴(三种方案 兼容多种浏览器)/">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/08/26/tech/redis/Redis线程IO模型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lemon">
@@ -270,7 +274,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">网页内容复制黏贴</h1>
+          <h1 class="post-title" itemprop="name headline">Redis线程模型</h1>
         
 
         <div class="post-meta">
@@ -282,8 +286,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-11T20:43:32+08:00">
-                2017-12-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-26T14:16:51+08:00">
+                2018-08-26
               </time>
             
 
@@ -305,8 +309,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe/" itemprop="url" rel="index">
-                    <span itemprop="name">fe</span>
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
                   </a>
                 </span>
 
@@ -342,24 +346,77 @@
       
 
       
-        <p>对网页上的内容实现复制粘贴的功能</p>
-<p>痛点：需要支持多种不同的浏览器 主要有IE，Firefox</p>
-<ol>
-<li>IE浏览器下的解决方案：<br><code>window.clipboardData.setData(&quot;Text&quot;, text);</code></li>
-<li>通用浏览器的解决方案：<br>选中元素之后执行：<br><code>document.execCommand(&#39;copy&#39;)</code></li>
-<li>Firefox下的解决方案<br>两种折中的方案<br>a. 监听hover事件 当鼠标移动至需要复制的文本上时 用户按下ctrl+c 实现复制<br>b.<code>window.prompt(&quot;Copy to clipboard: Ctrl+C, Enter&quot;, text);</code> 弹出框内容为选中的文案，用户按下ctrl+c 实现复制</li>
+        <h2 id="Redis-是个单线程程序"><a href="#Redis-是个单线程程序" class="headerlink" title="Redis 是个单线程程序"></a>Redis 是个单线程程序</h2><p>这点必须铭记。</p>
+<p>也许你会怀疑高并发的 Redis 中间件怎么可能是单线程。很抱歉，它就是单线程，你的怀疑暴露了你基础知识的不足。莫要瞧不起单线程，除了 Redis 之外，Node.js 也是单线程，Nginx 也是单线程，但是它们都是服务器高性能的典范。</p>
+<h2 id="Redis为什么这么快"><a href="#Redis为什么这么快" class="headerlink" title="Redis为什么这么快"></a>Redis为什么这么快</h2><ol>
+<li>完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O(1)；正因为 Redis 是单线程，所以要小心使用 Redis 指令，对于那些时间复杂度为 O(n) 级别的指令，一定要谨慎使用，一不小心就可能会导致 Redis 卡顿。</li>
+<li>数据结构简单，对数据操作也简单，Redis中的数据结构是专门进行设计的；</li>
+<li>采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU，不用去考虑各种锁的问题，不存在加锁释放锁操作，没有因为可能出现死锁而导致的性能消耗；</li>
+<li>使用多路I/O复用模型，非阻塞IO，Redis 单线程处理大量的并发客户端连接的模型。</li>
+<li>使用底层模型不同，它们之间底层实现方式以及与客户端之间通信的应用协议不一样，Redis直接自己构建了VM 机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求；</li>
 </ol>
-<a id="more"></a>
-<p>整合之后的代码为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">function copyToClipboard(text) &#123;</span><br><span class="line">  if (window.clipboardData) &#123; // Internet Explorer</span><br><span class="line">    window.clipboardData.setData(&quot;Text&quot;, text);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    var textArea = document.createElement(&quot;textarea&quot;);</span><br><span class="line">    textArea.style.background = &apos;transparent&apos;;</span><br><span class="line">    textArea.value = text;</span><br><span class="line">    document.body.appendChild(textArea);</span><br><span class="line">    textArea.select();</span><br><span class="line">    try &#123;</span><br><span class="line">      if (!document.execCommand(&apos;copy&apos;)) &#123;</span><br><span class="line">        copyToClipboardMozilla(text);</span><br><span class="line">	  &#125; else &#123;</span><br><span class="line">        showInfo(&quot;提示&quot;, &quot;复制成功&quot;)</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">    &#125; catch (err) &#123;</span><br><span class="line">      console.log(&apos;Oops, unable to copy&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">      document.body.removeChild(textArea);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function copyToClipboardMozilla(text) &#123;</span><br><span class="line">  window.prompt(&quot;Copy to clipboard: Ctrl+C, Enter&quot;, text);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$(&quot;.copy&quot;).on(&quot;mouseenter&quot;, function () &#123;</span><br><span class="line">  $(this).css(&quot;background-color&quot;, &quot;#c8c9c8&quot;);</span><br><span class="line">  $(this).focus();</span><br><span class="line">  var textArea = document.createElement(&quot;textarea&quot;);</span><br><span class="line">  textArea.style.background = &apos;transparent&apos;;</span><br><span class="line">  textArea.id = &quot;copyContent&quot;;</span><br><span class="line">  textArea.value = $(this).text();</span><br><span class="line">  document.body.appendChild(textArea);</span><br><span class="line">  textArea.select(); </span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">$(&quot;.copy&quot;).on(&quot;mouseleave&quot;, function () &#123;</span><br><span class="line">  $(this).css(&quot;background-color&quot;, &quot;&quot;);</span><br><span class="line"> document.body.removeChild(document.getElementById(&quot;copyContent&quot;)); </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>参考资料：</p>
+<h2 id="I-O模型"><a href="#I-O模型" class="headerlink" title="I/O模型"></a>I/O模型</h2><h3 id="阻塞I-O模型"><a href="#阻塞I-O模型" class="headerlink" title="阻塞I/O模型"></a>阻塞I/O模型</h3><p>阻塞I/O顾名思义就是：</p>
+<p>服务端面对并发请求逐个处理，如果其中一个请求准备数据处理时间过长会导致其他请求都在等待，系统的吞吐量下降。</p>
+<p>具体流程可以参照下图：</p>
+<p><img src="http://ok6q2poob.bkt.clouddn.com/20180826153527162776600.png" alt="阻塞.png"></p>
 <ol>
-<li><a href="https://www.cnblogs.com/xhyu/p/5370111.html" target="_blank" rel="noopener">几个通用的解决复制的方法</a>：</li>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand" target="_blank" rel="noopener">document.execCommand API</a><br><a href="https://w3c.github.io/clipboard-apis/" target="_blank" rel="noopener">W3C API</a></li>
-<li><a href="https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript" target="_blank" rel="noopener">How do I copy to the clipboard in JavaScript?</a></li>
-<li><a href="https://stackoverflow.com/questions/17527870/how-does-trello-access-the-users-clipboard" target="_blank" rel="noopener">How does Trello access the user’s clipboard?</a></li>
-<li><a href="http://www.weixinnu.com/v/00BsH1" target="_blank" rel="noopener">20 行 JS 代码，实现复制到剪贴板功能</a></li>
+<li>客户端发起读（read）的命令</li>
+<li>调用redis服务端</li>
+<li>此时没有数据</li>
+<li>数据报准备完成</li>
+<li>复制数据报</li>
+<li>复制完成</li>
+<li>返回成功</li>
+<li>客户端 处理数据报</li>
 </ol>
+<h3 id="多路复用I-O模型"><a href="#多路复用I-O模型" class="headerlink" title="多路复用I/O模型"></a>多路复用I/O模型</h3><p>简单理解一下 就是</p>
+<p>redis客户端先去select循环询问服务端是否可以发起read  这个过程是阻塞的 但是速度很快，当服务端准备好了数据报告诉客户端readable，客户端即可发起read请求，此时因为服务端已经准备好了数据报，直接返回即可。整个过程只在调用select、poll、epoll这些调用的时候才会阻塞，收发客户消息是不会阻塞的。这种方式避免了线程的阻塞，又称为非阻塞I/O模型</p>
+<p>这里“多路”指的是多个网络连接，“复用”指的是复用同一个线程。采用多路 I/O 复用技术可以让单个线程高效的处理多个连接请求（尽量减少网络 IO 的时间消耗）</p>
+<p>具体流程可以参照下图：</p>
+<p><img src="http://ok6q2poob.bkt.clouddn.com/20180826153527227269311.png" alt="多路复用"></p>
+<ol>
+<li><p>客户端select机制 循环请求 </p>
+</li>
+<li><p>去请求服务端 询问是否可以read</p>
+</li>
+<li><p>此时没有数据</p>
+</li>
+<li><p>数据报准备完成</p>
+</li>
+<li><p>服务端告诉客户端 可以read了</p>
+<p>1~5 这个过程是阻塞的</p>
+</li>
+<li><p>客户端发起read</p>
+</li>
+<li><p>系统调用read</p>
+</li>
+<li><p>复制数据报</p>
+</li>
+<li><p>复制完成</p>
+</li>
+<li><p>返回成功</p>
+</li>
+<li><p>客户端 处理数据报</p>
+</li>
+</ol>
+<p>下面看一个例子 十分贴切：</p>
+<blockquote>
+<p>下面举一个例子，模拟一个tcp服务器处理30个客户socket。假设你是一个老师，让30个学生解答一道题目，然后检查学生做的是否正确，你有下面几个选择：</p>
+<ol>
+<li>第一种选择：按顺序逐个检查，先检查A，然后是B，之后是C、D。。。这中间如果有一个学生卡主，全班都会被耽误。这种模式就好比，你用循环挨个处理socket，根本不具有并发能力。</li>
+<li>第二种选择：你创建30个分身，每个分身检查一个学生的答案是否正确。 这种类似于为每一个用户创建一个进程或者线程处理连接。</li>
+<li>第三种选择，你站在讲台上等，谁解答完谁举手。这时C、D举手，表示他们解答问题完毕，你下去依次检查C、D的答案，然后继续回到讲台上等。此时E、A又举手，然后去处理E和A。。。 这种就是IO复用模型，Linux下的select、poll和epoll就是干这个的。将用户socket对应的fd注册进epoll，然后epoll帮你监听哪些socket上有消息到达，这样就避免了大量的无用操作。此时的socket应该采用非阻塞模式。这样，整个过程只在调用select、poll、epoll这些调用的时候才会阻塞，收发客户消息是不会阻塞的，整个进程或者线程就被充分利用起来，这就是事件驱动，所谓的reactor模式。<br><a href="https://www.zhihu.com/question/28594409/answer/52835876" target="_blank" rel="noopener">I/O多路复用技术（multiplexing）是什么？ - 柴小喵的回答 - 知乎</a></li>
+</ol>
+</blockquote>
+<h3 id="不同操作系统中的select复用函数"><a href="#不同操作系统中的select复用函数" class="headerlink" title="不同操作系统中的select复用函数"></a>不同操作系统中的select复用函数</h3><p>因为 <code>select</code> 函数是作为 POSIX 标准中的系统调用，在不同版本的操作系统上都会实现，所以将其作为保底方案：</p>
+<p><img src="http://ok6q2poob.bkt.clouddn.com/20180826153527852532546.png" alt="复用函数.png"></p>
+<p>Redis 会优先选择时间复杂度为 <code>O(1)</code> 的 I/O 多路复用函数作为底层实现，包括 Solaries 10 中的 <code>evport</code>、Linux 中的 <code>epoll</code> 和 macOS/FreeBSD 中的 <code>kqueue</code>，上述的这些函数都使用了内核内部的结构，并且能够服务几十万的文件描述符。</p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p><a href="https://blog.csdn.net/tanswer_/article/details/70196139" target="_blank" rel="noopener">Redis 和 I/O 多路复用</a></p>
+<p><a href="https://juejin.im/book/5afc2e5f6fb9a07a9b362527/section/5afc3625f265da0b9c10d2a7" target="_blank" rel="noopener">Redis 深度历险：核心原理与应用实践</a></p>
+<blockquote>
+<p>有不足之处还望不吝赐教 欢迎关注</p>
+<p>未经作者允许 请勿转载，谢谢 :)</p>
+</blockquote>
 
       
     </div>
@@ -414,11 +471,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/js/" rel="tag"># js</a>
+            <a href="/tags/redis/" rel="tag"># redis</a>
           
-            <a href="/tags/trello/" rel="tag"># trello</a>
-          
-            <a href="/tags/ctrl-c/" rel="tag"># ctrl+c</a>
+            <a href="/tags/IO模型/" rel="tag"># IO模型</a>
           
         </div>
       
@@ -431,15 +486,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/08/25/tech/fe/微信浏览器调起App/" rel="next" title="微信浏览器调起App">
+                <i class="fa fa-chevron-left"></i> 微信浏览器调起App
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/18/tech/java/Session的持久化策略/" rel="prev" title="Session的持久化策略">
-                Session的持久化策略 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -491,8 +546,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -572,6 +636,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-是个单线程程序"><span class="nav-number">1.</span> <span class="nav-text">Redis 是个单线程程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis为什么这么快"><span class="nav-number">2.</span> <span class="nav-text">Redis为什么这么快</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-O模型"><span class="nav-number">3.</span> <span class="nav-text">I/O模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#阻塞I-O模型"><span class="nav-number">3.1.</span> <span class="nav-text">阻塞I/O模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多路复用I-O模型"><span class="nav-number">3.2.</span> <span class="nav-text">多路复用I/O模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同操作系统中的select复用函数"><span class="nav-number">3.3.</span> <span class="nav-text">不同操作系统中的select复用函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文档"><span class="nav-number">4.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
