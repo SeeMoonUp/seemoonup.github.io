@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180826153527162776600.png">
 <meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180826153527227269311.png">
 <meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20180826153527852532546.png">
-<meta property="og:updated_time" content="2018-08-26T16:20:24.473Z">
+<meta property="og:updated_time" content="2018-08-28T13:26:19.133Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis线程模型">
 <meta name="twitter:description" content="Redis 是个单线程程序这点必须铭记。 也许你会怀疑高并发的 Redis 中间件怎么可能是单线程。很抱歉，它就是单线程，你的怀疑暴露了你基础知识的不足。莫要瞧不起单线程，除了 Redis 之外，Node.js 也是单线程，Nginx 也是单线程，但是它们都是服务器高性能的典范。">
@@ -406,7 +406,7 @@
 <ol>
 <li>第一种选择：按顺序逐个检查，A用户先来买卫生纸，B用户买手电筒，C用户买泡面。。。。，逐个处理的结果是A用户买完走了，但是B用户的商品卖完了等待供应商送货30分钟后货送到了B购买成功，继续处理C用户。。。，这样处理就相当于最后的需要等待前面的用户全部购买成功才能继续购买。这种模式就好比，你用循环挨个处理socket，根本不具有并发能力。</li>
 <li>第二种选择：你创建30个分身，每个分身去负责处理每个用户的购买请求。 这种类似于为每一个用户创建一个进程或者线程处理连接，但是Redis是单线程的</li>
-<li>第三种选择，当A请求购买时 有货告知可以买 然后A购买，B需要等待供应商送货 告知不能买下次再来问（暂时不处理），继续处理C用户的购买请求，30分钟后B用户过来问是否有货了，然后发现有货了可以购买了，B购买成功。 这种就是IO复用模型，Linux下的select、poll和epoll就是干这个的。将用户socket对应的fd注册进epoll，然后epoll帮你监听哪些socket上有消息到达，这样就避免了大量的无用操作。此时的socket应该采用非阻塞模式。这样，整个过程只在调用select、poll、epoll这些调用的时候才会阻塞，收发客户消息是不会阻塞的，整个进程或者线程就被充分利用起来，这就是事件驱动，所谓的reactor模式。</li>
+<li>第三种选择，当A请求购买时 有货告知可以买 然后A购买，B请求购买 需要等待供应商送货 等待直到供应商送货过来 告知B来货了 B发起购买 购买成功；在B等待供应商的期间C用户的购买请求开始处理 有货直接购买成功 无需等待B用户购买，这就是多路复用模型，Linux下的select、poll和epoll就是干这个的。将用户socket对应的fd注册进epoll，然后epoll帮你监听哪些socket上有消息到达，这样就避免了大量的无用操作。此时的socket应该采用非阻塞模式。这样，整个过程只在调用select、poll、epoll这些调用的时候才会阻塞，收发客户消息是不会阻塞的，整个进程或者线程就被充分利用起来，这就是事件驱动，所谓的reactor模式。</li>
 </ol>
 </blockquote>
 <h3 id="不同操作系统中的select复用函数"><a href="#不同操作系统中的select复用函数" class="headerlink" title="不同操作系统中的select复用函数"></a>不同操作系统中的select复用函数</h3><p>因为 <code>select</code> 函数是作为 POSIX 标准中的系统调用，在不同版本的操作系统上都会实现，所以将其作为保底方案：</p>
@@ -497,6 +497,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/09/03/tech/mygirl/20180902/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -576,7 +580,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
