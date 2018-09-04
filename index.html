@@ -322,64 +322,16 @@
 
       
         
-          
-            <h2 id="新功能上线"><a href="#新功能上线" class="headerlink" title="新功能上线"></a>新功能上线</h2><p>20180701上线新功能<br>平台用户钱包管理</p>
+          <h2 id="新功能上线"><a href="#新功能上线" class="headerlink" title="新功能上线"></a>新功能上线</h2><p>20180701上线新功能<br>平台用户钱包管理</p>
 <p>订单收入、销售奖励收入、系统奖励收入 三个收入模块（分别有单独的明细和提现记录）进行合并即统一入口，增加了新的表account和account_log来记录对应的用户账户信息，上线时对之前的系统流水进行了接口一次性同步数据进入上述两张表中，系统上线，可以休息了</p>
 <p><img src="http://ww1.sinaimg.cn/large/6a195423gw1evl1ka6gi6g208w06nhdw.gif" alt=""></p>
-<h2 id="问题出现"><a href="#问题出现" class="headerlink" title="问题出现"></a>问题出现</h2><p>系统上线三天之后 发现数据出现问题，检查问题源头，发现同步数据接口中出现问题导致数据不一致</p>
-<p>发现了问题开始处理吧，因为只是部分数据出现问题只需要操作数据库更新几个用户的数据就可以，好的，下面开始操作 重点来了：</p>
-<ol>
-<li><p>连接上数据库</p>
-</li>
-<li><p>书写sql</p>
-</li>
-<li><p>update account_log set leftMoney = 8888;</p>
-</li>
-<li><p>回车</p>
-</li>
-<li><p>卧槽 什么鬼where条件呢 卧槽。。。</p>
-<p><img src="http://ww4.sinaimg.cn/large/6a195423gw1evl1iab6q1g205k059dwa.gif" alt="卧槽"></p>
-</li>
-<li><p>ctrl+c 卧槽 完蛋了 来不及了</p>
-</li>
-<li><p>卧槽 慌得一笔</p>
-</li>
-<li><p>检查数据库 select count(1) where leftMoney = 8888;</p>
-</li>
-<li><p>凉了。。。。</p>
-<p><img src="http://ww3.sinaimg.cn/large/6a195423gw1evl1ha10hng208w06o4qp.gif" alt="凉了。。。"></p>
-</li>
-</ol>
-<h2 id="数据恢复"><a href="#数据恢复" class="headerlink" title="数据恢复"></a>数据恢复</h2><p>好了 怎么办吧 赶快想一下现在的影响</p>
-<ol>
-<li>用户看到的余额是有问题的</li>
-<li>现在是晚上11点 用户在线数不高 </li>
-<li>赶快恢复数据</li>
-</ol>
-<p>开始解决</p>
-<ol>
-<li>联系负责人 询问数据库是否可以回滚（被告知不行 只能回滚到某一个时间点 会早上线上数据丢失）</li>
-<li>是否可以同步？可以同步 但是上线后两天的数据都在新表中 没有记录 怎么去同步 部分数据会丢失</li>
-</ol>
-<p>好吧 第一种方案直接不能走通了 看来只能使用第二种方案了</p>
-<p>改造同步数据接口，支持上线后产生的account_log信息的同步</p>
-<p>因业务原因，需要确认哪些提现是上线后产生的，逐一去日志文件中根据关键词来筛选提现记录（大概300多条）想想都眼睛痛</p>
-<p>接下来就是执行接口，测试数据了，线上数据量较大，需同步数据较多，大概百万数量级，同步一次数据耗时2个半小时左右</p>
-<p>耐心等待执行中。。。。</p>
-<p>好了 执行完了 检查一下 卧槽有个条件写错了</p>
-<p>需要重新同步</p>
-<p><img src="http://ww1.sinaimg.cn/large/6a195423gw1ey20ja4mgog208c08c4pc.gif" alt="想死的心都有了"></p>
-<p>来吧 修改代码 再同步一次</p>
-<p>终于在凌晨6点同步完了（此时我的同事已经扛不住睡一会了）。。。</p>
-<p>检查数据 一切正常，啊，终于可以睡觉了，跟负责人申请休息，睡觉，感谢我的小伙伴跟我一块解决了这个问题。</p>
-<p>现在线上库执行sql必须确认三遍，稳得很。。。</p>
-<p>大家引以为戒。哈哈哈</p>
-<p><img src="http://ww2.sinaimg.cn/large/6a195423gw1evl1m3gnjkg207i03mu0x.gif" alt="收官大吉"></p>
-<blockquote>
-<p>欢迎大家关注我的<a href="https://seemoonup.github.io/">技术博客 </a></p>
-</blockquote>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/04/tech/data/生产数据的update没加where条件（从执行到恢复）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

@@ -79,22 +79,22 @@
 
 
 
-<meta name="description" content="新功能上线20180701上线新功能平台用户钱包管理 订单收入、销售奖励收入、系统奖励收入 三个收入模块（分别有单独的明细和提现记录）进行合并即统一入口，增加了新的表account和account_log来记录对应的用户账户信息，上线时对之前的系统流水进行了接口一次性同步数据进入上述两张表中，系统上线，可以休息了  问题出现系统上线三天之后 发现数据出现问题，检查问题源头，发现同步数据接口中出现问">
+<meta name="description" content="新功能上线20180701上线新功能平台用户钱包管理 订单收入、销售奖励收入、系统奖励收入 三个收入模块（分别有单独的明细和提现记录）进行合并即统一入口，增加了新的表account和account_log来记录对应的用户账户信息，上线时对之前的系统流水进行了接口一次性同步数据进入上述两张表中，系统上线，可以休息了">
 <meta property="og:type" content="article">
 <meta property="og:title" content="不爱更新的博客">
 <meta property="og:url" content="http://SeeMoonUp.github.io/2018/09/04/tech/data/生产数据的update没加where条件（从执行到恢复）/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="新功能上线20180701上线新功能平台用户钱包管理 订单收入、销售奖励收入、系统奖励收入 三个收入模块（分别有单独的明细和提现记录）进行合并即统一入口，增加了新的表account和account_log来记录对应的用户账户信息，上线时对之前的系统流水进行了接口一次性同步数据进入上述两张表中，系统上线，可以休息了  问题出现系统上线三天之后 发现数据出现问题，检查问题源头，发现同步数据接口中出现问">
+<meta property="og:description" content="新功能上线20180701上线新功能平台用户钱包管理 订单收入、销售奖励收入、系统奖励收入 三个收入模块（分别有单独的明细和提现记录）进行合并即统一入口，增加了新的表account和account_log来记录对应的用户账户信息，上线时对之前的系统流水进行了接口一次性同步数据进入上述两张表中，系统上线，可以休息了">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/6a195423gw1evl1ka6gi6g208w06nhdw.gif">
 <meta property="og:image" content="http://ww4.sinaimg.cn/large/6a195423gw1evl1iab6q1g205k059dwa.gif">
 <meta property="og:image" content="http://ww3.sinaimg.cn/large/6a195423gw1evl1ha10hng208w06o4qp.gif">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/6a195423gw1ey20ja4mgog208c08c4pc.gif">
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/6a195423gw1evl1m3gnjkg207i03mu0x.gif">
-<meta property="og:updated_time" content="2018-09-04T13:01:12.512Z">
+<meta property="og:updated_time" content="2018-09-04T13:03:04.432Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="不爱更新的博客">
-<meta name="twitter:description" content="新功能上线20180701上线新功能平台用户钱包管理 订单收入、销售奖励收入、系统奖励收入 三个收入模块（分别有单独的明细和提现记录）进行合并即统一入口，增加了新的表account和account_log来记录对应的用户账户信息，上线时对之前的系统流水进行了接口一次性同步数据进入上述两张表中，系统上线，可以休息了  问题出现系统上线三天之后 发现数据出现问题，检查问题源头，发现同步数据接口中出现问">
+<meta name="twitter:description" content="新功能上线20180701上线新功能平台用户钱包管理 订单收入、销售奖励收入、系统奖励收入 三个收入模块（分别有单独的明细和提现记录）进行合并即统一入口，增加了新的表account和account_log来记录对应的用户账户信息，上线时对之前的系统流水进行了接口一次性同步数据进入上述两张表中，系统上线，可以休息了">
 <meta name="twitter:image" content="http://ww1.sinaimg.cn/large/6a195423gw1evl1ka6gi6g208w06nhdw.gif">
 
 
@@ -328,6 +328,7 @@
         <h2 id="新功能上线"><a href="#新功能上线" class="headerlink" title="新功能上线"></a>新功能上线</h2><p>20180701上线新功能<br>平台用户钱包管理</p>
 <p>订单收入、销售奖励收入、系统奖励收入 三个收入模块（分别有单独的明细和提现记录）进行合并即统一入口，增加了新的表account和account_log来记录对应的用户账户信息，上线时对之前的系统流水进行了接口一次性同步数据进入上述两张表中，系统上线，可以休息了</p>
 <p><img src="http://ww1.sinaimg.cn/large/6a195423gw1evl1ka6gi6g208w06nhdw.gif" alt=""></p>
+<a id="more"></a>
 <h2 id="问题出现"><a href="#问题出现" class="headerlink" title="问题出现"></a>问题出现</h2><p>系统上线三天之后 发现数据出现问题，检查问题源头，发现同步数据接口中出现问题导致数据不一致</p>
 <p>发现了问题开始处理吧，因为只是部分数据出现问题只需要操作数据库更新几个用户的数据就可以，好的，下面开始操作 重点来了：</p>
 <ol>
