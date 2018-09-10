@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java,maven,jetty,idea,jrebel," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,28 +79,33 @@
 
 
 
-<meta name="description" content="开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea">
-<meta name="keywords" content="java,maven,jetty,idea,jrebel">
+<meta name="description" content="幼儿园幼儿园不愿意去上学  小学小学逗笑女孩子  写算术题的时候也不知道是开心还是难过  初中初中上演脱裤子的恶作剧 你被搞过没有  被老师用粉笔头喊醒  各种各样的考试作弊手段  高中高中的时候在办理打过牌  上课困得不行睡个觉 结果翻车了  到了高中之后可能只有学习了  转眼到了高考的时间  大学大学到了谈恋爱的季节  大学宿舍的兄弟  一起小搓一顿  别的宿舍来到一起燥的画面  上课老师点名">
 <meta property="og:type" content="article">
-<meta property="og:title" content="maven+jetty+idea+jrebel 实现项目热部署">
-<meta property="og:url" content="http://SeeMoonUp.github.io/2017/12/19/tech/java/maven+jetty+idea+jrebel 实现项目热部署/index.html">
+<meta property="og:title" content="不爱更新的博客">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2018/09/10/life/怀念啊我们的青春啊/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea">
+<meta property="og:description" content="幼儿园幼儿园不愿意去上学  小学小学逗笑女孩子  写算术题的时候也不知道是开心还是难过  初中初中上演脱裤子的恶作剧 你被搞过没有  被老师用粉笔头喊醒  各种各样的考试作弊手段  高中高中的时候在办理打过牌  上课困得不行睡个觉 结果翻车了  到了高中之后可能只有学习了  转眼到了高考的时间  大学大学到了谈恋爱的季节  大学宿舍的兄弟  一起小搓一顿  别的宿舍来到一起燥的画面  上课老师点名">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3753cd461f7?w=953&h=50&f=png&s=5009">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3a1012861c9?w=538&h=655&f=png&s=120578">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3810031bdbd?w=613&h=733&f=png&s=55963">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e38b114e4f51?w=756&h=821&f=png&s=189919">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e38edc384c37?w=377&h=559&f=png&s=33454">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3b2d473e319?w=1378&h=140&f=png&s=46839">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3b6f58ffb98?w=1064&h=537&f=png&s=130745">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3ba9562f5f8?w=910&h=147&f=png&s=53482">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3bfa8a3f08b?w=877&h=66&f=png&s=16810">
-<meta property="og:updated_time" content="2018-08-18T13:58:14.368Z">
+<meta property="og:image" content="http://img.soogif.com/8vmE1aW0e0twgN37CcDmnePFK6JNmIlF.gif">
+<meta property="og:image" content="http://img.soogif.com/RSYwEdeetQxwd5uhGG4BX9l8pL19gNUE.gif">
+<meta property="og:image" content="http://img.soogif.com/C06UzV3Y9ZH7u7bmzbPE2sx0Dqk77GXZ.gif_s400x0">
+<meta property="og:image" content="http://img.soogif.com/AnOdWDeH7YOlRgV4VxkabMb2fZgjJyao.gif_s400x0">
+<meta property="og:image" content="http://5b0988e595225.cdn.sohucs.com/images/20170909/0eae78366b39487db3fa7b2ca72d710d.gif">
+<meta property="og:image" content="http://p1.qhimgs4.com/t017dfa87682189caf1.gif">
+<meta property="og:image" content="http://img.soogif.com/71w2dGEd3YFaRxjRidMkqVLpnSgMU5qT.gif">
+<meta property="og:image" content="http://img.soogif.com/QsgdrekqdRkT3HFQs6csdd5Id17aoOI4.gif">
+<meta property="og:image" content="http://img.soogif.com/0EzZM7fLHulkvOUSDeKEMYzPMeU6lzIO.gif_s400x0">
+<meta property="og:image" content="http://img.soogif.com/Ii1RDgNVeijELu4SgPFKrEuGfTeIvtoT.gif_s400x0">
+<meta property="og:image" content="http://img.soogif.com/qHDUfGgkHBcUqI1JmcIjpSnjT23TRMvL.gif_s400x0">
+<meta property="og:image" content="http://img.soogif.com/LroSlJp3Y0ayNDBR3ybqSgNFr5Mxhyho.gif_s400x0">
+<meta property="og:image" content="http://img.soogif.com/zwqoOvyBNAZ8f4pXv9odYwMUxWCQeXQx.gif_s400x0">
+<meta property="og:image" content="http://img.soogif.com/eNcrVXBC8AWHSz1igZ4IK0dxMzg5NVbN.gif_s400x0">
+<meta property="og:image" content="http://img.soogif.com/SNCPtsNuLn1dYEfei5FrV1MgrfKoc1yw.gif_s400x0">
+<meta property="og:updated_time" content="2018-09-10T06:16:33.045Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="maven+jetty+idea+jrebel 实现项目热部署">
-<meta name="twitter:description" content="开发环境开发过程中：修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受 如何实现一次部署之后，后面的修改全部热部署呢？  使用jrebel实现 web容器使用的是jetty 项目管理使用的maven ide使用的是idea">
-<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2017/12/19/1606e3753cd461f7?w=953&h=50&f=png&s=5009">
+<meta name="twitter:title" content="不爱更新的博客">
+<meta name="twitter:description" content="幼儿园幼儿园不愿意去上学  小学小学逗笑女孩子  写算术题的时候也不知道是开心还是难过  初中初中上演脱裤子的恶作剧 你被搞过没有  被老师用粉笔头喊醒  各种各样的考试作弊手段  高中高中的时候在办理打过牌  上课困得不行睡个觉 结果翻车了  到了高中之后可能只有学习了  转眼到了高考的时间  大学大学到了谈恋爱的季节  大学宿舍的兄弟  一起小搓一顿  别的宿舍来到一起燥的画面  上课老师点名">
+<meta name="twitter:image" content="http://img.soogif.com/8vmE1aW0e0twgN37CcDmnePFK6JNmIlF.gif">
 
 
 
@@ -130,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://SeeMoonUp.github.io/2017/12/19/tech/java/maven+jetty+idea+jrebel 实现项目热部署/"/>
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/09/10/life/怀念啊我们的青春啊/"/>
 
 
 
 
 
-  <title>maven+jetty+idea+jrebel 实现项目热部署 | 不爱更新的博客</title>
+  <title> | 不爱更新的博客</title>
   
 
 
@@ -263,7 +268,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2017/12/19/tech/java/maven+jetty+idea+jrebel 实现项目热部署/">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/09/10/life/怀念啊我们的青春啊/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lemon">
@@ -280,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">maven+jetty+idea+jrebel 实现项目热部署</h1>
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
         <div class="post-meta">
@@ -292,8 +297,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-19T17:14:52+08:00">
-                2017-12-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-10T14:10:22+08:00">
+                2018-09-10
               </time>
             
 
@@ -330,56 +335,36 @@
       
 
       
-        <h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><p>开发过程中：<br>修改java或者工程文件 需要重新对工程进行build deploy耗时太久 到无法忍受</p>
-<p>如何实现一次部署之后，后面的修改全部热部署呢？</p>
-<ol>
-<li>使用jrebel实现</li>
-<li>web容器使用的是jetty</li>
-<li>项目管理使用的maven</li>
-<li>ide使用的是idea</li>
-</ol>
-<a id="more"></a>
-<h1 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h1><ol>
-<li>打开idea中的settings–&gt;plugins 搜索jrebel –&gt; browse repositories</li>
-<li>install 开始进入下载 下载完成之后应用上 并且重启idea</li>
-<li>因为jrebel是收费软件 破解链接如下：<a href="http://blog.lanyus.com/archives/317.html" target="_blank" rel="noopener">http://blog.lanyus.com/archives/317.html</a><br>正常启动后的样式：</li>
-</ol>
-<p><img src="https://user-gold-cdn.xitu.io/2017/12/19/1606e3753cd461f7?w=953&amp;h=50&amp;f=png&amp;s=5009" alt="破解工具"></p>
-<p><img src="https://user-gold-cdn.xitu.io/2017/12/19/1606e3a1012861c9?w=538&amp;h=655&amp;f=png&amp;s=120578" alt="激活路径"><br>  server地址：<a href="http://127.0.0.1:8888/lemon" target="_blank" rel="noopener">http://127.0.0.1:8888/lemon</a> lemon为任意字符串<br>  email: 随意输入</p>
-<p><img src="https://user-gold-cdn.xitu.io/2017/12/19/1606e3810031bdbd?w=613&amp;h=733&amp;f=png&amp;s=55963" alt="激活"></p>
-<ol start="4">
-<li>对于需要热部署的项目进行如下操作 右击项目名称 选中jrebel生成配置文件<br>正确的配置文件内容如下：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--</span><br><span class="line">  This is the JRebel configuration file. It maps the running application to your IDE workspace, enabling JRebel reloading for this project.</span><br><span class="line">  Refer to https://manuals.zeroturnaround.com/jrebel/standalone/config.html for more information.</span><br><span class="line">--&gt;</span><br><span class="line">&lt;application generated-by=&quot;intellij&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns=&quot;http://www.zeroturnaround.com&quot; xsi:schemaLocation=&quot;http://www.zeroturnaround.com http://update.zeroturnaround.com/jrebel/rebel-2_1.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">	&lt;classpath&gt;</span><br><span class="line">		&lt;dir name=&quot;C:/workspaces***************/target/classes&quot;&gt; &lt;!--为项目的编译路径--&gt;</span><br><span class="line">		&lt;/dir&gt;</span><br><span class="line">	&lt;/classpath&gt;</span><br><span class="line"></span><br><span class="line">	&lt;web&gt;</span><br><span class="line">		&lt;link target=&quot;/&quot;&gt;</span><br><span class="line">			&lt;dir name=&quot;C:/workspace**********src/main/webapp&quot;&gt;&lt;!--为项目的路径--&gt;</span><br><span class="line">			&lt;/dir&gt;</span><br><span class="line">		&lt;/link&gt;</span><br><span class="line">	&lt;/web&gt;</span><br><span class="line"></span><br><span class="line">&lt;/application&gt;</span><br></pre></td></tr></table></figure>
-<ol start="5">
-<li>在idea菜单栏中 选中view &gt;tool 如下 将两个工具栏均展示出来：</li>
-</ol>
-<p><img src="https://user-gold-cdn.xitu.io/2017/12/19/1606e38b114e4f51?w=756&amp;h=821&amp;f=png&amp;s=189919" alt="view"></p>
-<ol start="6">
-<li>在jrebel中配置你需要热部署的项目 只需配置主工程即可 base等依赖据不需勾选：</li>
-</ol>
-<p><img src="https://user-gold-cdn.xitu.io/2017/12/19/1606e38edc384c37?w=377&amp;h=559&amp;f=png&amp;s=33454" alt="jrebel"></p>
-<ol start="7">
-<li>配置完成之后会在启动脚本旁边出现两个图标 分别为jrebel run和jrebel debug:</li>
-</ol>
-<p><img src="https://user-gold-cdn.xitu.io/2017/12/19/1606e3b2d473e319?w=1378&amp;h=140&amp;f=png&amp;s=46839" alt=""></p>
-<ol start="8">
-<li>代码中需要将jetty自身的热部署禁用</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">        &lt;groupId&gt;org.mortbay.jetty&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;jetty-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;8.1.16.v20140903&lt;/version&gt;</span><br><span class="line">        &lt;configuration&gt;</span><br><span class="line">          &lt;stopKey&gt;stop&lt;/stopKey&gt;</span><br><span class="line">          &lt;stopPort&gt;9999&lt;/stopPort&gt;</span><br><span class="line">          &lt;scanIntervalSeconds&gt;0&lt;/scanIntervalSeconds&gt;&lt;!--使用jetty自身的热部署：1 不用为0--&gt;</span><br><span class="line">          &lt;contextXml&gt;$&#123;project.basedir&#125;/src/main/resources/jetty-context.xml&lt;/contextXml&gt;</span><br><span class="line">          &lt;webApp&gt;</span><br><span class="line">            &lt;contextPath&gt;/&lt;/contextPath&gt;</span><br><span class="line">          &lt;/webApp&gt;</span><br><span class="line">          &lt;connectors&gt;</span><br><span class="line">            &lt;connector implementation=&quot;org.eclipse.jetty.server.nio.SelectChannelConnector&quot;&gt;</span><br><span class="line">              &lt;port&gt;8001&lt;/port&gt;</span><br><span class="line">              &lt;maxIdleTime&gt;60000&lt;/maxIdleTime&gt;</span><br><span class="line">            &lt;/connector&gt;</span><br><span class="line">          &lt;/connectors&gt;</span><br><span class="line">        &lt;/configuration&gt;</span><br><span class="line">      &lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
-<ol start="9">
-<li><p>当点击jrebel debug时 启动log出现如下图内容则标志着配置成功<br><img src="https://user-gold-cdn.xitu.io/2017/12/19/1606e3b6f58ffb98?w=1064&amp;h=537&amp;f=png&amp;s=130745" alt="部署"></p>
-</li>
-<li><p>启动之后体验一下热部署吧<br>针对单个文件进行的热部署： ctrl+shift+f9<br>针对修改的所有文件进行的热部署： ctrl+f9<br>执行之前别忘记ctrl + s</p>
-</li>
-<li><p>当执行上面的命令是 出现如下的内容 则表示部署成功：</p>
-</li>
-</ol>
-<p><img src="https://user-gold-cdn.xitu.io/2017/12/19/1606e3ba9562f5f8?w=910&amp;h=147&amp;f=png&amp;s=53482" alt="部署成功"></p>
-<p><img src="https://user-gold-cdn.xitu.io/2017/12/19/1606e3bfa8a3f08b?w=877&amp;h=66&amp;f=png&amp;s=16810" alt="log中输出"></p>
-<blockquote>
-<p>未经作者允许 请勿转载，谢谢 :)</p>
-</blockquote>
+        <h3 id="幼儿园"><a href="#幼儿园" class="headerlink" title="幼儿园"></a>幼儿园</h3><p>幼儿园不愿意去上学</p>
+<p><img src="http://img.soogif.com/8vmE1aW0e0twgN37CcDmnePFK6JNmIlF.gif" alt="刚上学"></p>
+<h3 id="小学"><a href="#小学" class="headerlink" title="小学"></a>小学</h3><p>小学逗笑女孩子</p>
+<p><img src="http://img.soogif.com/RSYwEdeetQxwd5uhGG4BX9l8pL19gNUE.gif" alt="小学"></p>
+<p>写算术题的时候也不知道是开心还是难过</p>
+<p><img src="http://img.soogif.com/C06UzV3Y9ZH7u7bmzbPE2sx0Dqk77GXZ.gif_s400x0" alt="算术题"></p>
+<h3 id="初中"><a href="#初中" class="headerlink" title="初中"></a>初中</h3><p>初中上演脱裤子的恶作剧 你被搞过没有</p>
+<p><img src="http://img.soogif.com/AnOdWDeH7YOlRgV4VxkabMb2fZgjJyao.gif_s400x0" alt="脱裤子"></p>
+<p>被老师用粉笔头喊醒</p>
+<p><img src="http://5b0988e595225.cdn.sohucs.com/images/20170909/0eae78366b39487db3fa7b2ca72d710d.gif" alt="粉笔"></p>
+<p>各种各样的考试作弊手段</p>
+<p><img src="http://p1.qhimgs4.com/t017dfa87682189caf1.gif" alt="作弊"></p>
+<h3 id="高中"><a href="#高中" class="headerlink" title="高中"></a>高中</h3><p>高中的时候在办理打过牌</p>
+<p><img src="http://img.soogif.com/71w2dGEd3YFaRxjRidMkqVLpnSgMU5qT.gif" alt="打牌"></p>
+<p>上课困得不行睡个觉 结果翻车了</p>
+<p><img src="http://img.soogif.com/QsgdrekqdRkT3HFQs6csdd5Id17aoOI4.gif" alt="睡觉翻车"></p>
+<p>到了高中之后可能只有学习了</p>
+<p><img src="http://img.soogif.com/0EzZM7fLHulkvOUSDeKEMYzPMeU6lzIO.gif_s400x0" alt="学习"></p>
+<p>转眼到了高考的时间</p>
+<p><img src="http://img.soogif.com/Ii1RDgNVeijELu4SgPFKrEuGfTeIvtoT.gif_s400x0" alt="高考"></p>
+<h3 id="大学"><a href="#大学" class="headerlink" title="大学"></a>大学</h3><p>大学到了谈恋爱的季节</p>
+<p><img src="http://img.soogif.com/qHDUfGgkHBcUqI1JmcIjpSnjT23TRMvL.gif_s400x0" alt="恋爱"></p>
+<p>大学宿舍的兄弟</p>
+<p><img src="http://img.soogif.com/LroSlJp3Y0ayNDBR3ybqSgNFr5Mxhyho.gif_s400x0" alt="室友情"></p>
+<p>一起小搓一顿</p>
+<p><img src="http://img.soogif.com/zwqoOvyBNAZ8f4pXv9odYwMUxWCQeXQx.gif_s400x0" alt="一起小搓一顿"></p>
+<p>别的宿舍来到一起燥的画面</p>
+<p><img src="http://img.soogif.com/eNcrVXBC8AWHSz1igZ4IK0dxMzg5NVbN.gif_s400x0" alt="燥"></p>
+<p>上课老师点名时的场景</p>
+<p><img src="http://img.soogif.com/SNCPtsNuLn1dYEfei5FrV1MgrfKoc1yw.gif_s400x0" alt="点名"></p>
 
       
     </div>
@@ -432,20 +417,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/java/" rel="tag"># java</a>
-          
-            <a href="/tags/maven/" rel="tag"># maven</a>
-          
-            <a href="/tags/jetty/" rel="tag"># jetty</a>
-          
-            <a href="/tags/idea/" rel="tag"># idea</a>
-          
-            <a href="/tags/jrebel/" rel="tag"># jrebel</a>
-          
-        </div>
-      
 
       
       
@@ -455,8 +426,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/18/tech/java/Session的持久化策略/" rel="next" title="Session的持久化策略">
-                <i class="fa fa-chevron-left"></i> Session的持久化策略
+              <a href="/2018/09/04/tech/data/生产数据的update没加where条件（从执行到恢复）/" rel="next" title="生产数据update没加where条件（从执行到恢复）">
+                <i class="fa fa-chevron-left"></i> 生产数据update没加where条件（从执行到恢复）
               </a>
             
           </div>
@@ -464,10 +435,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/20/tech/tools/进程的查询与关闭/" rel="prev" title="进程的查询与关闭">
-                进程的查询与关闭 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -619,7 +586,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境"><span class="nav-number">1.</span> <span class="nav-text">开发环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现步骤"><span class="nav-number">2.</span> <span class="nav-text">实现步骤</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#幼儿园"><span class="nav-number">1.</span> <span class="nav-text">幼儿园</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小学"><span class="nav-number">2.</span> <span class="nav-text">小学</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初中"><span class="nav-number">3.</span> <span class="nav-text">初中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高中"><span class="nav-number">4.</span> <span class="nav-text">高中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大学"><span class="nav-number">5.</span> <span class="nav-text">大学</span></a></li></ol></div>
             
 
           </div>
