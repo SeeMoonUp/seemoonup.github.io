@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="情景整点秒杀、限时特卖等活动会吸引大量用户在同一时间点、时间段访问请求系统，从而产生大的并发量，如果没有合理处理的话会出现商品超卖页面访问速度较慢更严重的可能出现系统宕机其他服务也无法正常使用。 本文主要处理服务端使用redis进行限流 涉及到的技术点主要有：redis分布式锁 redis常用命令 主要逻辑方案：  预热库存数据 限流（允许进入两倍库存的访问量） 10秒失效一次redis库存数据">
+<meta name="description" content="情景整点秒杀、限时特卖等活动会吸引大量用户在同一时间点、时间段访问请求系统，从而产生大的并发量，如果没有合理处理的话会出现商品超卖页面访问速度较慢更严重的可能出现系统宕机其他服务也无法正常使用。 本文主要处理服务端使用redis进行限流 涉及到的技术点主要有：redis分布式锁 redis常用命令 主要逻辑方案：  预热库存数据  限流（允许进入两倍库存的访问量）  10秒失效一次redis库存数">
 <meta name="keywords" content="电商,秒杀">
 <meta property="og:type" content="article">
 <meta property="og:title" content="最简单有效的秒杀限流">
 <meta property="og:url" content="http://SeeMoonUp.github.io/2018/10/09/tech/电商/秒杀限流/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="情景整点秒杀、限时特卖等活动会吸引大量用户在同一时间点、时间段访问请求系统，从而产生大的并发量，如果没有合理处理的话会出现商品超卖页面访问速度较慢更严重的可能出现系统宕机其他服务也无法正常使用。 本文主要处理服务端使用redis进行限流 涉及到的技术点主要有：redis分布式锁 redis常用命令 主要逻辑方案：  预热库存数据 限流（允许进入两倍库存的访问量） 10秒失效一次redis库存数据">
+<meta property="og:description" content="情景整点秒杀、限时特卖等活动会吸引大量用户在同一时间点、时间段访问请求系统，从而产生大的并发量，如果没有合理处理的话会出现商品超卖页面访问速度较慢更严重的可能出现系统宕机其他服务也无法正常使用。 本文主要处理服务端使用redis进行限流 涉及到的技术点主要有：redis分布式锁 redis常用命令 主要逻辑方案：  预热库存数据  限流（允许进入两倍库存的访问量）  10秒失效一次redis库存数">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ok6q2poob.bkt.clouddn.com/20181010153915236297882.png">
-<meta property="og:updated_time" content="2018-10-10T06:21:57.874Z">
+<meta property="og:updated_time" content="2018-10-10T06:23:16.529Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="最简单有效的秒杀限流">
-<meta name="twitter:description" content="情景整点秒杀、限时特卖等活动会吸引大量用户在同一时间点、时间段访问请求系统，从而产生大的并发量，如果没有合理处理的话会出现商品超卖页面访问速度较慢更严重的可能出现系统宕机其他服务也无法正常使用。 本文主要处理服务端使用redis进行限流 涉及到的技术点主要有：redis分布式锁 redis常用命令 主要逻辑方案：  预热库存数据 限流（允许进入两倍库存的访问量） 10秒失效一次redis库存数据">
+<meta name="twitter:description" content="情景整点秒杀、限时特卖等活动会吸引大量用户在同一时间点、时间段访问请求系统，从而产生大的并发量，如果没有合理处理的话会出现商品超卖页面访问速度较慢更严重的可能出现系统宕机其他服务也无法正常使用。 本文主要处理服务端使用redis进行限流 涉及到的技术点主要有：redis分布式锁 redis常用命令 主要逻辑方案：  预热库存数据  限流（允许进入两倍库存的访问量）  10秒失效一次redis库存数">
 <meta name="twitter:image" content="http://ok6q2poob.bkt.clouddn.com/20181010153915236297882.png">
 
 
@@ -360,9 +360,13 @@
 <p>涉及到的技术点主要有：<br>redis分布式锁 redis常用命令</p>
 <p>主要逻辑方案：</p>
 <ol>
-<li>预热库存数据</li>
-<li>限流（允许进入两倍库存的访问量）</li>
-<li>10秒失效一次redis库存数据 重新获取（处理因为进入下单页没有提交订单 而导致的库存剩余）</li>
+<li><p>预热库存数据</p>
+</li>
+<li><p>限流（允许进入两倍库存的访问量）</p>
+</li>
+<li><p>10秒失效一次redis库存数据 重新获取（处理因为进入下单页没有提交订单 而导致的库存剩余）</p>
+<a id="more"></a>
+</li>
 </ol>
 <h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><ol>
 <li><p>主要实现代码 判断是否有库存isEnoughRepository</p>
