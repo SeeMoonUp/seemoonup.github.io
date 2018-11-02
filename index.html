@@ -252,6 +252,130 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/11/01/tech/java/org.joda.time源码分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ok6q2poob.bkt.clouddn.com/IMG489.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不爱更新的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/01/tech/java/org.joda.time源码分析/" itemprop="url">org.joda.time源码分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-01T16:14:16+08:00">
+                2018-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>此前Java处理时间日期所使用的 Date 和 Calendar 被诟病不已，Calendar 的主要问题对象可变，而像时间和日期这样的类应该是不可变的，另外其概念模型也有不明确的地方，月份计算从0开始等等。</p>
+<p><a href="http://www.joda.org/joda-time/" target="_blank" rel="noopener">JodaTime开源时间/日期库</a>是很好的替代，另外Java8中也推出了新的java.time库，设计理念与JodaTime相似。</p>
+<p>Joda-Time 令时间和日期值变得易于管理、操作和理解。易于使用是 Joda 的主要设计目标。Joda-Time主类 DateTime 和JDK旧有类 Date 和 Calendar之间可以互相转换。从而保证了与JDK框架的兼容。</p>
+<h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><p>使用过程中的大部分用法<a href="https://juejin.im/post/580d6ff78ac247005b59377f" target="_blank" rel="noopener">计算机程序的思维逻辑</a>这里面都有介绍不再赘述</p>
+<h3 id="Period源码分析"><a href="#Period源码分析" class="headerlink" title="Period源码分析"></a>Period源码分析</h3><h4 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">第一种：直接声明</span><br><span class="line">public Period() &#123;</span><br><span class="line">	super(0L, (PeriodType)null, (Chronology)null);</span><br><span class="line">&#125;</span><br><span class="line">第二种：传入年、月、周、日、时、分、秒、毫秒等值 此处一定要注意中间的周这个值的定义</span><br><span class="line">public Period(int var1, int var2, int var3, int var4) &#123;</span><br><span class="line">	super(0, 0, 0, 0, var1, var2, var3, var4, PeriodType.standard());</span><br><span class="line">&#125;</span><br><span class="line">第三种：</span><br><span class="line">public Period(ReadableInstant var1, ReadableInstant var2, PeriodType var3) &#123;</span><br><span class="line">	super(var1, var2, var3);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/10/09/tech/电商/秒杀限流/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -418,263 +542,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/09/25/tech/电商/电商结构/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lemon">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://ok6q2poob.bkt.clouddn.com/IMG489.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="不爱更新的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/25/tech/电商/电商结构/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T09:36:28+08:00">
-                2018-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="商品"><a href="#商品" class="headerlink" title="商品"></a>商品</h2><p>供应商</p>
-<p>自营</p>
-<p>阿里下单</p>
-<p>旅游</p>
-<p>充值卡</p>
-<h2 id="店铺"><a href="#店铺" class="headerlink" title="店铺"></a>店铺</h2><p>自营</p>
-<p>分销</p>
-<h2 id="购物车"><a href="#购物车" class="headerlink" title="购物车"></a>购物车</h2><h2 id="订单"><a href="#订单" class="headerlink" title="订单"></a>订单</h2><p>金币</p>
-<p>物流</p>
-<h2 id="客服"><a href="#客服" class="headerlink" title="客服"></a>客服</h2><h2 id="活动"><a href="#活动" class="headerlink" title="活动"></a>活动</h2><p>满减活动</p>
-<p>优惠券</p>
-<p>每日特价</p>
-<p>降价活动</p>
-<p>周周爆款</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/09/20/life/18中秋/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lemon">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://ok6q2poob.bkt.clouddn.com/IMG489.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="不爱更新的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/20/life/18中秋/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-20T10:24:23+08:00">
-                2018-09-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>骑行妙峰山</li>
-<li>组团草原</li>
-<li>​</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/09/10/life/怀念啊我们的青春啊/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -767,72 +634,16 @@
 
       
         
-          
-            <h3 id="幼儿园"><a href="#幼儿园" class="headerlink" title="幼儿园"></a>幼儿园</h3><hr>
+          <h3 id="幼儿园"><a href="#幼儿园" class="headerlink" title="幼儿园"></a>幼儿园</h3><hr>
 <p>​                     <strong>幼儿园不愿意去上学</strong> </p>
 <p><img src="http://img.soogif.com/pDsLA4Y0ccwfyjb0j7qvrwHQeix0myEa.gif_s400x0" alt="刚上学"></p>
-<hr>
-<p>​                <strong>童年无忌的时光 初吻这么就没了</strong></p>
-<p><img src="http://img.soogif.com/IwyLCE0iAqeRC9lZmYoLxuUgIPL3Iqbb.gif_s400x0" alt="初吻"></p>
-<hr>
-<p>​                        <strong>幼儿园扛把子</strong></p>
-<p><img src="http://img.soogif.com/Oj40jXmNVNxjWciHkBkuUZsU4oO5bgBj.gif_s400x0" alt="秋名山扛把子"></p>
-<h3 id="小学"><a href="#小学" class="headerlink" title="小学"></a>小学</h3><hr>
-<p>​                    <strong>小学逗笑女孩子</strong></p>
-<p><img src="http://img.soogif.com/6z6Stjo8AimXe2IRyqkkpXWtwXBH8FlD.gif_s400x0" alt="小学"></p>
-<hr>
-<p>​            <strong>写算术题的时候也不知道是开心还是难过</strong></p>
-<p><img src="http://img.soogif.com/C06UzV3Y9ZH7u7bmzbPE2sx0Dqk77GXZ.gif_s400x0" alt="算术题"></p>
-<hr>
-<p>​                <strong>在同学后背贴纸条写上“xxx大坏蛋”</strong></p>
-<p><img src="http://img.soogif.com/TrszrQXw8lZ7BsfqzIX8yC9VUWnH0mB1.gif_s400x0" alt="传纸条"></p>
-<h3 id="初中"><a href="#初中" class="headerlink" title="初中"></a>初中</h3><hr>
-<p>​            <strong>初中上演脱裤子的恶作剧 你被搞过没有</strong></p>
-<p><img src="http://img.soogif.com/AnOdWDeH7YOlRgV4VxkabMb2fZgjJyao.gif_s400x0" alt="脱裤子"></p>
-<hr>
-<p>​                    <strong>被老师用粉笔头喊醒</strong></p>
-<p><img src="http://5b0988e595225.cdn.sohucs.com/images/20170909/0eae78366b39487db3fa7b2ca72d710d.gif" alt="粉笔"></p>
-<hr>
-<p>​                <strong>各种各样的考试作弊手段</strong></p>
-<p><img src="http://p1.qhimgs4.com/t017dfa87682189caf1.gif" alt="作弊"></p>
-<h3 id="高中"><a href="#高中" class="headerlink" title="高中"></a>高中</h3><hr>
-<p>​                    <strong>高中的时候在办理打过牌</strong></p>
-<p><img src="http://img.soogif.com/71w2dGEd3YFaRxjRidMkqVLpnSgMU5qT.gif" alt="打牌"></p>
-<hr>
-<p>​                <strong>上课困得不行睡个觉 结果翻车了</strong></p>
-<p><img src="http://img.soogif.com/QsgdrekqdRkT3HFQs6csdd5Id17aoOI4.gif" alt="睡觉翻车"></p>
-<hr>
-<p>​                <strong>到了高中之后可能只有学习了</strong></p>
-<p><img src="http://img.soogif.com/0EzZM7fLHulkvOUSDeKEMYzPMeU6lzIO.gif_s400x0" alt="学习"></p>
-<hr>
-<p>​                    <strong>转眼到了高考的时间</strong></p>
-<p><img src="http://img.soogif.com/Ii1RDgNVeijELu4SgPFKrEuGfTeIvtoT.gif_s400x0" alt="高考"></p>
-<h3 id="大学"><a href="#大学" class="headerlink" title="大学"></a>大学</h3><hr>
-<p>​                    <strong>大学到了谈恋爱的季节</strong></p>
-<p><img src="http://img.soogif.com/qHDUfGgkHBcUqI1JmcIjpSnjT23TRMvL.gif_s400x0" alt="恋爱"></p>
-<hr>
-<p>​                    <strong>大学宿舍的兄弟</strong></p>
-<p><img src="http://img.soogif.com/LroSlJp3Y0ayNDBR3ybqSgNFr5Mxhyho.gif_s400x0" alt="室友情"></p>
-<hr>
-<p>​                        <strong>一起小搓一顿</strong></p>
-<p><img src="http://img.soogif.com/zwqoOvyBNAZ8f4pXv9odYwMUxWCQeXQx.gif_s400x0" alt="一起小搓一顿"></p>
-<hr>
-<p>​                <strong>别的宿舍来到一起燥的画面</strong></p>
-<p><img src="http://img.soogif.com/eNcrVXBC8AWHSz1igZ4IK0dxMzg5NVbN.gif_s400x0" alt="燥"></p>
-<hr>
-<p>​                    <strong>上课老师点名时的场景</strong></p>
-<p><img src="http://img.soogif.com/SNCPtsNuLn1dYEfei5FrV1MgrfKoc1yw.gif_s400x0" alt="点名"></p>
-<hr>
-<p>​    <strong>毕业了，拍毕业照只用了三秒，却定格了我们四年的青春</strong></p>
-<p><img src="http://img.soogif.com/nb0QEYg8AhISIB18jw8UMc2auDiF7Ps1.gif_s400x0" alt="毕业"></p>
-<hr>
-<p>​                    <strong>结尾再说个悲伤的故事</strong></p>
-<p><img src="http://img.soogif.com/OLbLwwRWMgOY1HGVdp9ogfeZOc9ytIzb.gif_s400x0" alt="四级"></p>
-<hr>
-<p>​            <strong>最后的最后 祝教师节所有的教师节日快乐！</strong></p>
-<p><img src="https://ws4.sinaimg.cn/large/0069RVTdly1fv4s4rph24j30m80g00u1.jpg" alt="教师节"></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/10/life/怀念啊我们的青春啊/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1750,6 +1561,178 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/08/25/tech/电商/快递模板配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ok6q2poob.bkt.clouddn.com/IMG489.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不爱更新的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/25/tech/电商/快递模板配置/" itemprop="url">快递模板配置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-25T18:30:16+08:00">
+                2018-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe/" itemprop="url" rel="index">
+                    <span itemprop="name">fe</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe/plugin/" itemprop="url" rel="index">
+                    <span itemprop="name">plugin</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/fe/plugin/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>######开发条件：<br>安装bootstrap-treeview插件，具体操作见：<br><a href="http://www.bootcdn.cn/bootstrap-treeview/readme/" target="_blank" rel="noopener">bootstrap-treeview</a></p>
+<p>######实现功能：</p>
+<blockquote>
+<p>1.一个模板可指定子模板（包含多个地区、价格等）<br>2.编辑子模板地区时，动态改变tree的地区（其他子模板选中的地区disabled,此模板之前选中的地区默认选中）<br>3.tree选择时，父级和子集的联动（如父级选中子集全部选中，取消一个子集的时候，父级也取消）<br>4.维护子模板数据（展示选中的地区格式 如（安徽、北京（昌平 回龙观）） 存储选中节点）</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/08/25/tech/电商/快递模板配置/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1804,7 +1787,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1826,7 +1809,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
