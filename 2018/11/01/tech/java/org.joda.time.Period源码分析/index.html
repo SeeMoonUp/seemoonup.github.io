@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="不爱更新的博客">
 <meta property="og:description" content="前言此前Java处理时间日期所使用的 Date 和 Calendar 被诟病不已，Calendar 的主要问题对象可变，而像时间和日期这样的类应该是不可变的，另外其概念模型也有不明确的地方，月份计算从0开始等等。 JodaTime开源时间/日期库是很好的替代，另外Java8中也推出了新的java.time库，设计理念与JodaTime相似。 Joda-Time 令时间和日期值变得易于管理、操作和理">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-05T09:46:17.578Z">
+<meta property="og:updated_time" content="2018-11-06T14:03:18.064Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="joda.time之如何获取到两个时间的差值（正确的使用Period类）">
 <meta name="twitter:description" content="前言此前Java处理时间日期所使用的 Date 和 Calendar 被诟病不已，Calendar 的主要问题对象可变，而像时间和日期这样的类应该是不可变的，另外其概念模型也有不明确的地方，月份计算从0开始等等。 JodaTime开源时间/日期库是很好的替代，另外Java8中也推出了新的java.time库，设计理念与JodaTime相似。 Joda-Time 令时间和日期值变得易于管理、操作和理">
@@ -355,6 +355,7 @@
         <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>此前Java处理时间日期所使用的 Date 和 Calendar 被诟病不已，Calendar 的主要问题对象可变，而像时间和日期这样的类应该是不可变的，另外其概念模型也有不明确的地方，月份计算从0开始等等。</p>
 <p><a href="http://www.joda.org/joda-time/" target="_blank" rel="noopener">JodaTime开源时间/日期库</a>是很好的替代，另外Java8中也推出了新的java.time库，设计理念与JodaTime相似。</p>
 <p>Joda-Time 令时间和日期值变得易于管理、操作和理解。易于使用是 Joda 的主要设计目标。Joda-Time主类 DateTime 和JDK旧有类 Date 和 Calendar之间可以互相转换。从而保证了与JDK框架的兼容。</p>
+<a id="more"></a>
 <p>本文主要介绍了下Period类及如何正确的两个时间的差值 通过分析构造方法的方式进行展开，详细见下文</p>
 <h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><p>org.joda.time大部分用法<a href="https://juejin.im/post/580d6ff78ac247005b59377f" target="_blank" rel="noopener">计算机程序的思维逻辑</a>和<a href="https://www.jianshu.com/p/efdeda608780" target="_blank" rel="noopener">使用Joda-Time优雅的处理日期时间</a>这里面都有很好的介绍不再赘述，下面主要看下处理时间段（两个日期的差值）的Period类</p>
 <div align="life"><br><iframe frameborder="no" marginwidth="0" marginheight="0" width="400" height="140" src="https://music.163.com/outchain/player?type=2&id=34341360&auto=0&height=66"></iframe><br></div>

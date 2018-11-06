@@ -354,8 +354,7 @@
 
       
         
-          
-            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>相信初学者一直对tomcat这个东西很好奇到底是个什么东西</p>
+          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>相信初学者一直对tomcat这个东西很好奇到底是个什么东西</p>
 <p>从开始学习就知道是个java容器,可是它的作用究竟是什么呢？在项目工程中扮演的是什么角色？下面就来通过源码来学习下tomcat</p>
 <blockquote>
 <p>Tomcat 源码系列一 （环境的搭建）</p>
@@ -366,28 +365,13 @@
 <li>下载Source Code Distributions下面的zip文件</li>
 <li>解压文件</li>
 </ol>
-<h3 id="导入编译"><a href="#导入编译" class="headerlink" title="导入编译"></a>导入编译</h3><p>因为tomcat是使用的ant进行编译的，所以需要ant并配置环境</p>
-<p>本文不采用这种方式，如果使用此方式的话可以参照<a href="https://yq.aliyun.com/articles/83778" target="_blank" rel="noopener">Idea导入Tomcat源码</a></p>
-<p>本文使用的是maven依赖ant jar包进行编译</p>
-<ol>
-<li><p>首先在解压后的源码根目录下面增加pom.xml文件</p>
-<p>笔者的路径为<code>/workspace/apache-tomcat-7.0.91-src</code></p>
-</li>
-<li><p>编辑pom.xml</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;</span><br><span class="line">         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;Tomcat7.0&lt;/artifactId&gt;</span><br><span class="line">    &lt;name&gt;Tomcat7.0 src&lt;/name&gt;</span><br><span class="line">    &lt;version&gt;7.0&lt;/version&gt;</span><br><span class="line"></span><br><span class="line">    &lt;build&gt;</span><br><span class="line">        &lt;finalName&gt;Tomcat7.0&lt;/finalName&gt;</span><br><span class="line">        &lt;sourceDirectory&gt;java&lt;/sourceDirectory&gt;</span><br><span class="line">        &lt;resources&gt;</span><br><span class="line">            &lt;resource&gt;</span><br><span class="line">                &lt;directory&gt;java&lt;/directory&gt;</span><br><span class="line">            &lt;/resource&gt;</span><br><span class="line">        &lt;/resources&gt;</span><br><span class="line">        &lt;plugins&gt;</span><br><span class="line">            &lt;plugin&gt;</span><br><span class="line">                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">                &lt;version&gt;2.3&lt;/version&gt;</span><br><span class="line">                &lt;configuration&gt;</span><br><span class="line">                    &lt;encoding&gt;UTF-8&lt;/encoding&gt;</span><br><span class="line">                    &lt;source&gt;1.6&lt;/source&gt;</span><br><span class="line">                    &lt;target&gt;1.6&lt;/target&gt;</span><br><span class="line">                &lt;/configuration&gt;</span><br><span class="line">            &lt;/plugin&gt;</span><br><span class="line">        &lt;/plugins&gt;</span><br><span class="line">    &lt;/build&gt;</span><br><span class="line"></span><br><span class="line">    &lt;dependencies&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;ant&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;ant&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.7.0&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;ant&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;ant-apache-log4j&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.6.5&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;ant&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;ant-commons-logging&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.6.5&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;wsdl4j&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;wsdl4j&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.6.2&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;!-- https://mvnrepository.com/artifact/javax.xml/jaxrpc-api --&gt;</span><br><span class="line">      &lt;dependency&gt;</span><br><span class="line">          &lt;groupId&gt;javax.xml&lt;/groupId&gt;</span><br><span class="line">          &lt;artifactId&gt;jaxrpc-api&lt;/artifactId&gt;</span><br><span class="line">          &lt;version&gt;1.1&lt;/version&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.eclipse.jdt.core.compiler&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;ecj&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;4.4&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">    &lt;/dependencies&gt;</span><br><span class="line">&lt;/project&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>打开idea 点击右边侧边栏[maven project] 点击+号 选中新建的pom.xml文件 稍等一会</p>
-</li>
-<li><p>至此就已经把tomcat源码导入进入了idea中</p>
-</li>
-</ol>
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><ol>
-<li>进入org.apache.catalina.startup</li>
-<li>运行mian方法 进入编译 运行</li>
-<li>看到控制台有对应的输出即表示导入编译成功</li>
-</ol>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/06/tech/tomcat/tomcat探索之环境搭建/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -645,64 +629,16 @@
 
       
         
-          
-            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>此前Java处理时间日期所使用的 Date 和 Calendar 被诟病不已，Calendar 的主要问题对象可变，而像时间和日期这样的类应该是不可变的，另外其概念模型也有不明确的地方，月份计算从0开始等等。</p>
+          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>此前Java处理时间日期所使用的 Date 和 Calendar 被诟病不已，Calendar 的主要问题对象可变，而像时间和日期这样的类应该是不可变的，另外其概念模型也有不明确的地方，月份计算从0开始等等。</p>
 <p><a href="http://www.joda.org/joda-time/" target="_blank" rel="noopener">JodaTime开源时间/日期库</a>是很好的替代，另外Java8中也推出了新的java.time库，设计理念与JodaTime相似。</p>
 <p>Joda-Time 令时间和日期值变得易于管理、操作和理解。易于使用是 Joda 的主要设计目标。Joda-Time主类 DateTime 和JDK旧有类 Date 和 Calendar之间可以互相转换。从而保证了与JDK框架的兼容。</p>
-<p>本文主要介绍了下Period类及如何正确的两个时间的差值 通过分析构造方法的方式进行展开，详细见下文</p>
-<h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><p>org.joda.time大部分用法<a href="https://juejin.im/post/580d6ff78ac247005b59377f" target="_blank" rel="noopener">计算机程序的思维逻辑</a>和<a href="https://www.jianshu.com/p/efdeda608780" target="_blank" rel="noopener">使用Joda-Time优雅的处理日期时间</a>这里面都有很好的介绍不再赘述，下面主要看下处理时间段（两个日期的差值）的Period类</p>
-<div align="life"><br><iframe frameborder="no" marginwidth="0" marginheight="0" width="400" height="140" src="https://music.163.com/outchain/player?type=2&id=34341360&auto=0&height=66"></iframe><br></div>
-
-<h3 id="Period简介"><a href="#Period简介" class="headerlink" title="Period简介"></a>Period简介</h3><p>由一组持续时间字段值指定的不可变时间段</p>
-<p>一段时间分为多个字段如年月日来表示，这些字段由PeriodType类定义，PeriodType默认值为standard类型，支持年，月，周，日，小时，分钟，秒和毫秒</p>
-<h4 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">第一种：直接声明</span><br><span class="line">public Period() &#123;</span><br><span class="line">	super(0L, (PeriodType)null, (Chronology)null);</span><br><span class="line">&#125;</span><br><span class="line">第二种：传入年、月、周、日、时、分、秒、毫秒等值 此处一定要注意中间的周这个值的定义</span><br><span class="line">public Period(int var1, int var2, int var3, int var4) &#123;</span><br><span class="line">	super(0, 0, 0, 0, var1, var2, var3, var4, PeriodType.standard());</span><br><span class="line">&#125;</span><br><span class="line">第三种：获取两个ReadableInstant实现类(如DateTime)之间的时间段</span><br><span class="line">public Period(ReadableInstant var1, ReadableInstant var2, PeriodType var3) &#123;</span><br><span class="line">	super(var1, var2, var3);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="正确的获取两个时间之间的差值"><a href="#正确的获取两个时间之间的差值" class="headerlink" title="正确的获取两个时间之间的差值"></a>正确的获取两个时间之间的差值</h4><p>网上有很多的案例说获取两个时间之间的差距年月日等信息的解决方案：</p>
-<blockquote>
-<p>计算两个时间的差值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;DateTime start = new DateTime(2016,8,18,10,58);</span><br><span class="line">&gt;DateTime end = new DateTime(2016,9,19,12,3);</span><br><span class="line">&gt;Period period = new Period(start,end);        </span><br><span class="line">&gt;System.out.println(period.getMonths()+&quot;月&quot;+period.getDays()+&quot;天&quot;</span><br><span class="line">&gt;        +period.getHours()+&quot;小时&quot;+period.getMinutes()+&quot;分&quot;);</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<blockquote>
-<p>输出为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;1月1天1小时5分</span><br><span class="line">&gt;复制代码</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<blockquote>
-<p>只要给定起止时间，Period就可以自动计算出来，两个时间之间有多少月、多少天、多少小时等。</p>
-</blockquote>
-<p>这里有一个问题没有说明 拿一个案例来说</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DateTime d1 = new DateTime(2018,1,27,0,30);</span><br><span class="line">DateTime d2 = new DateTime(2018,2,26,2,30);</span><br><span class="line">Period p0 = new Period(d1, d2);</span><br><span class="line">System.out.println(p0.getYears() + &quot;年&quot; + p0.getMonths() + &quot;月&quot;  + p0.getWeeks() + &quot;周&quot; + p0.getDays() + &quot;天&quot;);</span><br></pre></td></tr></table></figure>
-<p>输出为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0年0月4周2天</span><br></pre></td></tr></table></figure>
-<p>是不是跟预期想要得到的30天不一致，下面看下原因</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">使用new Period(ReadableInstant var1, ReadableInstant var2)进行Period的实例化</span><br><span class="line">这个构造方法默认使用的PeriodType</span><br><span class="line">public Period(ReadableInstant var1, ReadableInstant var2) &#123; </span><br><span class="line">	super(var1, var2, (PeriodType)null);</span><br><span class="line">&#125;</span><br><span class="line">这时候指定的PeriodType为null，再继续向下看Period的上级抽象父类BasePeriod的构造方法</span><br><span class="line">protected BasePeriod(ReadableInstant var1, ReadableInstant var2, PeriodType var3) &#123;</span><br><span class="line">	//1. 检查一下var3对应的值</span><br><span class="line">	var3 = this.checkPeriodType(var3);</span><br><span class="line">    if (var1 == null &amp;&amp; var2 == null) &#123;</span><br><span class="line">    	//6. 这里将iType赋值为var3指定的Period</span><br><span class="line">    	this.iType = var3;</span><br><span class="line">        this.iValues = new int[this.size()];</span><br><span class="line">     &#125; else &#123;</span><br><span class="line">     	long var4 = DateTimeUtils.getInstantMillis(var1);</span><br><span class="line">        long var6 = DateTimeUtils.getInstantMillis(var2);</span><br><span class="line">        Chronology var8 = DateTimeUtils.getIntervalChronology(var1, var2);</span><br><span class="line">        this.iType = var3;</span><br><span class="line">        this.iValues = var8.get(this, var4, var6);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line">protected PeriodType checkPeriodType(PeriodType var1) &#123;</span><br><span class="line">	//2. 调用DateTimeUtils工具类的getPeriodType()传入var1 也就是上一代码块的var3(也就是null)</span><br><span class="line">	return DateTimeUtils.getPeriodType(var1);</span><br><span class="line">&#125;</span><br><span class="line">public static final PeriodType getPeriodType(PeriodType var0) &#123;</span><br><span class="line">	//3. 在这里就可以看到 传入的null最终转化为了PeriodType.standard()</span><br><span class="line">	return var0 == null ? PeriodType.standard() : var0;</span><br><span class="line">&#125;</span><br><span class="line">//4. 在PeriodType看到静态方法 实例standard并返回对应的Period</span><br><span class="line">public static PeriodType standard() &#123;</span><br><span class="line">	PeriodType var0 = cStandard;</span><br><span class="line">    if (var0 == null) &#123;</span><br><span class="line">    	//5. 这里可以看到在Standard中指定了年月周天时分秒(有兴趣的可以看下PeriodType的实例的设计)</span><br><span class="line">    	//这里的猫腻就在于Standard中指定了周！！！</span><br><span class="line">   		var0 = new PeriodType(&quot;Standard&quot;, new DurationFieldType[]&#123;DurationFieldType.years(), DurationFieldType.months(), DurationFieldType.weeks(), DurationFieldType.days(), DurationFieldType.hours(), DurationFieldType.minutes(), DurationFieldType.seconds(), DurationFieldType.millis()&#125;, new int[]&#123;0, 1, 2, 3, 4, 5, 6, 7&#125;);</span><br><span class="line">    	cStandard = var0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	return var0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>所以获取两个日期的差值如年月日的正确姿势应该如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DateTime d1 = new DateTime(2018,1,27,0,30);</span><br><span class="line">DateTime d2 = new DateTime(2018,2,26,2,30);</span><br><span class="line">//指定PeriodType为yearMonthDayTime</span><br><span class="line">Period p2 = new Period(d1, d2, PeriodType.yearMonthDayTime());</span><br><span class="line">System.out.println(p2.getYears() + &quot;年&quot; + p2.getMonths() + &quot;月&quot;+ p2.getWeeks() + &quot;周&quot; + p2.getDays() + &quot;天&quot;);</span><br></pre></td></tr></table></figure>
-<p>输入结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0年0月0周30天</span><br></pre></td></tr></table></figure>
-<p>查询官方文档</p>
-<blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; public Period(ReadableInstant startInstant,</span><br><span class="line">&gt;               ReadableInstant endInstant)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<blockquote>
-<p>Most calculations performed by this method have obvious results. The special case is where the calculation is from a “long” month to a “short” month. Here, the result favours increasing the months field rather than the days. For example, 2013-01-31 to 2013-02-28 is treated as one whole month. By contrast, 2013-01-31 to 2013-03-30 is treated as one month and 30 days (exposed as 4 weeks and 2 days). The results are explained by considering that the start date plus the calculated period result in the end date.</p>
-<p>大致的意思是说有的两点：</p>
-<ol>
-<li><p>2013-01-31 to 2013-03-30 is treated as one month and 30 days (exposed as 4 weeks and 2 days)</p>
-<p>从2013-01-31到2013-03-30被视为有一个月和30天（其中30天暴露为4周和2天）</p>
-<p>上面已经分析过原因及实现，以及如果获取到想要的值</p>
-</li>
-<li><p>从大月到小月的计算需要注意，比如2013-01-31到2013-02-28是一个月</p>
-<p>2013-01-29到2013-02-28也是一个月</p>
-<p>2013-01-28到2013-02-28还是一个月</p>
-<p>2013-01-27到2013-02-28是一个月零一天</p>
-<p>这个也是需要注意的点</p>
-</li>
-</ol>
-</blockquote>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>笔者也是在项目中使用joda.time来处理两个时间的差值的时候使用Period这个处理时间段的类，但是在使用的过程中出现了跟预期值不同的问题，随后翻阅资料更正了用法总结了一下，希望能够帮助到大家。需要使用到更多的用法可以参考官方文档：<a href="https://link.jianshu.com/?t=http://www.joda.org/joda-time/userguide.html" target="_blank" rel="noopener">User Guide</a>。</p>
-<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="https://www.joda.org/joda-time/apidocs/index.html" target="_blank" rel="noopener">joda.time官方API</a></p>
-<p><a href="https://juejin.im/post/580d6ff78ac247005b59377f" target="_blank" rel="noopener">计算机程序的思维逻辑</a></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/01/tech/java/org.joda.time.Period源码分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
