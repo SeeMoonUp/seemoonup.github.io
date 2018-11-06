@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="redis," />
+  <meta name="keywords" content="tomcat," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="基本数据结构及数据模型string（字符串）Redis 的字符串是动态字符串，是可以修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字">
-<meta name="keywords" content="redis">
+<meta name="description" content="前言相信初学者一直对tomcat这个东西很好奇到底是个什么东西 从开始学习就知道是个java容器,可是它的作用究竟是什么呢？在项目工程中扮演的是什么角色？下面就来通过源码来学习下tomcat  Tomcat 源码系列一 （环境的搭建） Tomcat源码系列二（部署项目）  准备工作 进入tomcat源码 官方地址 下载Source Code Distributions下面的zip文件 解压文件">
+<meta name="keywords" content="tomcat">
 <meta property="og:type" content="article">
-<meta property="og:title" content="redis基本数据结构">
-<meta property="og:url" content="http://SeeMoonUp.github.io/2018/08/19/tech/redis/基本数据结构/index.html">
+<meta property="og:title" content="tomcat源码系列一（环境搭建）">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2018/11/06/tech/tomcat/tomcat探索之环境搭建/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="基本数据结构及数据模型string（字符串）Redis 的字符串是动态字符串，是可以修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字">
+<meta property="og:description" content="前言相信初学者一直对tomcat这个东西很好奇到底是个什么东西 从开始学习就知道是个java容器,可是它的作用究竟是什么呢？在项目工程中扮演的是什么角色？下面就来通过源码来学习下tomcat  Tomcat 源码系列一 （环境的搭建） Tomcat源码系列二（部署项目）  准备工作 进入tomcat源码 官方地址 下载Source Code Distributions下面的zip文件 解压文件">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-19T08:25:26.969Z">
+<meta property="og:updated_time" content="2018-11-06T13:59:50.517Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="redis基本数据结构">
-<meta name="twitter:description" content="基本数据结构及数据模型string（字符串）Redis 的字符串是动态字符串，是可以修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字">
+<meta name="twitter:title" content="tomcat源码系列一（环境搭建）">
+<meta name="twitter:description" content="前言相信初学者一直对tomcat这个东西很好奇到底是个什么东西 从开始学习就知道是个java容器,可是它的作用究竟是什么呢？在项目工程中扮演的是什么角色？下面就来通过源码来学习下tomcat  Tomcat 源码系列一 （环境的搭建） Tomcat源码系列二（部署项目）  准备工作 进入tomcat源码 官方地址 下载Source Code Distributions下面的zip文件 解压文件">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/08/19/tech/redis/基本数据结构/"/>
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/11/06/tech/tomcat/tomcat探索之环境搭建/"/>
 
 
 
 
 
-  <title>redis基本数据结构 | 不爱更新的博客</title>
+  <title>tomcat源码系列一（环境搭建） | 不爱更新的博客</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/08/19/tech/redis/基本数据结构/">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/11/06/tech/tomcat/tomcat探索之环境搭建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lemon">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">redis基本数据结构</h1>
+          <h1 class="post-title" itemprop="name headline">tomcat源码系列一（环境搭建）</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-19T14:24:02+08:00">
-                2018-08-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-06T21:05:37+08:00">
+                2018-11-06
               </time>
             
 
@@ -315,8 +315,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
+                  <a href="/categories/tomcat/" itemprop="url" rel="index">
+                    <span itemprop="name">tomcat</span>
                   </a>
                 </span>
 
@@ -352,35 +352,37 @@
       
 
       
-        <h3 id="基本数据结构及数据模型"><a href="#基本数据结构及数据模型" class="headerlink" title="基本数据结构及数据模型"></a>基本数据结构及数据模型</h3><h4 id="string（字符串）"><a href="#string（字符串）" class="headerlink" title="string（字符串）"></a>string（字符串）</h4><p>Redis 的字符串是动态字符串，是可以修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字符串最大长度为 512M。</p>
-<a id="more"></a>
-<p>字符串结构使用非常广泛，一个常见的用途就是缓存用户信息。我们将用户信息结构体使用 JSON 序列化成字符串，然后将序列化后的字符串塞进 Redis 来缓存。同样，取用户信息会经过一次反序列化的过程。</p>
-<h4 id="list（列表）"><a href="#list（列表）" class="headerlink" title="list（列表）"></a>list（列表）</h4><p>Redis 的列表相当于 Java 语言里面的 LinkedList，注意它是链表而不是数组。这意味着 list 的插入和删除操作非常快，时间复杂度为 O(1)，但是索引定位很慢，时间复杂度为 O(n)，这点让人非常意外。</p>
-<h4 id="set-集合"><a href="#set-集合" class="headerlink" title="set (集合)"></a>set (集合)</h4><p>Redis 的集合相当于 Java 语言里面的 HashSet，它内部的键值对是无序的唯一的。它的内部实现相当于一个特殊的字典，字典中所有的 value 都是一个值<code>NULL</code>。</p>
-<h4 id="zset-有序列表"><a href="#zset-有序列表" class="headerlink" title="zset (有序列表)"></a>zset (有序列表)</h4><p>zset 可能是 Redis 提供的最为特色的数据结构，它也是在面试中面试官最爱问的数据结构。它类似于 Java 的 SortedSet 和 HashMap 的结合体，一方面它是一个 set，保证了内部 value 的唯一性，另一方面它可以给每个 value 赋予一个 score，代表这个 value 的排序权重。它的内部实现用的是一种叫做「跳跃列表」的数据结构。</p>
-<h4 id="hash-字典"><a href="#hash-字典" class="headerlink" title="hash (字典)"></a>hash (字典)</h4><p>Redis 的字典相当于 Java 语言里面的 HashMap，它是无序字典。内部实现结构上同 Java 的 HashMap 也是一致的，同样的数组 + 链表二维结构。</p>
-<h3 id="容器型数据结构的通用规则"><a href="#容器型数据结构的通用规则" class="headerlink" title="容器型数据结构的通用规则"></a>容器型数据结构的通用规则</h3><p>list/set/hash/zset 这四种数据结构是容器型数据结构，它们共享下面两条通用规则：</p>
-<p>create if not exists</p>
-<p>如果容器不存在，那就创建一个，再进行操作。比如 rpush 操作刚开始是没有列表的，Redis 就会自动创建一个，然后再 rpush 进去新元素。</p>
-<p>drop if no elements</p>
-<p>如果容器里元素没有了，那么立即删除元素，释放内存。这意味着 lpop 操作到最后一个元素，列表就消失了。</p>
-<h3 id="存结构体信息到底该使用-hash-还是-string？"><a href="#存结构体信息到底该使用-hash-还是-string？" class="headerlink" title="存结构体信息到底该使用 hash 还是 string？"></a>存结构体信息到底该使用 hash 还是 string？</h3><p>这取决于您访问数据的方式：</p>
-<p>选择1使用简单的字符串键和值：</p>
-<ul>
-<li>如果您在大多数访问中使用大多数字段。</li>
-<li>如果可能的键有差异</li>
-</ul>
-<p>选择2使用哈希：</p>
-<ul>
-<li>如果您在大多数访问中仅使用单个字段。</li>
-<li>如果您始终知道哪些字段可用</li>
-</ul>
-<p>PS：根据经验，请选择在大多数用例中需要较少查询的选项。<br>上面提到了 关于字符创存储用户信息 试想一下是否可以使用hash来存储用户信息</p>
-<p>大部分摘自：<a href="https://juejin.im/book/5afc2e5f6fb9a07a9b362527/section/5afc2e5f51882542714ff291" target="_blank" rel="noopener">https://juejin.im/book/5afc2e5f6fb9a07a9b362527/section/5afc2e5f51882542714ff291</a></p>
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>相信初学者一直对tomcat这个东西很好奇到底是个什么东西</p>
+<p>从开始学习就知道是个java容器,可是它的作用究竟是什么呢？在项目工程中扮演的是什么角色？下面就来通过源码来学习下tomcat</p>
 <blockquote>
-<p>有不足之处还望不吝赐教 欢迎关注</p>
-<p>未经作者允许 请勿转载，谢谢 :)</p>
+<p>Tomcat 源码系列一 （环境的搭建）</p>
+<p>Tomcat源码系列二（部署项目）</p>
 </blockquote>
+<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><ol>
+<li>进入tomcat源码 <a href="http://tomcat.apache.org/download-70.cgi" target="_blank" rel="noopener">官方地址</a></li>
+<li>下载Source Code Distributions下面的zip文件</li>
+<li>解压文件</li>
+</ol>
+<h3 id="导入编译"><a href="#导入编译" class="headerlink" title="导入编译"></a>导入编译</h3><p>因为tomcat是使用的ant进行编译的，所以需要ant并配置环境</p>
+<p>本文不采用这种方式，如果使用此方式的话可以参照<a href="https://yq.aliyun.com/articles/83778" target="_blank" rel="noopener">Idea导入Tomcat源码</a></p>
+<p>本文使用的是maven依赖ant jar包进行编译</p>
+<ol>
+<li><p>首先在解压后的源码根目录下面增加pom.xml文件</p>
+<p>笔者的路径为<code>/workspace/apache-tomcat-7.0.91-src</code></p>
+</li>
+<li><p>编辑pom.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;</span><br><span class="line">         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.tomcat&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;Tomcat7.0&lt;/artifactId&gt;</span><br><span class="line">    &lt;name&gt;Tomcat7.0 src&lt;/name&gt;</span><br><span class="line">    &lt;version&gt;7.0&lt;/version&gt;</span><br><span class="line"></span><br><span class="line">    &lt;build&gt;</span><br><span class="line">        &lt;finalName&gt;Tomcat7.0&lt;/finalName&gt;</span><br><span class="line">        &lt;sourceDirectory&gt;java&lt;/sourceDirectory&gt;</span><br><span class="line">        &lt;resources&gt;</span><br><span class="line">            &lt;resource&gt;</span><br><span class="line">                &lt;directory&gt;java&lt;/directory&gt;</span><br><span class="line">            &lt;/resource&gt;</span><br><span class="line">        &lt;/resources&gt;</span><br><span class="line">        &lt;plugins&gt;</span><br><span class="line">            &lt;plugin&gt;</span><br><span class="line">                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">                &lt;version&gt;2.3&lt;/version&gt;</span><br><span class="line">                &lt;configuration&gt;</span><br><span class="line">                    &lt;encoding&gt;UTF-8&lt;/encoding&gt;</span><br><span class="line">                    &lt;source&gt;1.6&lt;/source&gt;</span><br><span class="line">                    &lt;target&gt;1.6&lt;/target&gt;</span><br><span class="line">                &lt;/configuration&gt;</span><br><span class="line">            &lt;/plugin&gt;</span><br><span class="line">        &lt;/plugins&gt;</span><br><span class="line">    &lt;/build&gt;</span><br><span class="line"></span><br><span class="line">    &lt;dependencies&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;ant&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;ant&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.7.0&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;ant&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;ant-apache-log4j&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.6.5&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;ant&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;ant-commons-logging&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.6.5&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;wsdl4j&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;wsdl4j&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.6.2&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;!-- https://mvnrepository.com/artifact/javax.xml/jaxrpc-api --&gt;</span><br><span class="line">      &lt;dependency&gt;</span><br><span class="line">          &lt;groupId&gt;javax.xml&lt;/groupId&gt;</span><br><span class="line">          &lt;artifactId&gt;jaxrpc-api&lt;/artifactId&gt;</span><br><span class="line">          &lt;version&gt;1.1&lt;/version&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.eclipse.jdt.core.compiler&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;ecj&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;4.4&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">    &lt;/dependencies&gt;</span><br><span class="line">&lt;/project&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开idea 点击右边侧边栏[maven project] 点击+号 选中新建的pom.xml文件 稍等一会</p>
+</li>
+<li><p>至此就已经把tomcat源码导入进入了idea中</p>
+</li>
+</ol>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><ol>
+<li>进入org.apache.catalina.startup</li>
+<li>运行mian方法 进入编译 运行</li>
+<li>看到控制台有对应的输出即表示导入编译成功</li>
+</ol>
 
       
     </div>
@@ -435,7 +437,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/redis/" rel="tag"># redis</a>
+            <a href="/tags/tomcat/" rel="tag"># tomcat</a>
           
         </div>
       
@@ -448,8 +450,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/15/tech/go/日志处理/" rel="next" title="日志处理">
-                <i class="fa fa-chevron-left"></i> 日志处理
+              <a href="/2018/11/03/tech/java/org.joda.time使用教程/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
               </a>
             
           </div>
@@ -457,10 +459,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/23/tech/tools/svn分支协同开发流程/" rel="prev" title="svn分支协同开发流程">
-                svn分支协同开发流程 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -630,7 +628,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本数据结构及数据模型"><span class="nav-number">1.</span> <span class="nav-text">基本数据结构及数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#string（字符串）"><span class="nav-number">1.1.</span> <span class="nav-text">string（字符串）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#list（列表）"><span class="nav-number">1.2.</span> <span class="nav-text">list（列表）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-集合"><span class="nav-number">1.3.</span> <span class="nav-text">set (集合)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zset-有序列表"><span class="nav-number">1.4.</span> <span class="nav-text">zset (有序列表)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hash-字典"><span class="nav-number">1.5.</span> <span class="nav-text">hash (字典)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器型数据结构的通用规则"><span class="nav-number">2.</span> <span class="nav-text">容器型数据结构的通用规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存结构体信息到底该使用-hash-还是-string？"><span class="nav-number">3.</span> <span class="nav-text">存结构体信息到底该使用 hash 还是 string？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工作"><span class="nav-number">2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入编译"><span class="nav-number">3.</span> <span class="nav-text">导入编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">4.</span> <span class="nav-text">测试</span></a></li></ol></div>
             
 
           </div>
