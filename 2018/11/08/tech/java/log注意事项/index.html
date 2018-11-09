@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="js,webview,ios,android," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,20 +79,17 @@
 
 
 
-<meta name="description" content="微信中唤起app 方案目前的通用解决方案：  跳转应用宝 打开 数据证明这种方式在微信体系中的转化比较高    跳转浏览器 调起app 打开链接  下面来详细了解一下第二种解决方案">
-<meta name="keywords" content="js,webview,ios,android">
+<meta name="description" content="不那么差劲的程序员">
 <meta property="og:type" content="article">
-<meta property="og:title" content="微信浏览器调起App">
-<meta property="og:url" content="http://SeeMoonUp.github.io/2018/08/25/tech/fe/微信浏览器调起App/index.html">
+<meta property="og:title" content="不爱更新的博客">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2018/11/08/tech/java/log注意事项/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="微信中唤起app 方案目前的通用解决方案：  跳转应用宝 打开 数据证明这种方式在微信体系中的转化比较高    跳转浏览器 调起app 打开链接  下面来详细了解一下第二种解决方案">
+<meta property="og:description" content="不那么差劲的程序员">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1329783-b49beea93566c15d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-08-25T10:51:32.199Z">
+<meta property="og:updated_time" content="2018-11-08T15:56:21.033Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="微信浏览器调起App">
-<meta name="twitter:description" content="微信中唤起app 方案目前的通用解决方案：  跳转应用宝 打开 数据证明这种方式在微信体系中的转化比较高    跳转浏览器 调起app 打开链接  下面来详细了解一下第二种解决方案">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1329783-b49beea93566c15d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="不爱更新的博客">
+<meta name="twitter:description" content="不那么差劲的程序员">
 
 
 
@@ -122,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/08/25/tech/fe/微信浏览器调起App/"/>
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/11/08/tech/java/log注意事项/"/>
 
 
 
 
 
-  <title>微信浏览器调起App | 不爱更新的博客</title>
+  <title> | 不爱更新的博客</title>
   
 
 
@@ -265,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/08/25/tech/fe/微信浏览器调起App/">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/11/08/tech/java/log注意事项/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lemon">
@@ -282,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">微信浏览器调起App</h1>
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
         <div class="post-meta">
@@ -294,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-25T18:45:42+08:00">
-                2018-08-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-08T23:56:05+08:00">
+                2018-11-08
               </time>
             
 
@@ -304,28 +301,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/fe/" itemprop="url" rel="index">
-                    <span itemprop="name">fe</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -354,37 +329,7 @@
       
 
       
-        <h4 id="微信中唤起app-方案"><a href="#微信中唤起app-方案" class="headerlink" title="微信中唤起app 方案"></a>微信中唤起app 方案</h4><p>目前的通用解决方案：</p>
-<ol>
-<li><p>跳转应用宝 打开</p>
-<p>数据证明这种方式在微信体系中的转化比较高</p>
-</li>
-</ol>
-<ol start="2">
-<li>跳转浏览器 调起app 打开链接</li>
-</ol>
-<p>下面来详细了解一下第二种解决方案</p>
-<a id="more"></a>
-<h4 id="使用scheme协议解决"><a href="#使用scheme协议解决" class="headerlink" title="使用scheme协议解决"></a>使用scheme协议解决</h4><p>分享出去的链接比如share.html<br>其中的代码为<br><code>&lt;a href=&quot;www.seemoonup.com/jump.html?schema=***&quot;&gt;</code></p>
-<p>schema为app端提供的地址<br>请求发送到server之后跳转至中转页面jump.html</p>
-<p>下面来分析一下jump.html的页面逻辑</p>
-<ol>
-<li>打开分享页 点击在app中打开,进入中转jump页</li>
-<li>判断是否为wechat浏览器 </li>
-<li>如果在wechat浏览器中，则诱导用户使用浏览器打开此页面</li>
-<li>浏览器中打开jump页</li>
-<li>使用页面js方法schema尝试调起app 调起成功直接打开，调起失败提示跳转失败</li>
-</ol>
-<h4 id="逻辑流程图"><a href="#逻辑流程图" class="headerlink" title="逻辑流程图"></a>逻辑流程图</h4><p><img src="http://upload-images.jianshu.io/upload_images/1329783-b49beea93566c15d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
-<p>这其中的逻辑主要集中在jump页面判断ua上面<br>其次对于如何调起schema对于ios和android以及版本的不同</p>
-<blockquote>
-<p>主要有两种方式：<br>frame.src = schema//嵌入frame<br>window.location=schema//url跳转</p>
-</blockquote>
-<p>具体实现代码根据业务需求实现</p>
-<blockquote>
-<p>总结:两种解决方式各有利弊，根据具体需求选用，使用应用宝就绕不开下载应用宝，使用中转方式 绕不开点击更多 使用浏览器打开<br>适合自己的才是最好的</p>
-</blockquote>
-
+        
       
     </div>
     
@@ -436,18 +381,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/js/" rel="tag"># js</a>
-          
-            <a href="/tags/webview/" rel="tag"># webview</a>
-          
-            <a href="/tags/ios/" rel="tag"># ios</a>
-          
-            <a href="/tags/android/" rel="tag"># android</a>
-          
-        </div>
-      
 
       
       
@@ -457,8 +390,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/25/tech/java/debug watch/" rel="next" title="debug watch小工具的使用">
-                <i class="fa fa-chevron-left"></i> debug watch小工具的使用
+              <a href="/2018/11/08/tech/java/java反射/" rel="next" title="Java 反射由浅入深 | 进阶必备">
+                <i class="fa fa-chevron-left"></i> Java 反射由浅入深 | 进阶必备
               </a>
             
           </div>
@@ -466,10 +399,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/26/tech/redis/Redis线程IO模型/" rel="prev" title="Redis线程模型">
-                Redis线程模型 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -521,17 +450,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -629,22 +549,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#微信中唤起app-方案"><span class="nav-number">1.</span> <span class="nav-text">微信中唤起app 方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用scheme协议解决"><span class="nav-number">2.</span> <span class="nav-text">使用scheme协议解决</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑流程图"><span class="nav-number">3.</span> <span class="nav-text">逻辑流程图</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

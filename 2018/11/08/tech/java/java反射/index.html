@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Java 反射由浅入深 | 进阶必备本博文主要记录我学习 Java 反射（reflect）的一点心得，在了解反射之前，你应该先了解 Java 中的 Class 类，如果你不是很了解，可以先简单了解下。 一、Java 反射机制参考了许多博文，总结了以下个人观点，若有不妥还望指正：  Java 反射机制在程序运行时，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 反射由浅入深 | 进阶必备">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2018/11/08/tech/java/java反射/index.html">
+<meta property="og:site_name" content="不爱更新的博客">
+<meta property="og:description" content="Java 反射由浅入深 | 进阶必备本博文主要记录我学习 Java 反射（reflect）的一点心得，在了解反射之前，你应该先了解 Java 中的 Class 类，如果你不是很了解，可以先简单了解下。 一、Java 反射机制参考了许多博文，总结了以下个人观点，若有不妥还望指正：  Java 反射机制在程序运行时，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/11/9/166f6b7bbe04c16d?w=1015&h=938&f=png&s=390390">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/11/9/166f6b9021cfc7b3?w=1280&h=844&f=png&s=503454">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/8/12/2bdcae6d3cde4638c23a0cfe34f85aa6">
+<meta property="og:updated_time" content="2018-11-09T04:29:27.968Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java 反射由浅入深 | 进阶必备">
+<meta name="twitter:description" content="Java 反射由浅入深 | 进阶必备本博文主要记录我学习 Java 反射（reflect）的一点心得，在了解反射之前，你应该先了解 Java 中的 Class 类，如果你不是很了解，可以先简单了解下。 一、Java 反射机制参考了许多博文，总结了以下个人观点，若有不妥还望指正：  Java 反射机制在程序运行时，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/11/9/166f6b7bbe04c16d?w=1015&h=938&f=png&s=390390">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/11/08/tech/java/java反射/"/>
+
+
+
+
+
+  <title>Java 反射由浅入深 | 进阶必备 | 不爱更新的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">不爱更新的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">代码是写不完的<br>bug是改不完的<br>下班 回家</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/11/08/tech/java/java反射/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ok6q2poob.bkt.clouddn.com/IMG489.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="不爱更新的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java 反射由浅入深 | 进阶必备</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-08T23:54:17+08:00">
+                2018-11-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Java-反射由浅入深-进阶必备"><a href="#Java-反射由浅入深-进阶必备" class="headerlink" title="Java 反射由浅入深 | 进阶必备"></a>Java 反射由浅入深 | 进阶必备</h1><p>本博文主要记录我学习 Java 反射（reflect）的一点心得，在了解反射之前，你应该先了解 Java 中的 Class 类，如果你不是很了解，可以先简单了解下。</p>
+<h1 id="一、Java-反射机制"><a href="#一、Java-反射机制" class="headerlink" title="一、Java 反射机制"></a>一、Java 反射机制</h1><p>参考了许多博文，总结了以下个人观点，若有不妥还望指正：</p>
+<blockquote>
+<p>Java 反射机制在程序<strong>运行时</strong>，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性。这种 <strong>动态的获取信息</strong> 以及 <strong>动态调用对象的方法</strong> 的功能称为 <strong>java 的反射机制</strong>。</p>
+<p>反射机制很重要的一点就是“运行时”，其使得我们可以在程序运行时加载、探索以及使用编译期间完全未知的 <code>.class</code> 文件。换句话说，Java 程序可以加载一个运行时才得知名称的 <code>.class</code> 文件，然后获悉其完整构造，并生成其对象实体、或对其 fields（变量）设值、或调用其 methods（方法）。</p>
+</blockquote>
+<p>不知道上面的理论你能否明白，反正刚接触反射时我一脸懵比，后来写了几个例子之后：哦~~原来是这个意思！</p>
+<p>若暂时不明白理论没关系，先往下看例子，之后再回来看相信你就能明白了。</p>
+<h1 id="二、使用反射获取类的信息"><a href="#二、使用反射获取类的信息" class="headerlink" title="二、使用反射获取类的信息"></a>二、使用反射获取类的信息</h1><p>为使得测试结果更加明显，我首先定义了一个 <code>FatherClass</code> 类（默认继承自 <code>Object</code> 类），然后定义一个继承自 <code>FatherClass</code> 类的 <code>SonClass</code> 类，如下所示。可以看到测试类中变量以及方法的访问权限不是很规范，是为了更明显得查看测试结果而故意设置的，实际项目中不提倡这么写。</p>
+<p><strong>FatherClass.java</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class FatherClass &#123;</span><br><span class="line">    public String mFatherName;</span><br><span class="line">    public int mFatherAge;</span><br><span class="line"></span><br><span class="line">    public void printFatherMsg()&#123;&#125;</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<p><strong>SonClass.java</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">public class SonClass extends FatherClass&#123;</span><br><span class="line"></span><br><span class="line">    private String mSonName;</span><br><span class="line">    protected int mSonAge;</span><br><span class="line">    public String mSonBirthday;</span><br><span class="line"></span><br><span class="line">    public void printSonMsg()&#123;</span><br><span class="line">        System.out.println(&quot;Son Msg - name : &quot;</span><br><span class="line">                + mSonName + &quot;; age : &quot; + mSonAge);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void setSonName(String name)&#123;</span><br><span class="line">        mSonName = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void setSonAge(int age)&#123;</span><br><span class="line">        mSonAge = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private int getSonAge()&#123;</span><br><span class="line">        return mSonAge;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private String getSonName()&#123;</span><br><span class="line">        return mSonName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<h2 id="1-获取类的所有变量信息"><a href="#1-获取类的所有变量信息" class="headerlink" title="1. 获取类的所有变量信息"></a>1. 获取类的所有变量信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 通过反射获取类的所有变量</span><br><span class="line"> */</span><br><span class="line">private static void printFields()&#123;</span><br><span class="line">    //1.获取并输出类的名称</span><br><span class="line">    Class mClass = SonClass.class;</span><br><span class="line">    System.out.println(&quot;类的名称：&quot; + mClass.getName());</span><br><span class="line"></span><br><span class="line">    //2.1 获取所有 public 访问权限的变量</span><br><span class="line">    // 包括本类声明的和从父类继承的</span><br><span class="line">    Field[] fields = mClass.getFields();</span><br><span class="line"></span><br><span class="line">    //2.2 获取所有本类声明的变量（不问访问权限）</span><br><span class="line">    //Field[] fields = mClass.getDeclaredFields();</span><br><span class="line"></span><br><span class="line">    //3. 遍历变量并输出变量信息</span><br><span class="line">    for (Field field :</span><br><span class="line">            fields) &#123;</span><br><span class="line">        //获取访问权限并输出</span><br><span class="line">        int modifiers = field.getModifiers();</span><br><span class="line">        System.out.print(Modifier.toString(modifiers) + &quot; &quot;);</span><br><span class="line">        //输出变量的类型及变量名</span><br><span class="line">        System.out.println(field.getType().getName()</span><br><span class="line">                 + &quot; &quot; + field.getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<p>以上代码注释很详细，就不再解释了。需要注意的是注释中 2.1 的 <code>getFields()</code> 与 2.2的 <code>getDeclaredFields()</code> 之间的区别，下面分别看一下两种情况下的输出。看之前强调一下：<br><code>SonClass</code> extends <code>FatherClass</code> extends <code>Object</code> ：</p>
+<ul>
+<li><p>调用 <code>getFields()</code> 方法，输出 <code>SonClass</code> 类以及其所继承的父类( 包括 <code>FatherClass</code> 和 <code>Object</code> ) 的 <code>public</code> 方法。注：<code>Object</code> 类中没有成员变量，所以没有输出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">类的名称：obj.SonClass</span><br><span class="line">public java.lang.String mSonBirthday</span><br><span class="line">public java.lang.String mFatherName</span><br><span class="line">public int mFatherAge复制代码</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用 <code>getDeclaredFields()</code> ， 输出 <code>SonClass</code> 类的所有成员变量，不问访问权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">类的名称：obj.SonClass</span><br><span class="line">private java.lang.String mSonName</span><br><span class="line">protected int mSonAge</span><br><span class="line">public java.lang.String mSonBirthday复制代码</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="2-获取类的所有方法信息"><a href="#2-获取类的所有方法信息" class="headerlink" title="2. 获取类的所有方法信息"></a>2. 获取类的所有方法信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 通过反射获取类的所有方法</span><br><span class="line"> */</span><br><span class="line">private static void printMethods()&#123;</span><br><span class="line">    //1.获取并输出类的名称</span><br><span class="line">    Class mClass = SonClass.class;</span><br><span class="line">    System.out.println(&quot;类的名称：&quot; + mClass.getName());</span><br><span class="line"></span><br><span class="line">    //2.1 获取所有 public 访问权限的方法</span><br><span class="line">    //包括自己声明和从父类继承的</span><br><span class="line">    Method[] mMethods = mClass.getMethods();</span><br><span class="line"></span><br><span class="line">    //2.2 获取所有本类的的方法（不问访问权限）</span><br><span class="line">    //Method[] mMethods = mClass.getDeclaredMethods();</span><br><span class="line"></span><br><span class="line">    //3.遍历所有方法</span><br><span class="line">    for (Method method :</span><br><span class="line">            mMethods) &#123;</span><br><span class="line">        //获取并输出方法的访问权限（Modifiers：修饰符）</span><br><span class="line">        int modifiers = method.getModifiers();</span><br><span class="line">        System.out.print(Modifier.toString(modifiers) + &quot; &quot;);</span><br><span class="line">        //获取并输出方法的返回值类型</span><br><span class="line">        Class returnType = method.getReturnType();</span><br><span class="line">        System.out.print(returnType.getName() + &quot; &quot;</span><br><span class="line">                + method.getName() + &quot;( &quot;);</span><br><span class="line">        //获取并输出方法的所有参数</span><br><span class="line">        Parameter[] parameters = method.getParameters();</span><br><span class="line">        for (Parameter parameter:</span><br><span class="line">             parameters) &#123;</span><br><span class="line">            System.out.print(parameter.getType().getName()</span><br><span class="line">                    + &quot; &quot; + parameter.getName() + &quot;,&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        //获取并输出方法抛出的异常</span><br><span class="line">        Class[] exceptionTypes = method.getExceptionTypes();</span><br><span class="line">        if (exceptionTypes.length == 0)&#123;</span><br><span class="line">            System.out.println(&quot; )&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            for (Class c : exceptionTypes) &#123;</span><br><span class="line">                System.out.println(&quot; ) throws &quot;</span><br><span class="line">                        + c.getName());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<p>同获取变量信息一样，需要注意注释中 2.1 与 2.2 的区别，下面看一下打印输出：</p>
+<ul>
+<li><p>调用 <code>getMethods()</code> 方法<br>获取 <code>SonClass</code> 类所有 <code>public</code> 访问权限的方法，包括从父类继承的。打印信息中，<code>printSonMsg()</code> 方法来自 <code>SonClass</code> 类， <code>printFatherMsg()</code> 来自 <code>FatherClass</code> 类，其余方法来自 Object 类。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">类的名称：obj.SonClass</span><br><span class="line">public void printSonMsg(  )</span><br><span class="line">public void printFatherMsg(  )</span><br><span class="line">public final void wait(  ) throws java.lang.InterruptedException</span><br><span class="line">public final void wait( long arg0,int arg1, ) throws java.lang.InterruptedException</span><br><span class="line">public final native void wait( long arg0, ) throws java.lang.InterruptedException</span><br><span class="line">public boolean equals( java.lang.Object arg0, )</span><br><span class="line">public java.lang.String toString(  )</span><br><span class="line">public native int hashCode(  )</span><br><span class="line">public final native java.lang.Class getClass(  )</span><br><span class="line">public final native void notify(  )</span><br><span class="line">public final native void notifyAll(  )复制代码</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用 <code>getDeclaredMethods()</code> 方法</p>
+<p>打印信息中，输出的都是 <code>SonClass</code> 类的方法，不问访问权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">类的名称：obj.SonClass</span><br><span class="line">private int getSonAge(  )</span><br><span class="line">private void setSonAge( int arg0, )</span><br><span class="line">public void printSonMsg(  )</span><br><span class="line">private void setSonName( java.lang.String arg0, )</span><br><span class="line">private java.lang.String getSonName(  )复制代码</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="三、访问或操作类的私有变量和方法"><a href="#三、访问或操作类的私有变量和方法" class="headerlink" title="三、访问或操作类的私有变量和方法"></a>三、访问或操作类的私有变量和方法</h1><p>在上面，我们成功获取了类的变量和方法信息，验证了在运行时 <strong>动态的获取信息</strong> 的观点。那么，仅仅是获取信息吗？我们接着往后看。</p>
+<p>都知道，对象是无法访问或操作类的私有变量和方法的，但是，通过反射，我们就可以做到。没错，反射可以做到！下面，让我们一起探讨如何利用反射访问 <strong>类对象的私有方法</strong> 以及修改 <strong>私有变量或常量</strong>。</p>
+<p>老规矩，先上测试类。</p>
+<p>注：</p>
+<ol>
+<li>请注意看测试类中变量和方法的修饰符（访问权限）；</li>
+<li>测试类仅供测试，不提倡实际开发时这么写 : )</li>
+</ol>
+<p><strong>TestClass.java</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class TestClass &#123;</span><br><span class="line"></span><br><span class="line">    private String MSG = &quot;Original&quot;;</span><br><span class="line"></span><br><span class="line">    private void privateMethod(String head , int tail)&#123;</span><br><span class="line">        System.out.print(head + tail);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getMsg()&#123;</span><br><span class="line">        return MSG;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<h2 id="3-1-访问私有方法"><a href="#3-1-访问私有方法" class="headerlink" title="3.1 访问私有方法"></a>3.1 访问私有方法</h2><p>以访问 <code>TestClass</code> 类中的私有方法 <code>privateMethod(...)</code> 为例，方法加参数是为了考虑最全的情况，很贴心有木有？先贴代码，看注释，最后我会重点解释部分代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 访问对象的私有方法</span><br><span class="line"> * 为简洁代码，在方法上抛出总的异常，实际开发别这样</span><br><span class="line"> */</span><br><span class="line">private static void getPrivateMethod() throws Exception&#123;</span><br><span class="line">    //1. 获取 Class 类实例</span><br><span class="line">    TestClass testClass = new TestClass();</span><br><span class="line">    Class mClass = testClass.getClass();</span><br><span class="line"></span><br><span class="line">    //2. 获取私有方法</span><br><span class="line">    //第一个参数为要获取的私有方法的名称</span><br><span class="line">    //第二个为要获取方法的参数的类型，参数为 Class...，没有参数就是null</span><br><span class="line">    //方法参数也可这么写 ：new Class[]&#123;String.class , int.class&#125;</span><br><span class="line">    Method privateMethod =</span><br><span class="line">            mClass.getDeclaredMethod(&quot;privateMethod&quot;, String.class, int.class);</span><br><span class="line"></span><br><span class="line">    //3. 开始操作方法</span><br><span class="line">    if (privateMethod != null) &#123;</span><br><span class="line">        //获取私有方法的访问权</span><br><span class="line">        //只是获取访问权，并不是修改实际权限</span><br><span class="line">        privateMethod.setAccessible(true);</span><br><span class="line"></span><br><span class="line">        //使用 invoke 反射调用私有方法</span><br><span class="line">        //privateMethod 是获取到的私有方法</span><br><span class="line">        //testClass 要操作的对象</span><br><span class="line">        //后面两个参数传实参</span><br><span class="line">        privateMethod.invoke(testClass, &quot;Java Reflect &quot;, 666);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，第3步中的 <code>setAccessible(true)</code> 方法，是获取私有方法的访问权限，如果不加会报异常 <strong>IllegalAccessException</strong>，因为当前方法访问权限是“private”的，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalAccessException: Class MainClass can not access a member of class obj.TestClass with modifiers &quot;private&quot;复制代码</span><br></pre></td></tr></table></figure>
+<p>正常运行后，打印如下，<strong>调用私有方法</strong>成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Java Reflect 666复制代码</span><br></pre></td></tr></table></figure>
+<h2 id="3-2-修改私有变量"><a href="#3-2-修改私有变量" class="headerlink" title="3.2 修改私有变量"></a>3.2 修改私有变量</h2><p>以修改 <code>TestClass</code> 类中的私有变量 <code>MSG</code> 为例，其初始值为 “Original” ，我们要修改为 “Modified”。老规矩，先上代码看注释。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 修改对象私有变量的值</span><br><span class="line"> * 为简洁代码，在方法上抛出总的异常</span><br><span class="line"> */</span><br><span class="line">private static void modifyPrivateFiled() throws Exception &#123;</span><br><span class="line">    //1. 获取 Class 类实例</span><br><span class="line">    TestClass testClass = new TestClass();</span><br><span class="line">    Class mClass = testClass.getClass();</span><br><span class="line"></span><br><span class="line">    //2. 获取私有变量</span><br><span class="line">    Field privateField = mClass.getDeclaredField(&quot;MSG&quot;);</span><br><span class="line"></span><br><span class="line">    //3. 操作私有变量</span><br><span class="line">    if (privateField != null) &#123;</span><br><span class="line">        //获取私有变量的访问权</span><br><span class="line">        privateField.setAccessible(true);</span><br><span class="line"></span><br><span class="line">        //修改私有变量，并输出以测试</span><br><span class="line">        System.out.println(&quot;Before Modify：MSG = &quot; + testClass.getMsg());</span><br><span class="line"></span><br><span class="line">        //调用 set(object , value) 修改变量的值</span><br><span class="line">        //privateField 是获取到的私有变量</span><br><span class="line">        //testClass 要操作的对象</span><br><span class="line">        //&quot;Modified&quot; 为要修改成的值</span><br><span class="line">        privateField.set(testClass, &quot;Modified&quot;);</span><br><span class="line">        System.out.println(&quot;After Modify：MSG = &quot; + testClass.getMsg());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<p>此处代码和访问私有方法的逻辑差不多，就不再赘述，从输出信息看出 <strong>修改私有变量</strong> 成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Before Modify：MSG = Original</span><br><span class="line">After Modify：MSG = Modified复制代码</span><br></pre></td></tr></table></figure>
+<h2 id="3-3-修改私有常量"><a href="#3-3-修改私有常量" class="headerlink" title="3.3 修改私有常量"></a>3.3 修改私有常量</h2><p>在 3.2 中，我们介绍了如何修改私有 <strong>变量</strong>，现在来说说如何修改私有 <strong>常量</strong>，</p>
+<h3 id="01-真的能修改吗？"><a href="#01-真的能修改吗？" class="headerlink" title="01. 真的能修改吗？"></a>01. 真的能修改吗？</h3><p>常量是指使用 <code>final</code> 修饰符修饰的成员属性，与变量的区别就在于有无 <code>final</code> 关键字修饰。在说之前，先补充一个知识点。</p>
+<p>Java 虚拟机（JVM）在编译 <code>.java</code> 文件得到 <code>.class</code> 文件时，会优化我们的代码以提升效率。其中一个优化就是：JVM 在编译阶段会把引用常量的代码替换成具体的常量值，如下所示（部分代码）。</p>
+<p>编译前的 <code>.java</code> 文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//注意是 String  类型的值</span><br><span class="line">private final String FINAL_VALUE = &quot;hello&quot;;</span><br><span class="line"></span><br><span class="line">if(FINAL_VALUE.equals(&quot;world&quot;))&#123;</span><br><span class="line">    //do something</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<p>编译后得到的 <code>.class</code> 文件（当然，编译后是没有注释的）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">private final String FINAL_VALUE = &quot;hello&quot;;</span><br><span class="line">//替换为&quot;hello&quot;</span><br><span class="line">if(&quot;hello&quot;.equals(&quot;world&quot;))&#123;</span><br><span class="line">    //do something</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<p>但是，并不是所有常量都会优化。经测试对于 <code>int</code> 、<code>long</code> 、<code>boolean</code> 以及 <code>String</code> 这些基本类型 JVM 会优化，而对于 <code>Integer</code> 、<code>Long</code> 、<code>Boolean</code> 这种包装类型，或者其他诸如 <code>Date</code>、<code>Object</code> 类型则不会被优化。</p>
+<p>总结来说：<strong>对于基本类型的静态常量，JVM 在编译阶段会把引用此常量的代码替换成具体的常量值</strong>。</p>
+<p>这么说来，在实际开发中，如果我们想修改某个类的常量值，恰好那个常量是基本类型的，岂不是无能为力了？反正我个人认为除非修改源码，否则真没办法！</p>
+<p>这里所谓的无能为力是指：<strong>我们在程序运行时刻依然可以使用反射修改常量的值（后面会代码验证），但是 JVM 在编译阶段得到的 .class 文件已经将常量优化为具体的值，在运行阶段就直接使用具体的值了，所以即使修改了常量的值也已经毫无意义了</strong>。</p>
+<p>下面我们验证这一点，在测试类 <code>TestClass</code> 类中添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//String 会被 JVM 优化</span><br><span class="line">private final String FINAL_VALUE = &quot;FINAL&quot;;</span><br><span class="line"></span><br><span class="line">public String getFinalValue()&#123;</span><br><span class="line">    //剧透，会被优化为: return &quot;FINAL&quot; ,拭目以待吧</span><br><span class="line">    return FINAL_VALUE;</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<p>接下来，是修改常量的值，先上代码，请仔细看注释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 修改对象私有常量的值</span><br><span class="line"> * 为简洁代码，在方法上抛出总的异常，实际开发别这样</span><br><span class="line"> */</span><br><span class="line">private static void modifyFinalFiled() throws Exception &#123;</span><br><span class="line">    //1. 获取 Class 类实例</span><br><span class="line">    TestClass testClass = new TestClass();</span><br><span class="line">    Class mClass = testClass.getClass();</span><br><span class="line"></span><br><span class="line">    //2. 获取私有常量</span><br><span class="line">    Field finalField = mClass.getDeclaredField(&quot;FINAL_VALUE&quot;);</span><br><span class="line"></span><br><span class="line">    //3. 修改常量的值</span><br><span class="line">    if (finalField != null) &#123;</span><br><span class="line"></span><br><span class="line">        //获取私有常量的访问权</span><br><span class="line">        finalField.setAccessible(true);</span><br><span class="line"></span><br><span class="line">        //调用 finalField 的 getter 方法</span><br><span class="line">        //输出 FINAL_VALUE 修改前的值</span><br><span class="line">        System.out.println(&quot;Before Modify：FINAL_VALUE = &quot;</span><br><span class="line">                + finalField.get(testClass));</span><br><span class="line"></span><br><span class="line">        //修改私有常量</span><br><span class="line">        finalField.set(testClass, &quot;Modified&quot;);</span><br><span class="line"></span><br><span class="line">        //调用 finalField 的 getter 方法</span><br><span class="line">        //输出 FINAL_VALUE 修改后的值</span><br><span class="line">        System.out.println(&quot;After Modify：FINAL_VALUE = &quot;</span><br><span class="line">                + finalField.get(testClass));</span><br><span class="line"></span><br><span class="line">        //使用对象调用类的 getter 方法</span><br><span class="line">        //获取值并输出</span><br><span class="line">        System.out.println(&quot;Actually ：FINAL_VALUE = &quot;</span><br><span class="line">                + testClass.getFinalValue());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<p>上面的代码不解释了，注释巨详细有木有！特别注意一下第3步的注释，然后来看看输出，已经迫不及待了，擦亮双眼：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Before Modify：FINAL_VALUE = FINAL</span><br><span class="line">After Modify：FINAL_VALUE = Modified</span><br><span class="line">Actually ：FINAL_VALUE = FINAL复制代码</span><br></pre></td></tr></table></figure>
+<p>结果出来了:</p>
+<p>第一句打印修改前 <code>FINAL_VALUE</code> 的值，没有异议；</p>
+<p>第二句打印修改后常量的值，说明<code>FINAL_VALUE</code>确实通过反射修改了；</p>
+<p>第三句打印通过 <code>getFinalValue()</code> 方法获取的 <code>FINAL_VALUE</code> 的值，但还是初始值，导致修改无效！</p>
+<p>这结果你觉得可信吗？什么，你还不信？问我怎么知道 JVM 编译后会优化代码？那要不这样吧，一起来看看 <code>TestClass.java</code> 文件编译后得到的 <code>TestClass.class</code> 文件。为避免说代码是我自己手写的，我决定不粘贴代码，直接截图：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/11/9/166f6b7bbe04c16d?w=1015&amp;h=938&amp;f=png&amp;s=390390" alt="TestClass.class 文件">TestClass.class 文件</p>
+<p>看到了吧，有图有真相，<code>getFinalValue()</code> 方法直接 <code>return &quot;FINAL&quot;</code>！同时也说明了，<strong>程序运行时是根据编译后的 .class 来执行的</strong>。</p>
+<p>顺便提一下，如果你有时间，可以换几个数据类型试试，正如上面说的，有些数据类型是不会优化的。你可以修改数据类型后，根据我的思路试试，看输出觉得不靠谱就直接看 <code>.classs</code> 文件，一眼就能看出来哪些数据类型优化了 ，哪些没有优化。下面说下一个知识点。</p>
+<h3 id="02-想办法也要修改！"><a href="#02-想办法也要修改！" class="headerlink" title="02. 想办法也要修改！"></a>02. 想办法也要修改！</h3><p>不能修改，这你能忍？别着急，不知你发现没，刚才的常量都是在声明时就直接赋值了。你可能会疑惑，常量不都是在声明时赋值吗？不赋值不报错？当然不是啦。</p>
+<p><strong>方法一</strong></p>
+<p>事实上，Java 允许我们声明常量时不赋值，但必须在构造函数中赋值。你可能会问我为什么要说这个，这就解释：</p>
+<p>我们修改一下 <code>TestClass</code> 类，在声明常量时不赋值，然后添加构造函数并为其赋值，大概看一下修改后的代码（部分代码 ）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class TestClass &#123;</span><br><span class="line"></span><br><span class="line">    //......</span><br><span class="line">    private final String FINAL_VALUE;</span><br><span class="line"></span><br><span class="line">    //构造函数内为常量赋值 </span><br><span class="line">    public TestClass()&#123;</span><br><span class="line">        this.FINAL_VALUE = &quot;FINAL&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    //......</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+<p>现在，我们再调用上面贴出的修改常量的方法，发现输出是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Before Modify：FINAL_VALUE = FINAL</span><br><span class="line">After Modify：FINAL_VALUE = Modified</span><br><span class="line">Actually ：FINAL_VALUE = Modified复制代码</span><br></pre></td></tr></table></figure>
+<p>纳尼，最后一句输出修改后的值了？对，修改成功了！想知道为啥，还得看编译后的 <code>TestClass.class</code> 文件的贴图，图中有标注。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/11/9/166f6b9021cfc7b3?w=1280&amp;h=844&amp;f=png&amp;s=503454" alt="TestClass.class 文件">TestClass.class 文件</p>
+<p>解释一下：我们将赋值放在构造函数中，构造函数是我们运行时 new 对象才会调用的，所以就不会像之前直接为常量赋值那样，在编译阶段将 <code>getFinalValue()</code> 方法优化为返回常量值，而是指向 <code>FINAL_VALUE</code> ，这样我们在运行阶段通过反射修改敞亮的值就有意义啦。但是，看得出来，程序还是有优化的，将构造函数中的赋值语句优化了。再想想那句 <strong>程序运行时是根据编译后的 .class 来执行的</strong> ，相信你一定明白为什么这么输出了！</p>
+<p><strong>方法二</strong></p>
+<p>请你务必将上面捋清楚了再往下看。接下来再说一种改法，不使用构造函数，也可以成功修改常量的值，但原理上都一样。去掉构造函数，将声明常量的语句改为使用三目表达式赋值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">private final String FINAL_VALUE</span><br><span class="line">        = null == null ? &quot;FINAL&quot; : null;复制代码</span><br></pre></td></tr></table></figure>
+<p>其实，上述代码等价于直接为 <code>FINAL_VALUE</code> 赋值 “FINAL”，但是他就是可以！至于为什么，你这么想：<code>null == null ? &quot;FINAL&quot; : null</code> 是在运行时刻计算的，在编译时刻不会计算，也就不会被优化，所以你懂得。</p>
+<p>总结来说，不管使用构造函数还是三目表达式，根本上都是<strong>避免在编译时刻被优化</strong>，这样我们通过反射修改常量之后才有意义！好了，这一小部分到此结束！</p>
+<p><strong>最后的强调</strong>：</p>
+<p>必须提醒你的是，无论<strong>直接为常量赋值</strong> 、 <strong>通过构造函数为常量赋值</strong> 还是 <strong>使用三目运算符</strong>，实际上我们都能通过反射成功修改常量的值。而我在上面说的修改”成功”与否是指：<strong>我们在程序运行阶段通过反射肯定能修改常量值，但是实际执行优化后的 .class 文件时，修改的后值真的起到作用了吗？换句话说，就是编译时是否将常量替换为具体的值了？如果替换了，再怎么修改常量的值都不会影响最终的结果了，不是吗？</strong>。</p>
+<p>其实，你可以直接这么想：<strong>反射肯定能修改常量的值，但修改后的值是否有意义</strong>？</p>
+<h3 id="03-到底能不能改？"><a href="#03-到底能不能改？" class="headerlink" title="03. 到底能不能改？"></a>03. 到底能不能改？</h3><p>到底能不能改？也就是说反射修改后到底有没有意义？</p>
+<p>如果你上面看明白了，答案就简单了。俗话说“一千句话不如一张图”，下面允许我用不太规范的流程图直接表达答案哈。</p>
+<p>注：图中”没法修改”可以理解为”能修改值但没有意义”；”可以修改”是指”能修改值且有意义”。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2017/8/12/2bdcae6d3cde4638c23a0cfe34f85aa6" alt="判断能不能改">判断能不能改</p>
+<h1 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h1><p>好了，本次记录就到这儿了，突然不知不觉发现写了好多，感谢耐心听我叨逼完。我想这篇博客如果你认真的看完，肯定会有收获的！最后，因为内容较多，知识点较多，如果文中有任何错误或欠妥的地方，还望指正。欢迎留言交流！</p>
+<blockquote>
+<p>本文为转载文章<br>原作者：伯特<br>链接：<a href="https://juejin.im/post/598ea9116fb9a03c335a99a4" target="_blank" rel="noopener">https://juejin.im/post/598ea9116fb9a03c335a99a4</a><br>来源：掘金<br>著作权归原作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="http://ok6q2poob.bkt.clouddn.com/dyh.jpg" alt="lemon wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎大家关注我的订阅号 SeeMoonUp</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>写的不错？鼓励一下？不差钱？</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://ok6q2poob.bkt.clouddn.com/wechatmoney.png" alt="lemon 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://ok6q2poob.bkt.clouddn.com/alimoney.png" alt="lemon 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/06/tech/tomcat/tomcat探索之环境搭建/" rel="next" title="tomcat源码系列一（环境搭建）">
+                <i class="fa fa-chevron-left"></i> tomcat源码系列一（环境搭建）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/08/tech/java/log注意事项/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://ok6q2poob.bkt.clouddn.com/IMG489.jpeg"
+                alt="lemon" />
+            
+              <p class="site-author-name" itemprop="name">lemon</p>
+              <p class="site-description motion-element" itemprop="description">不那么差劲的程序员</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/SeeMoonUp" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://juejin.im/user/57d034de0e3dd90069b96e65" target="_blank" title="掘金">
+                      
+                        <i class="fa fa-fw fa-bookmark"></i>掘金</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.youleyu.com/" title="游乐鱼的博客" target="_blank">游乐鱼的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://bangqi.github.io/" title="吖吖邦的博客" target="_blank">吖吖邦的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-反射由浅入深-进阶必备"><span class="nav-number">1.</span> <span class="nav-text">Java 反射由浅入深 | 进阶必备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一、Java-反射机制"><span class="nav-number">2.</span> <span class="nav-text">一、Java 反射机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、使用反射获取类的信息"><span class="nav-number">3.</span> <span class="nav-text">二、使用反射获取类的信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-获取类的所有变量信息"><span class="nav-number">3.1.</span> <span class="nav-text">1. 获取类的所有变量信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-获取类的所有方法信息"><span class="nav-number">3.2.</span> <span class="nav-text">2. 获取类的所有方法信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、访问或操作类的私有变量和方法"><span class="nav-number">4.</span> <span class="nav-text">三、访问或操作类的私有变量和方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-访问私有方法"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 访问私有方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-修改私有变量"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 修改私有变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-修改私有常量"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 修改私有常量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#01-真的能修改吗？"><span class="nav-number">4.3.1.</span> <span class="nav-text">01. 真的能修改吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#02-想办法也要修改！"><span class="nav-number">4.3.2.</span> <span class="nav-text">02. 想办法也要修改！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#03-到底能不能改？"><span class="nav-number">4.3.3.</span> <span class="nav-text">03. 到底能不能改？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、总结"><span class="nav-number">5.</span> <span class="nav-text">四、总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lemon</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
