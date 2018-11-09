@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="Java 反射由浅入深 | 进阶必备本博文主要记录我学习 Java 反射（reflect）的一点心得，在了解反射之前，你应该先了解 Java 中的 Class 类，如果你不是很了解，可以先简单了解下。 一、Java 反射机制参考了许多博文，总结了以下个人观点，若有不妥还望指正：  Java 反射机制在程序运行时，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意">
+<meta name="description" content="#[转] Java 反射由浅入深 | 进阶必备 本博文主要记录我学习 Java 反射（reflect）的一点心得，在了解反射之前，你应该先了解 Java 中的 Class 类，如果你不是很了解，可以先简单了解下。 一、Java 反射机制参考了许多博文，总结了以下个人观点，若有不妥还望指正：  Java 反射机制在程序运行时，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java 反射由浅入深 | 进阶必备">
 <meta property="og:url" content="http://SeeMoonUp.github.io/2018/11/08/tech/java/java反射/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="Java 反射由浅入深 | 进阶必备本博文主要记录我学习 Java 反射（reflect）的一点心得，在了解反射之前，你应该先了解 Java 中的 Class 类，如果你不是很了解，可以先简单了解下。 一、Java 反射机制参考了许多博文，总结了以下个人观点，若有不妥还望指正：  Java 反射机制在程序运行时，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意">
+<meta property="og:description" content="#[转] Java 反射由浅入深 | 进阶必备 本博文主要记录我学习 Java 反射（reflect）的一点心得，在了解反射之前，你应该先了解 Java 中的 Class 类，如果你不是很了解，可以先简单了解下。 一、Java 反射机制参考了许多博文，总结了以下个人观点，若有不妥还望指正：  Java 反射机制在程序运行时，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/11/9/166f6b7bbe04c16d?w=1015&h=938&f=png&s=390390">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/11/9/166f6b9021cfc7b3?w=1280&h=844&f=png&s=503454">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/8/12/2bdcae6d3cde4638c23a0cfe34f85aa6">
-<meta property="og:updated_time" content="2018-11-09T04:29:27.968Z">
+<meta property="og:updated_time" content="2018-11-09T14:38:24.158Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java 反射由浅入深 | 进阶必备">
-<meta name="twitter:description" content="Java 反射由浅入深 | 进阶必备本博文主要记录我学习 Java 反射（reflect）的一点心得，在了解反射之前，你应该先了解 Java 中的 Class 类，如果你不是很了解，可以先简单了解下。 一、Java 反射机制参考了许多博文，总结了以下个人观点，若有不妥还望指正：  Java 反射机制在程序运行时，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意">
+<meta name="twitter:description" content="#[转] Java 反射由浅入深 | 进阶必备 本博文主要记录我学习 Java 反射（reflect）的一点心得，在了解反射之前，你应该先了解 Java 中的 Class 类，如果你不是很了解，可以先简单了解下。 一、Java 反射机制参考了许多博文，总结了以下个人观点，若有不妥还望指正：  Java 反射机制在程序运行时，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够">
 <meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/11/9/166f6b7bbe04c16d?w=1015&h=938&f=png&s=390390">
 
 
@@ -356,7 +356,8 @@
       
 
       
-        <h1 id="Java-反射由浅入深-进阶必备"><a href="#Java-反射由浅入深-进阶必备" class="headerlink" title="Java 反射由浅入深 | 进阶必备"></a>Java 反射由浅入深 | 进阶必备</h1><p>本博文主要记录我学习 Java 反射（reflect）的一点心得，在了解反射之前，你应该先了解 Java 中的 Class 类，如果你不是很了解，可以先简单了解下。</p>
+        <p>#[转] Java 反射由浅入深 | 进阶必备</p>
+<p>本博文主要记录我学习 Java 反射（reflect）的一点心得，在了解反射之前，你应该先了解 Java 中的 Class 类，如果你不是很了解，可以先简单了解下。</p>
 <h1 id="一、Java-反射机制"><a href="#一、Java-反射机制" class="headerlink" title="一、Java 反射机制"></a>一、Java 反射机制</h1><p>参考了许多博文，总结了以下个人观点，若有不妥还望指正：</p>
 <blockquote>
 <p>Java 反射机制在程序<strong>运行时</strong>，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性。这种 <strong>动态的获取信息</strong> 以及 <strong>动态调用对象的方法</strong> 的功能称为 <strong>java 的反射机制</strong>。</p>
@@ -364,6 +365,7 @@
 </blockquote>
 <p>不知道上面的理论你能否明白，反正刚接触反射时我一脸懵比，后来写了几个例子之后：哦~~原来是这个意思！</p>
 <p>若暂时不明白理论没关系，先往下看例子，之后再回来看相信你就能明白了。</p>
+<a id="more"></a>
 <h1 id="二、使用反射获取类的信息"><a href="#二、使用反射获取类的信息" class="headerlink" title="二、使用反射获取类的信息"></a>二、使用反射获取类的信息</h1><p>为使得测试结果更加明显，我首先定义了一个 <code>FatherClass</code> 类（默认继承自 <code>Object</code> 类），然后定义一个继承自 <code>FatherClass</code> 类的 <code>SonClass</code> 类，如下所示。可以看到测试类中变量以及方法的访问权限不是很规范，是为了更明显得查看测试结果而故意设置的，实际项目中不提倡这么写。</p>
 <p><strong>FatherClass.java</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class FatherClass &#123;</span><br><span class="line">    public String mFatherName;</span><br><span class="line">    public int mFatherAge;</span><br><span class="line"></span><br><span class="line">    public void printFatherMsg()&#123;&#125;</span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
@@ -538,7 +540,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/11/08/tech/java/log注意事项/" rel="prev" title="">
+              <a href="/2018/11/08/tech/java/log分析与使用/" rel="prev" title="">
                  <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -621,7 +623,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -710,7 +712,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-反射由浅入深-进阶必备"><span class="nav-number">1.</span> <span class="nav-text">Java 反射由浅入深 | 进阶必备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一、Java-反射机制"><span class="nav-number">2.</span> <span class="nav-text">一、Java 反射机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、使用反射获取类的信息"><span class="nav-number">3.</span> <span class="nav-text">二、使用反射获取类的信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-获取类的所有变量信息"><span class="nav-number">3.1.</span> <span class="nav-text">1. 获取类的所有变量信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-获取类的所有方法信息"><span class="nav-number">3.2.</span> <span class="nav-text">2. 获取类的所有方法信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、访问或操作类的私有变量和方法"><span class="nav-number">4.</span> <span class="nav-text">三、访问或操作类的私有变量和方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-访问私有方法"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 访问私有方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-修改私有变量"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 修改私有变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-修改私有常量"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 修改私有常量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#01-真的能修改吗？"><span class="nav-number">4.3.1.</span> <span class="nav-text">01. 真的能修改吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#02-想办法也要修改！"><span class="nav-number">4.3.2.</span> <span class="nav-text">02. 想办法也要修改！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#03-到底能不能改？"><span class="nav-number">4.3.3.</span> <span class="nav-text">03. 到底能不能改？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、总结"><span class="nav-number">5.</span> <span class="nav-text">四、总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、Java-反射机制"><span class="nav-number">1.</span> <span class="nav-text">一、Java 反射机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、使用反射获取类的信息"><span class="nav-number">2.</span> <span class="nav-text">二、使用反射获取类的信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-获取类的所有变量信息"><span class="nav-number">2.1.</span> <span class="nav-text">1. 获取类的所有变量信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-获取类的所有方法信息"><span class="nav-number">2.2.</span> <span class="nav-text">2. 获取类的所有方法信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、访问或操作类的私有变量和方法"><span class="nav-number">3.</span> <span class="nav-text">三、访问或操作类的私有变量和方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-访问私有方法"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 访问私有方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-修改私有变量"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 修改私有变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-修改私有常量"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 修改私有常量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#01-真的能修改吗？"><span class="nav-number">3.3.1.</span> <span class="nav-text">01. 真的能修改吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#02-想办法也要修改！"><span class="nav-number">3.3.2.</span> <span class="nav-text">02. 想办法也要修改！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#03-到底能不能改？"><span class="nav-number">3.3.3.</span> <span class="nav-text">03. 到底能不能改？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、总结"><span class="nav-number">4.</span> <span class="nav-text">四、总结</span></a></li></ol></div>
             
 
           </div>
