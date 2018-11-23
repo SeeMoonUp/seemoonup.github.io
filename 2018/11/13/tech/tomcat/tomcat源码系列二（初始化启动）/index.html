@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.ibm.com/developerworks/cn/java/j-lo-tomcat1/image001.gif">
 <meta property="og:image" content="https://github.com/c-rainstorm/blog/raw/master/res/tomcat-architecture.png">
-<meta property="og:updated_time" content="2018-11-14T11:01:22.661Z">
+<meta property="og:updated_time" content="2018-11-18T14:41:33.853Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tomcat源码系列二（初始化启动）">
 <meta name="twitter:description" content="Tomcat总体结构Tomcat 的结构很复杂，但是 Tomcat 也非常的模块化，找到了 Tomcat 最核心的模块，您就抓住了 Tomcat 的“七寸”。下面是 Tomcat 的总体结构图：  从上图中可以看出 Tomcat 的心脏是两个组件：Connector 和 Container，关于这两个组件将在后面详细介绍。Connector 组件是可以被替换，这样可以提供给服务器设计者更多的选择，">
@@ -271,7 +271,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lemon">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://ok6q2poob.bkt.clouddn.com/IMG489.jpeg">
+      <meta itemprop="image" content="http://img.javalemon.com/IMG489.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -375,7 +375,37 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Load daemon.</span><br><span class="line"> */</span><br><span class="line">private void load(String[] arguments)</span><br><span class="line">    throws Exception &#123;</span><br><span class="line"></span><br><span class="line">    // Call the load() method</span><br><span class="line">    String methodName = &quot;load&quot;;</span><br><span class="line">    Object param[];</span><br><span class="line">    Class&lt;?&gt; paramTypes[];</span><br><span class="line">    if (arguments==null || arguments.length==0) &#123;</span><br><span class="line">        paramTypes = null;</span><br><span class="line">        param = null;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        paramTypes = new Class[1];</span><br><span class="line">        paramTypes[0] = arguments.getClass();</span><br><span class="line">        param = new Object[1];</span><br><span class="line">        param[0] = arguments;</span><br><span class="line">    &#125;</span><br><span class="line">    Method method =</span><br><span class="line">        catalinaDaemon.getClass().getMethod(methodName, paramTypes);</span><br><span class="line">    if (log.isDebugEnabled())</span><br><span class="line">        log.debug(&quot;Calling startup class &quot; + method);</span><br><span class="line">    method.invoke(catalinaDaemon, param);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可以看出这个做的主要事情是调用catalinaDaemon.load()</p>
 <p>在第一步init的时候 知道catalinaDaemon为Catalina的实例，所以看下catalina.load(),其中的关键性代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//1. Create and execute our Digester</span><br><span class="line">Digester digester = createStartDigester();</span><br><span class="line">InputSource inputSource = null;</span><br><span class="line">InputStream inputStream = null;</span><br><span class="line">File file = null;</span><br><span class="line">// 2.读取配置文件conf/server.xml</span><br><span class="line">file = configFile();</span><br><span class="line">inputStream = new FileInputStream(file);</span><br><span class="line">inputSource = new InputSource(file.toURI().toURL().toString());</span><br><span class="line">inputSource.setByteStream(inputStream);</span><br><span class="line">digester.push(this);</span><br><span class="line">// 3.解析配置文件</span><br><span class="line">digester.parse(inputSource);</span><br><span class="line">getServer().setCatalina(this);</span><br><span class="line">// Stream redirection</span><br><span class="line">initStreams();</span><br><span class="line">// 4.初始化server主要初始化声明周期</span><br><span class="line">getServer().init();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. Create and execute our Digester</span></span><br><span class="line">Digester digester = createStartDigester();</span><br><span class="line">InputSource inputSource = <span class="keyword">null</span>;</span><br><span class="line">InputStream inputStream = <span class="keyword">null</span>;</span><br><span class="line">File file = <span class="keyword">null</span>;</span><br><span class="line"><span class="comment">// 2.读取配置文件conf/server.xml</span></span><br><span class="line">file = configFile();</span><br><span class="line">inputStream = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">inputSource = <span class="keyword">new</span> InputSource(file.toURI().toURL().toString());</span><br><span class="line">inputSource.setByteStream(inputStream);</span><br><span class="line">digester.push(<span class="keyword">this</span>);</span><br><span class="line"><span class="comment">// 3.解析配置文件</span></span><br><span class="line">digester.parse(inputSource);</span><br><span class="line">getServer().setCatalina(<span class="keyword">this</span>);</span><br><span class="line"><span class="comment">// Stream redirection</span></span><br><span class="line">initStreams();</span><br><span class="line"><span class="comment">// 4.初始化server</span></span><br><span class="line">getServer().init();</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>createStartDigester</p>
+<ul>
+<li><p>添加规定的对象创建规则</p>
+</li>
+<li><p>为规定的对象添加设置属性规则</p>
+</li>
+<li><p>设置父级方法 完成后调用</p>
+<p>举个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//添加规定的对象Server 对应Server.xml中的&lt;Server&gt;</span><br><span class="line">digester.addObjectCreate(&quot;Server&quot;,</span><br><span class="line">                         &quot;org.apache.catalina.core.StandardServer&quot;,</span><br><span class="line">                         &quot;className&quot;);</span><br><span class="line">digester.addSetProperties(&quot;Server&quot;);</span><br><span class="line">//设置上级调用setServer方法 此处看下面的digester.push(this),将catalina的实例放入了栈顶，即会调用Catalina.setServer()指定了catalina中的server为parse时创建的Server对象</span><br><span class="line">digester.addSetNext(&quot;Server&quot;,</span><br><span class="line">                    &quot;setServer&quot;,</span><br><span class="line">                    &quot;org.apache.catalina.Server&quot;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加ruleSet</p>
+</li>
+</ul>
+</li>
+<li><p>读取server.xml</p>
+</li>
+<li><p>重点步骤 digester.parse</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1. getXMLReader().parse(input);</span><br><span class="line">2. getXMLReader:getParser().getXMLReader();</span><br><span class="line">3. getParser():getFactory().newSAXParser();</span><br><span class="line">4. getFactory():SAXParserFactory.newInstance();</span><br><span class="line">5. newInstance():FactoryFinder.find(</span><br><span class="line">                /* The default property name according to the JAXP spec */</span><br><span class="line">                SAXParserFactory.class,</span><br><span class="line">                /* The fallback implementation class name */</span><br><span class="line">                &quot;com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl&quot;);</span><br><span class="line">                可以得到第3步的getFactory()得到的实例为SAXParserFactoryImpl的实例</span><br><span class="line">6. 第3步的newSAXParser():new SAXParserImpl(this, features, fSecureProcess); 得到的是SAXParserImpl()的实例 所以getParser()为SAXParserImpl</span><br><span class="line">7. 最终调用的为：SAXParserImpl.parse(input)</span><br></pre></td></tr></table></figure>
+<p>经过对xml文件的解析将会产生org.apache.catalina.core.StandardServer、org.apache.catalina.core.StandardService、org.apache.catalina.connector.Connector、org.apache.catalina.core.StandardEngine、org.apache.catalina.core.StandardHost、org.apache.catalina.core.StandardContext等等一系列对象，这些对象从前到后前一个包含后一个对象的引用（一对一或一对多的关系）。</p>
+</li>
+<li><p>调用server.init()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setStateInternal(LifecycleState.INITIALIZING, null, false);</span><br><span class="line">initInternal();</span><br><span class="line">setStateInternal(LifecycleState.INITIALIZED, null, false);</span><br></pre></td></tr></table></figure>
+<p>其中的重点方法为：initInternal()，initInternal()中的重点代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// Initialize our defined Services</span><br><span class="line">for (int i = 0; i &lt; services.length; i++) &#123;</span><br><span class="line">	services[i].init();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样的StandardService的init重点代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">//初始化container</span><br><span class="line">if (container != null) &#123;</span><br><span class="line">	container.init();</span><br><span class="line">&#125;</span><br><span class="line">        </span><br><span class="line">// 初始化Executor</span><br><span class="line">for (Executor executor : findExecutors()) &#123;</span><br><span class="line">    if (executor instanceof LifecycleMBeanBase) &#123;</span><br><span class="line">        ((LifecycleMBeanBase) executor).setDomain(getDomain());</span><br><span class="line">    &#125;</span><br><span class="line">    executor.init();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 初始化定义的Connector 在server.xml中的配置</span><br><span class="line">&lt;Connector port=&quot;8080&quot; protocol=&quot;HTTP/1.1&quot;</span><br><span class="line">               connectionTimeout=&quot;20000&quot;</span><br><span class="line">               redirectPort=&quot;8443&quot; /&gt;</span><br><span class="line">&lt;Connector port=&quot;8009&quot; protocol=&quot;AJP/1.3&quot; redirectPort=&quot;8443&quot; /&gt;</span><br><span class="line"></span><br><span class="line">synchronized (connectorsLock) &#123;</span><br><span class="line">    for (Connector connector : connectors) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            connector.init();</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            String message = sm.getString(</span><br><span class="line">                    &quot;standardService.connector.initFailed&quot;, connector);</span><br><span class="line">            log.error(message, e);</span><br><span class="line"></span><br><span class="line">            if (Boolean.getBoolean(&quot;org.apache.catalina.startup.EXIT_ON_INIT_FAILURE&quot;))</span><br><span class="line">                throw new LifecycleException(message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>通过代码可以看到StandardServer、StandardService、StandardEnginee、Connector均集成了抽象类LifecycleMBeanBase，抽象类实现了LifecycleBase接口。</p>
 <h4 id="daemon-start"><a href="#daemon-start" class="headerlink" title="daemon.start()"></a>daemon.start()</h4>
       
     </div>
@@ -383,6 +413,14 @@
     
     
 
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="http://img.javalemon.com/dyh.jpg" alt="lemon wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎大家关注我的订阅号 SeeMoonUp</div>
+</div>
+
+      </div>
     
 
     
@@ -396,11 +434,16 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://ok6q2poob.bkt.clouddn.com/wechatmoney.png" alt="lemon 微信支付"/>
+        <img id="wechat_qr" src="http://img.javalemon.com/wechatmoney.png" alt="lemon 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://img.javalemon.com/alimoney.png" alt="lemon 支付宝"/>
+        <p>支付宝</p>
+      </div>
     
 
     
@@ -439,6 +482,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/18/tech/java/Executor&Future/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -505,7 +552,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://ok6q2poob.bkt.clouddn.com/IMG489.jpeg"
+                src="http://img.javalemon.com/IMG489.jpeg"
                 alt="lemon" />
             
               <p class="site-author-name" itemprop="name">lemon</p>
@@ -519,7 +566,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -577,7 +624,7 @@
             <div class="links-of-blogroll motion-element links-of-blogroll-inline">
               <div class="links-of-blogroll-title">
                 <i class="fa  fa-fw fa-link"></i>
-                Links
+                友链
               </div>
               <ul class="links-of-blogroll-list">
                 
