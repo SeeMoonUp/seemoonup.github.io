@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.ibm.com/developerworks/cn/java/j-lo-tomcat1/image001.gif">
 <meta property="og:image" content="https://github.com/c-rainstorm/blog/raw/master/res/tomcat-architecture.png">
-<meta property="og:updated_time" content="2018-11-18T14:41:33.853Z">
+<meta property="og:updated_time" content="2018-11-24T14:44:39.261Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tomcat源码系列二（初始化启动）">
 <meta name="twitter:description" content="Tomcat总体结构Tomcat 的结构很复杂，但是 Tomcat 也非常的模块化，找到了 Tomcat 最核心的模块，您就抓住了 Tomcat 的“七寸”。下面是 Tomcat 的总体结构图：  从上图中可以看出 Tomcat 的心脏是两个组件：Connector 和 Container，关于这两个组件将在后面详细介绍。Connector 组件是可以被替换，这样可以提供给服务器设计者更多的选择，">
@@ -405,7 +405,10 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">//初始化container</span><br><span class="line">if (container != null) &#123;</span><br><span class="line">	container.init();</span><br><span class="line">&#125;</span><br><span class="line">        </span><br><span class="line">// 初始化Executor</span><br><span class="line">for (Executor executor : findExecutors()) &#123;</span><br><span class="line">    if (executor instanceof LifecycleMBeanBase) &#123;</span><br><span class="line">        ((LifecycleMBeanBase) executor).setDomain(getDomain());</span><br><span class="line">    &#125;</span><br><span class="line">    executor.init();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 初始化定义的Connector 在server.xml中的配置</span><br><span class="line">&lt;Connector port=&quot;8080&quot; protocol=&quot;HTTP/1.1&quot;</span><br><span class="line">               connectionTimeout=&quot;20000&quot;</span><br><span class="line">               redirectPort=&quot;8443&quot; /&gt;</span><br><span class="line">&lt;Connector port=&quot;8009&quot; protocol=&quot;AJP/1.3&quot; redirectPort=&quot;8443&quot; /&gt;</span><br><span class="line"></span><br><span class="line">synchronized (connectorsLock) &#123;</span><br><span class="line">    for (Connector connector : connectors) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            connector.init();</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            String message = sm.getString(</span><br><span class="line">                    &quot;standardService.connector.initFailed&quot;, connector);</span><br><span class="line">            log.error(message, e);</span><br><span class="line"></span><br><span class="line">            if (Boolean.getBoolean(&quot;org.apache.catalina.startup.EXIT_ON_INIT_FAILURE&quot;))</span><br><span class="line">                throw new LifecycleException(message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>通过代码可以看到StandardServer、StandardService、StandardEnginee、Connector均集成了抽象类LifecycleMBeanBase，抽象类实现了LifecycleBase接口。</p>
+<p>直到service的初始化 我们可以发现 service的初始化中包含了container.init()和多个Connector.init()对应了上文中的一个service包含了一个container和多个connector</p>
+<p>container是从哪里实例化的呢，在进行createStartDigester的时候 会添加多个RuleSet如：<code>digester.addRuleSet(new EngineRuleSet(&quot;Server/Service/&quot;));</code><br>打断点可以发现如下在digester中的rules包含了如下几个规则：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ObjectCreateRule[className=org.apache.catalina.core.StandardEngine, attributeName=className]</span><br><span class="line">SetNextRule[methodName=setContainer, paramType=org.apache.catalina.Container]</span><br></pre></td></tr></table></figure></p>
+<p>在进行digester.parse()的时候就会对这些规则进行解析，将StandardEngine的实例绑定为Service的Container</p>
+<p>通过代码可以看到StandardServer、StandardService、StandardEnginee、Connector均继承了抽象类LifecycleMBeanBase，抽象类实现了LifecycleBase接口。</p>
 <h4 id="daemon-start"><a href="#daemon-start" class="headerlink" title="daemon.start()"></a>daemon.start()</h4>
       
     </div>
@@ -566,7 +569,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -588,7 +591,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
