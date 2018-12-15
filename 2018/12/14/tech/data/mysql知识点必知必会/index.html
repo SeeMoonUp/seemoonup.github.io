@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java,线程," />
+  <meta name="keywords" content="MySql," />
 
 
 
@@ -79,20 +79,25 @@
 
 
 
-<meta name="description" content="继承Thread类 实现Runnable接口注意点：  123456继承自Thread的类 ThreadClass :ThreadClass tc = new ThreadClass();tc.start();  //注意此处必须调用start方法实现Runnable接口的类 ThreadRunable :Thread t = new Thread(new ThreadRunnable());">
-<meta name="keywords" content="java,线程">
+<meta name="description" content="MySql简介MySql逻辑架构 服务层：为客户端做连接处理，授权和安全认证相关工作核心层：查询解析，分析，优化SQL语句，缓存结果等等存储引擎层：存储和提取数据(索引使用)及事务的处理">
+<meta name="keywords" content="MySql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="线程详解 (java实现线程的两种方式)">
-<meta property="og:url" content="http://SeeMoonUp.github.io/2018/02/24/tech/java/线程详解/index.html">
+<meta property="og:title" content="MySql知识点必知必会">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2018/12/14/tech/data/mysql知识点必知必会/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="继承Thread类 实现Runnable接口注意点：  123456继承自Thread的类 ThreadClass :ThreadClass tc = new ThreadClass();tc.start();  //注意此处必须调用start方法实现Runnable接口的类 ThreadRunable :Thread t = new Thread(new ThreadRunnable());">
+<meta property="og:description" content="MySql简介MySql逻辑架构 服务层：为客户端做连接处理，授权和安全认证相关工作核心层：查询解析，分析，优化SQL语句，缓存结果等等存储引擎层：存储和提取数据(索引使用)及事务的处理">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.javalemon.com/20181125154315728627961.png">
-<meta property="og:updated_time" content="2018-11-25T14:49:59.150Z">
+<meta property="og:image" content="https://segmentfault.com/img/bVSYR3?w=341&h=429">
+<meta property="og:image" content="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/2.png">
+<meta property="og:image" content="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/3.png">
+<meta property="og:image" content="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/4.png">
+<meta property="og:image" content="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/10.png">
+<meta property="og:image" content="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/11.png">
+<meta property="og:updated_time" content="2018-12-15T10:02:57.943Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="线程详解 (java实现线程的两种方式)">
-<meta name="twitter:description" content="继承Thread类 实现Runnable接口注意点：  123456继承自Thread的类 ThreadClass :ThreadClass tc = new ThreadClass();tc.start();  //注意此处必须调用start方法实现Runnable接口的类 ThreadRunable :Thread t = new Thread(new ThreadRunnable());">
-<meta name="twitter:image" content="http://img.javalemon.com/20181125154315728627961.png">
+<meta name="twitter:title" content="MySql知识点必知必会">
+<meta name="twitter:description" content="MySql简介MySql逻辑架构 服务层：为客户端做连接处理，授权和安全认证相关工作核心层：查询解析，分析，优化SQL语句，缓存结果等等存储引擎层：存储和提取数据(索引使用)及事务的处理">
+<meta name="twitter:image" content="https://segmentfault.com/img/bVSYR3?w=341&h=429">
 
 
 
@@ -122,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/02/24/tech/java/线程详解/"/>
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/12/14/tech/data/mysql知识点必知必会/"/>
 
 
 
 
 
-  <title>线程详解 (java实现线程的两种方式) | 不爱更新的博客</title>
+  <title>MySql知识点必知必会 | 不爱更新的博客</title>
   
 
 
@@ -265,7 +270,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/02/24/tech/java/线程详解/">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/12/14/tech/data/mysql知识点必知必会/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lemon">
@@ -282,7 +287,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">线程详解 (java实现线程的两种方式)</h1>
+          <h1 class="post-title" itemprop="name headline">MySql知识点必知必会</h1>
         
 
         <div class="post-meta">
@@ -294,8 +299,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-24T09:05:37+08:00">
-                2018-02-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-14T19:54:54+08:00">
+                2018-12-14
               </time>
             
 
@@ -317,8 +322,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/categories/MySql/" itemprop="url" rel="index">
+                    <span itemprop="name">MySql</span>
                   </a>
                 </span>
 
@@ -354,53 +359,59 @@
       
 
       
-        <p><img src="http://img.javalemon.com/20181125154315728627961.png" alt="线程基本图谱.png"></p>
-<ol>
-<li>继承Thread类</li>
-<li>实现Runnable接口<br>注意点：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">继承自Thread的类 ThreadClass :</span><br><span class="line">ThreadClass tc = new ThreadClass();</span><br><span class="line">tc.start();  //注意此处必须调用start方法</span><br><span class="line">实现Runnable接口的类 ThreadRunable :</span><br><span class="line">Thread t = new Thread(new ThreadRunnable());</span><br><span class="line">t.start();</span><br></pre></td></tr></table></figure>
+        <h3 id="MySql简介"><a href="#MySql简介" class="headerlink" title="MySql简介"></a>MySql简介</h3><h4 id="MySql逻辑架构"><a href="#MySql逻辑架构" class="headerlink" title="MySql逻辑架构"></a>MySql逻辑架构</h4><p><img src="https://segmentfault.com/img/bVSYR3?w=341&amp;h=429" alt="mysql逻辑架构"></p>
+<p>服务层：为客户端做连接处理，授权和安全认证相关工作<br>核心层：查询解析，分析，优化SQL语句，缓存结果等等<br>存储引擎层：存储和提取数据(索引使用)及事务的处理</p>
 <a id="more"></a>
-<h1 id="线程的基本属性和方法"><a href="#线程的基本属性和方法" class="headerlink" title="线程的基本属性和方法"></a>线程的基本属性和方法</h1><h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><ol>
-<li>id和name<br>id是自增的整数<br>name是“Thread-”后跟一个整数</li>
-<li>优先级<br>默认为5 范围1-10（不同操作系统可能不一样） 优先级对于操作系统而言只是建议</li>
-<li>状态<br>Thread.State</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public enum State &#123;</span><br><span class="line">  NEW,  //没有调用start的线程状态为new</span><br><span class="line">  RUNNABLE,  //调用start后线程在执行run方法且没有阻塞时为Runnable 不过Runnable不一定代表CPU一定在执行该线程的代码，可能正在执行 也可能在等待操作系统分配时间片，只是它没有在等待其他条件</span><br><span class="line">  BLOCKED,  //线程不能获得锁的时候 会加入等待队列等待 线程阻塞</span><br><span class="line">  WAITING,  //线程中 对象显式调用wait()</span><br><span class="line">  TIMED_WAITING, //线程中 对象显式调用wait()</span><br><span class="line">  TERMINATED; //线程运行结束后状态</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>是否daemon线程 (守护进程)<br>启动线程会启动一条单独的执行流，整个程序只有在所有线程都结束的时候才退出，但daemo线程是例外，当整个程序中剩下的都是daemo线程的时候，程序就会退出。<br>daemo线程有什么用呢？它一般是其他线程的辅助线程，在它辅助的主线程退出的时候，它就没有存在的意义了。在我们运行一个即使最简单的”hello world”类型的程序时，实际上，Java也会创建多个线程，除了main线程外，至少还有一个负责垃圾回收的线程，这个线程就是daemo线程，在main线程结束的时候，垃圾回收线程也会退出。</li>
-</ol>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol start="5">
-<li>sleep方法</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static native void sleep(long millis) throws InterruptedException;</span><br></pre></td></tr></table></figure>
-<p>睡眠期间该线程让出cpu 但是睡眠时间不一定是给定的毫秒数 偏差与系统定时器和操作系统调度器的准确度和精度有关<br>睡眠期间 线程可以被中断 如果被中断 sleep会抛出interruptedException</p>
-<ol start="6">
-<li>yield方法</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static native void yield();</span><br></pre></td></tr></table></figure>
-<p>告诉系统调度器 线程不着急使用CPU 可以先让其他线程运行 当然这也只是建议 调度器如何处理不一定 也可能完全忽略</p>
-<ol start="7">
-<li>join方法<br>在前面HelloThread的例子中，HelloThread没执行完，main线程可能就执行完了，Thread有一个join方法，可以让调用join的线程等待该线程结束，join方法的声明为：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public final void join() throws InterruptedException</span><br></pre></td></tr></table></figure>
-<p>在等待线程结束的过程中，这个等待可能被中断，如果被中断，会抛出InterruptedException。</p>
-<p>join方法还有一个变体，可以限定等待的最长时间，单位为毫秒，如果为0，表示无期限等待：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public final synchronized void join(long millis) throws InterruptedException</span><br></pre></td></tr></table></figure>
-<p>eg：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">    Thread thread = new HelloThread();</span><br><span class="line">    thread.start();</span><br><span class="line">    thread.join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="线程的优点及成本"><a href="#线程的优点及成本" class="headerlink" title="线程的优点及成本"></a>线程的优点及成本</h1><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p>为什么要创建单独的执行流？或者说线程有什么优点呢？至少有以下几点：</p>
+<h3 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h3><h4 id="InnoDb"><a href="#InnoDb" class="headerlink" title="InnoDb"></a>InnoDb</h4><p>特点：MySQL5.7之前的版本不支持全文索引，5.7及以后的支持<br>支持行级锁，锁粒度小<br>支持ACID(事务完整性和异质性)<br>独有的聚簇索引主键设计方式，可大发提升并发读写性能<br>支持外键，支持崩溃数据的自我修复<br>注意问题<br>a) 所有InnoDB数据表都创建一个和业务无关的自增数字型作为主键，对保证性能很有帮助；<br>b) 杜绝使用text/blob，确实需要使用的，尽可能拆分出去成一个独立的表；<br>c) 时间建议使用 TIMESTAMP 类型存储；<br>d) IPV4 地址建议用 INT UNSIGNED 类型存储；<br>e) 性别等非是即非的逻辑，建议采用 TINYINT 存储，而不是 CHAR(1)；bool<br>f) 存储较长文本内容时，建议采用JSON/BSON格式存储；</p>
+<h4 id="MyIsam"><a href="#MyIsam" class="headerlink" title="MyIsam"></a>MyIsam</h4><p>特点：支持全文索引，<br>能够对整张表进行加锁，不支持行锁，及锁粒度较大。<br>缺点：不支持事物，及没有rollback功能。<br>应用：日志系统，读表的操作，没有事物第并发的网站</p>
+<h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><p><strong>Read Uncommitted（读取未提交内容）</strong></p>
+<p>在该隔离级别，所有事务都可以看到其他未提交事务的执行结果。本隔离级别很少用于实际应用，因为它的性能也不比其他级别好多少。读取未提交的数据，也被称之为脏读（Dirty Read）。</p>
+<p>注意：读取未提交内容会出现赃读</p>
+<p><strong>Read Committed（读取提交内容）</strong></p>
+<p>这是大多数数据库系统的默认隔离级别（但不是MySQL默认的）。它满足了隔离的简单定义：一个事务只能看见已经提交事务所做的改变。这种隔离级别 也支持所谓的不可重复读（Nonrepeatable Read），因为同一事务的其他实例在该实例处理其间可能会有新的commit，所以同一select可能返回不同结果。</p>
+<p><strong>Repeatable Read（可重读）</strong></p>
+<p>这是MySQL的默认事务隔离级别，它确保同一事务的多个实例在并发读取数据时，会看到同样的数据行。不过理论上，这会导致另一个棘手的问题：幻读 （Phantom Read）。简单的说，幻读指当用户读取某一范围的数据行时，另一个事务又在该范围内插入了新行，当用户再读取该范围的数据行时，会发现有新的“幻影” 行。InnoDB和Falcon存储引擎通过多版本并发控制（MVCC，Multiversion Concurrency Control）机制解决了该问题。</p>
+<p>注意：可重读会出现幻读的情况</p>
+<p><strong>Serializable（可串行化）</strong></p>
+<p>这是最高的隔离级别，它通过强制事务排序，使之不可能相互冲突，从而解决幻读问题。简言之，它是在每个读的数据行上加上共享锁。在这个级别，可能导致大量的超时现象和锁竞争。</p>
+<h3 id="索引实现"><a href="#索引实现" class="headerlink" title="索引实现"></a>索引实现</h3><p>目前大部分数据库系统及文件系统都采用B-Tree或其变种B+Tree作为索引结构</p>
+<h4 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B-Tree"></a>B-Tree</h4><p><img src="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/2.png" alt="B-tree"></p>
+<h4 id="B-Tree-1"><a href="#B-Tree-1" class="headerlink" title="B+Tree"></a>B+Tree</h4><p><img src="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/3.png" alt="B+Tree"></p>
+<h4 id="带有顺序访问指针的B-Tree"><a href="#带有顺序访问指针的B-Tree" class="headerlink" title="带有顺序访问指针的B+Tree"></a>带有顺序访问指针的B+Tree</h4><p>一般在数据库系统或文件系统中使用的B+Tree结构都在经典B+Tree的基础上进行了优化，增加了顺序访问指针。</p>
+<p><img src="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/4.png" alt="img"></p>
+<p>如图所示，在B+Tree的每个叶子节点增加一个指向相邻叶子节点的指针，就形成了带有顺序访问指针的B+Tree。做这个优化的目的是为了提高区间访问的性能，例如图4中如果要查询key为从18到49的所有数据记录，当找到18后，只需顺着节点和指针顺序遍历就可以一次性访问到所有数据节点，极大提到了区间查询效率。</p>
+<h4 id="InnoDB索引实现"><a href="#InnoDB索引实现" class="headerlink" title="InnoDB索引实现"></a>InnoDB索引实现</h4><p>虽然InnoDB也使用B+Tree作为索引结构，但具体实现方式却与MyISAM截然不同。</p>
+<p>第一个重大区别是InnoDB的数据文件本身就是索引文件。从上文知道，MyISAM索引文件和数据文件是分离的，索引文件仅保存数据记录的地址。而在InnoDB中，表数据文件本身就是按B+Tree组织的一个索引结构，这棵树的叶节点data域保存了完整的数据记录。这个索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引。</p>
+<p><img src="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/10.png" alt="img"></p>
+<p>是InnoDB主索引（同时也是数据文件）的示意图，可以看到叶节点包含了完整的数据记录。这种索引叫做聚集索引。因为InnoDB的数据文件本身要按主键聚集，所以InnoDB要求表必须有主键（MyISAM可以没有），如果没有显式指定，则MySQL系统会自动选择一个可以唯一标识数据记录的列作为主键，如果不存在这种列，则MySQL自动为InnoDB表生成一个隐含字段作为主键，这个字段长度为6个字节，类型为长整形。</p>
+<p>第二个与MyISAM索引的不同是InnoDB的辅助索引data域存储相应记录主键的值而不是地址。换句话说，InnoDB的所有辅助索引都引用主键作为data域。例如，图11为定义在Col3上的一个辅助索引：</p>
+<p><img src="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/11.png" alt="img"></p>
+<p>图11</p>
+<p>这里以英文字符的ASCII码作为比较准则。聚集索引这种实现方式使得按主键的搜索十分高效，但是辅助索引搜索需要检索两遍索引：首先检索辅助索引获得主键，然后用主键到主索引中检索获得记录。</p>
+<h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><h4 id="MVCC实现"><a href="#MVCC实现" class="headerlink" title="MVCC实现"></a>MVCC实现</h4><p>MVCC是通过在每行记录后面保存两个隐藏的列来实现的。这两个列，一个保存了行的创建时间，一个保存行的过期时间（或删除时间）。当然存储的并不是实际的时间值，而是系统版本号（system version number)。每开始一个新的事务，系统版本号都会自动递增。事务开始时刻的系统版本号会作为事务的版本号，用来和查询到的每行记录的版本号进行比较。</p>
+<p>下面看一下在REPEATABLE READ隔离级别下，MVCC具体是如何操作的。</p>
 <ul>
-<li>充分利用多CPU的计算能力，单线程只能利用一个CPU，使用多线程可以利用多CPU的计算能力。</li>
-<li>充分利用硬件资源，CPU和硬盘、网络是可以同时工作的，一个线程在等待网络IO的同时，另一个线程完全可以利用CPU，对于多个独立的网络请求，完全可以使用多个线程同时请求。</li>
-<li>在用户界面(GUI)应用程序中，保持程序的响应性，界面和后台任务通常是不同的线程，否则，如果所有事情都是一个线程来执行，当执行一个很慢的任务时，整个界面将停止响应，也无法取消该任务。</li>
-<li>简化建模及IO处理，比如，在服务器应用程序中，对每个用户请求使用一个单独的线程进行处理，相比使用一个线程，处理来自各种用户的各种请求，以及各种网络和文件IO事件，建模和编写程序要容易的多。</li>
+<li><p>SELECT</p>
+<p>InnoDB会根据以下两个条件检查每行记录：</p>
+<ol>
+<li>InnoDB只查找版本早于当前事务版本的数据行（也就是，行的系统版本号小于或等于事务的系统版本号），这样可以确保事务读取的行，要么是在事务开始前已经存在的，要么是事务自身插入或者修改过的。</li>
+<li>行的删除版本要么未定义，要么大于当前事务版本号。这可以确保事务读取到的行，在事务开始之前未被删除。</li>
+</ol>
+<p>只有符合上述两个条件的记录，才能返回作为查询结果</p>
+</li>
+<li><p>INSERT</p>
+<p>InnoDB为新插入的每一行保存当前系统版本号作为行版本号。</p>
+</li>
+<li><p>DELETE</p>
+<p>InnoDB为删除的每一行保存当前系统版本号作为行删除标识。</p>
+</li>
+<li><p>UPDATE</p>
+<p>InnoDB为插入一行新记录，保存当前系统版本号作为行版本号，同时保存当前系统版本号到原来的行作为行删除标识。<br>保存这两个额外系统版本号，使大多数读操作都可以不用加锁。这样设计使得读数据操作很简单，性能很好，并且也能保证只会读取到符合标准的行，不足之处是每行记录都需要额外的存储空间，需要做更多的行检查工作，以及一些额外的维护工作</p>
+</li>
 </ul>
-<h2 id="成本"><a href="#成本" class="headerlink" title="成本"></a>成本</h2><p>关于线程，我们需要知道，它是有成本的。创建线程需要消耗操作系统的资源，操作系统会为每个线程创建必要的数据结构、栈、程序计数器等，创建也需要一定的时间。</p>
-<p>此外，线程调度和切换也是有成本的，当有当量可运行线程的时候，操作系统会忙于调度，为一个线程分配一段时间，执行完后，再让另一个线程执行，一个线程被切换出去后，操作系统需要保存它的当前上下文状态到内存，上下文状态包括当前CPU寄存器的值、程序计数器的值等，而一个线程被切换回来后，操作系统需要恢复它原来的上下文状态，整个过程被称为上下文切换，这个切换不仅耗时，而且使CPU中的很多缓存失效，是有成本的。</p>
-<p>当然，这些成本是相对而言的，如果线程中实际执行的事情比较多，这些成本是可以接受的，但如果只是执行本节示例中的counter++，那相对成本就太高了。</p>
-<p>另外，如果执行的任务都是CPU密集型的，即主要消耗的都是CPU，那创建超过CPU数量的线程就是没有必要的，并不会加快程序的执行。</p>
-<p>作者：swiftma<br>链接：<a href="https://juejin.im/post/58a1ba8786b599006b4877aa" target="_blank" rel="noopener">https://juejin.im/post/58a1ba8786b599006b4877aa</a><br>来源：掘金<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<p>大部分内容摘自：</p>
+<p><a href="https://link.jianshu.com/?t=https%3A%2F%2Fread.douban.com%2Freader%2Febook%2F35648568%2F" target="_blank" rel="noopener">《高性能MySQL》</a></p>
+<p><a href="http://blog.codinglabs.org/articles/theory-of-mysql-index.html" target="_blank" rel="noopener">MySQL索引背后的数据结构及算法原理</a></p>
 
       
     </div>
@@ -455,9 +466,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
-          
-            <a href="/tags/线程/" rel="tag"># 线程</a>
+            <a href="/tags/MySql/" rel="tag"># MySql</a>
           
         </div>
       
@@ -470,8 +479,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/20/tech/tools/进程的查询与关闭/" rel="next" title="进程的查询与关闭">
-                <i class="fa fa-chevron-left"></i> 进程的查询与关闭
+              <a href="/2018/12/13/tech/mq/RocketMq实战/" rel="next" title="RocketMq实战">
+                <i class="fa fa-chevron-left"></i> RocketMq实战
               </a>
             
           </div>
@@ -479,10 +488,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/02/24/tech/java/Synchronized/" rel="prev" title="Synchronized">
-                Synchronized <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -652,7 +657,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#线程的基本属性和方法"><span class="nav-number">1.</span> <span class="nav-text">线程的基本属性和方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#属性"><span class="nav-number">1.1.</span> <span class="nav-text">属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">1.2.</span> <span class="nav-text">方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程的优点及成本"><span class="nav-number">2.</span> <span class="nav-text">线程的优点及成本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#优点"><span class="nav-number">2.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#成本"><span class="nav-number">2.2.</span> <span class="nav-text">成本</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySql简介"><span class="nav-number">1.</span> <span class="nav-text">MySql简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MySql逻辑架构"><span class="nav-number">1.1.</span> <span class="nav-text">MySql逻辑架构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储引擎"><span class="nav-number">2.</span> <span class="nav-text">存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDb"><span class="nav-number">2.1.</span> <span class="nav-text">InnoDb</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MyIsam"><span class="nav-number">2.2.</span> <span class="nav-text">MyIsam</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隔离级别"><span class="nav-number">3.</span> <span class="nav-text">隔离级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引实现"><span class="nav-number">4.</span> <span class="nav-text">索引实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#B-Tree"><span class="nav-number">4.1.</span> <span class="nav-text">B-Tree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-Tree-1"><span class="nav-number">4.2.</span> <span class="nav-text">B+Tree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#带有顺序访问指针的B-Tree"><span class="nav-number">4.3.</span> <span class="nav-text">带有顺序访问指针的B+Tree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB索引实现"><span class="nav-number">4.4.</span> <span class="nav-text">InnoDB索引实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务"><span class="nav-number">5.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MVCC实现"><span class="nav-number">5.1.</span> <span class="nav-text">MVCC实现</span></a></li></ol></li></ol></div>
             
 
           </div>
