@@ -87,17 +87,17 @@
 <meta property="og:site_name" content="不爱更新的博客">
 <meta property="og:description" content="MySql简介MySql逻辑架构 服务层：为客户端做连接处理，授权和安全认证相关工作核心层：查询解析，分析，优化SQL语句，缓存结果等等存储引擎层：存储和提取数据(索引使用)及事务的处理">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://segmentfault.com/img/bVSYR3?w=341&h=429">
+<meta property="og:image" content="https://image-static.segmentfault.com/294/258/2942589459-59930ef93f276_articlex">
 <meta property="og:image" content="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/2.png">
 <meta property="og:image" content="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/3.png">
 <meta property="og:image" content="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/4.png">
 <meta property="og:image" content="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/10.png">
 <meta property="og:image" content="http://blog.codinglabs.org/uploads/pictures/theory-of-mysql-index/11.png">
-<meta property="og:updated_time" content="2018-12-15T10:02:57.943Z">
+<meta property="og:updated_time" content="2018-12-15T10:05:07.575Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySql知识点必知必会">
 <meta name="twitter:description" content="MySql简介MySql逻辑架构 服务层：为客户端做连接处理，授权和安全认证相关工作核心层：查询解析，分析，优化SQL语句，缓存结果等等存储引擎层：存储和提取数据(索引使用)及事务的处理">
-<meta name="twitter:image" content="https://segmentfault.com/img/bVSYR3?w=341&h=429">
+<meta name="twitter:image" content="https://image-static.segmentfault.com/294/258/2942589459-59930ef93f276_articlex">
 
 
 
@@ -359,7 +359,7 @@
       
 
       
-        <h3 id="MySql简介"><a href="#MySql简介" class="headerlink" title="MySql简介"></a>MySql简介</h3><h4 id="MySql逻辑架构"><a href="#MySql逻辑架构" class="headerlink" title="MySql逻辑架构"></a>MySql逻辑架构</h4><p><img src="https://segmentfault.com/img/bVSYR3?w=341&amp;h=429" alt="mysql逻辑架构"></p>
+        <h3 id="MySql简介"><a href="#MySql简介" class="headerlink" title="MySql简介"></a>MySql简介</h3><h4 id="MySql逻辑架构"><a href="#MySql逻辑架构" class="headerlink" title="MySql逻辑架构"></a>MySql逻辑架构</h4><p><img src="https://image-static.segmentfault.com/294/258/2942589459-59930ef93f276_articlex" alt="mysql逻辑架构"></p>
 <p>服务层：为客户端做连接处理，授权和安全认证相关工作<br>核心层：查询解析，分析，优化SQL语句，缓存结果等等<br>存储引擎层：存储和提取数据(索引使用)及事务的处理</p>
 <a id="more"></a>
 <h3 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h3><h4 id="InnoDb"><a href="#InnoDb" class="headerlink" title="InnoDb"></a>InnoDb</h4><p>特点：MySQL5.7之前的版本不支持全文索引，5.7及以后的支持<br>支持行级锁，锁粒度小<br>支持ACID(事务完整性和异质性)<br>独有的聚簇索引主键设计方式，可大发提升并发读写性能<br>支持外键，支持崩溃数据的自我修复<br>注意问题<br>a) 所有InnoDB数据表都创建一个和业务无关的自增数字型作为主键，对保证性能很有帮助；<br>b) 杜绝使用text/blob，确实需要使用的，尽可能拆分出去成一个独立的表；<br>c) 时间建议使用 TIMESTAMP 类型存储；<br>d) IPV4 地址建议用 INT UNSIGNED 类型存储；<br>e) 性别等非是即非的逻辑，建议采用 TINYINT 存储，而不是 CHAR(1)；bool<br>f) 存储较长文本内容时，建议采用JSON/BSON格式存储；</p>
