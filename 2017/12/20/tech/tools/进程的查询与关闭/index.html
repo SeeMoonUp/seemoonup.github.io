@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="查询某个端口是否被使用123PS C:\WINDOWS\system32&amp;gt; netstat -aon|findstr 8001  TCP    0.0.0.0:8001           0.0.0.0:0              LISTENING       6964  TCP    [::]:8001              [::]:0                 LIST">
+<meta name="description" content="lsof -i:端口号 kill  查询某个端口是否被使用123PS C:\WINDOWS\system32&amp;gt; netstat -aon|findstr 8001  TCP    0.0.0.0:8001           0.0.0.0:0              LISTENING       6964  TCP    [::]:8001              [::]:0">
 <meta property="og:type" content="article">
 <meta property="og:title" content="进程的查询与关闭">
 <meta property="og:url" content="http://SeeMoonUp.github.io/2017/12/20/tech/tools/进程的查询与关闭/index.html">
 <meta property="og:site_name" content="不爱更新的博客">
-<meta property="og:description" content="查询某个端口是否被使用123PS C:\WINDOWS\system32&amp;gt; netstat -aon|findstr 8001  TCP    0.0.0.0:8001           0.0.0.0:0              LISTENING       6964  TCP    [::]:8001              [::]:0                 LIST">
+<meta property="og:description" content="lsof -i:端口号 kill  查询某个端口是否被使用123PS C:\WINDOWS\system32&amp;gt; netstat -aon|findstr 8001  TCP    0.0.0.0:8001           0.0.0.0:0              LISTENING       6964  TCP    [::]:8001              [::]:0">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-18T13:59:38.601Z">
+<meta property="og:updated_time" content="2019-02-23T14:45:04.127Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="进程的查询与关闭">
-<meta name="twitter:description" content="查询某个端口是否被使用123PS C:\WINDOWS\system32&amp;gt; netstat -aon|findstr 8001  TCP    0.0.0.0:8001           0.0.0.0:0              LISTENING       6964  TCP    [::]:8001              [::]:0                 LIST">
+<meta name="twitter:description" content="lsof -i:端口号 kill  查询某个端口是否被使用123PS C:\WINDOWS\system32&amp;gt; netstat -aon|findstr 8001  TCP    0.0.0.0:8001           0.0.0.0:0              LISTENING       6964  TCP    [::]:8001              [::]:0">
 
 
 
@@ -329,7 +329,9 @@
       
 
       
-        <h1 id="查询某个端口是否被使用"><a href="#查询某个端口是否被使用" class="headerlink" title="查询某个端口是否被使用"></a>查询某个端口是否被使用</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS C:\WINDOWS\system32&gt; netstat -aon|findstr 8001</span><br><span class="line">  TCP    0.0.0.0:8001           0.0.0.0:0              LISTENING       6964</span><br><span class="line">  TCP    [::]:8001              [::]:0                 LISTENING       6964</span><br></pre></td></tr></table></figure>
+        <p>lsof -i:端口号</p>
+<p>kill </p>
+<h1 id="查询某个端口是否被使用"><a href="#查询某个端口是否被使用" class="headerlink" title="查询某个端口是否被使用"></a>查询某个端口是否被使用</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PS C:\WINDOWS\system32&gt; netstat -aon|findstr 8001</span><br><span class="line">  TCP    0.0.0.0:8001           0.0.0.0:0              LISTENING       6964</span><br><span class="line">  TCP    [::]:8001              [::]:0                 LISTENING       6964</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <h1 id="查询占用的进程"><a href="#查询占用的进程" class="headerlink" title="查询占用的进程"></a>查询占用的进程</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PS C:\WINDOWS\system32&gt; tasklist|findstr 6964</span><br><span class="line">java.exe                      6964 Console                    1    607,468 K</span><br></pre></td></tr></table></figure>
 <h1 id="强制关闭进行"><a href="#强制关闭进行" class="headerlink" title="强制关闭进行"></a>强制关闭进行</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PS C:\WINDOWS\system32&gt; TASKKILL /pid 6964</span><br><span class="line">错误: 无法终止 PID 为 6964 的进程。</span><br><span class="line">原因: 只能强行终止这个进程(带 /F 选项)。</span><br><span class="line">PS C:\WINDOWS\system32&gt; TASKKILL /f /pid 6964</span><br><span class="line">成功: 已终止 PID 为 6964 的进程。</span><br></pre></td></tr></table></figure>
@@ -499,7 +501,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
