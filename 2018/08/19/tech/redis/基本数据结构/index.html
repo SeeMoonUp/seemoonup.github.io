@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="不爱更新的博客">
 <meta property="og:description" content="基本数据结构及数据模型string（字符串）Redis 的字符串是动态字符串，是可以修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-19T08:25:26.969Z">
+<meta property="og:updated_time" content="2019-02-23T03:28:20.651Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis基本数据结构">
 <meta name="twitter:description" content="基本数据结构及数据模型string（字符串）Redis 的字符串是动态字符串，是可以修改的字符串，内部结构实现上类似于 Java 的 ArrayList，采用预分配冗余空间的方式来减少内存的频繁分配，内部为当前字符串实际分配的空间 capacity 一般要高于实际字符串长度 len。当字符串长度小于 1M 时，扩容都是加倍现有的空间，如果超过 1M，扩容时一次只会多扩 1M 的空间。需要注意的是字">
@@ -364,18 +364,6 @@
 <p>如果容器不存在，那就创建一个，再进行操作。比如 rpush 操作刚开始是没有列表的，Redis 就会自动创建一个，然后再 rpush 进去新元素。</p>
 <p>drop if no elements</p>
 <p>如果容器里元素没有了，那么立即删除元素，释放内存。这意味着 lpop 操作到最后一个元素，列表就消失了。</p>
-<h3 id="存结构体信息到底该使用-hash-还是-string？"><a href="#存结构体信息到底该使用-hash-还是-string？" class="headerlink" title="存结构体信息到底该使用 hash 还是 string？"></a>存结构体信息到底该使用 hash 还是 string？</h3><p>这取决于您访问数据的方式：</p>
-<p>选择1使用简单的字符串键和值：</p>
-<ul>
-<li>如果您在大多数访问中使用大多数字段。</li>
-<li>如果可能的键有差异</li>
-</ul>
-<p>选择2使用哈希：</p>
-<ul>
-<li>如果您在大多数访问中仅使用单个字段。</li>
-<li>如果您始终知道哪些字段可用</li>
-</ul>
-<p>PS：根据经验，请选择在大多数用例中需要较少查询的选项。<br>上面提到了 关于字符创存储用户信息 试想一下是否可以使用hash来存储用户信息</p>
 <p>大部分摘自：<a href="https://juejin.im/book/5afc2e5f6fb9a07a9b362527/section/5afc2e5f51882542714ff291" target="_blank" rel="noopener">https://juejin.im/book/5afc2e5f6fb9a07a9b362527/section/5afc2e5f51882542714ff291</a></p>
 <blockquote>
 <p>有不足之处还望不吝赐教 欢迎关注</p>
@@ -541,7 +529,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -563,7 +551,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -630,7 +618,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本数据结构及数据模型"><span class="nav-number">1.</span> <span class="nav-text">基本数据结构及数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#string（字符串）"><span class="nav-number">1.1.</span> <span class="nav-text">string（字符串）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#list（列表）"><span class="nav-number">1.2.</span> <span class="nav-text">list（列表）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-集合"><span class="nav-number">1.3.</span> <span class="nav-text">set (集合)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zset-有序列表"><span class="nav-number">1.4.</span> <span class="nav-text">zset (有序列表)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hash-字典"><span class="nav-number">1.5.</span> <span class="nav-text">hash (字典)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器型数据结构的通用规则"><span class="nav-number">2.</span> <span class="nav-text">容器型数据结构的通用规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存结构体信息到底该使用-hash-还是-string？"><span class="nav-number">3.</span> <span class="nav-text">存结构体信息到底该使用 hash 还是 string？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本数据结构及数据模型"><span class="nav-number">1.</span> <span class="nav-text">基本数据结构及数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#string（字符串）"><span class="nav-number">1.1.</span> <span class="nav-text">string（字符串）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#list（列表）"><span class="nav-number">1.2.</span> <span class="nav-text">list（列表）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-集合"><span class="nav-number">1.3.</span> <span class="nav-text">set (集合)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zset-有序列表"><span class="nav-number">1.4.</span> <span class="nav-text">zset (有序列表)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hash-字典"><span class="nav-number">1.5.</span> <span class="nav-text">hash (字典)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器型数据结构的通用规则"><span class="nav-number">2.</span> <span class="nav-text">容器型数据结构的通用规则</span></a></li></ol></div>
             
 
           </div>
@@ -650,7 +638,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
