@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="IO模型解惑 本文基于《构建高性能网站》整理。之前对于各种IO模型的理解不是很清晰，发现这本书里整理得比较好，这里记录下相关要点。 IO操作根据设备类型一般分为内存IO,网络IO,和磁盘IO。其中内存IO的速度大大快于后两者，计算机的性能瓶颈一般不在于内存IO. 尽管网络IO可通过购买独享带宽和高速网卡来提升速度，可以使用RAID磁盘阵列来提升磁盘IO的速度，但是由于IO操作都是由系统内核调用来完">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="转 IO模型解惑">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2019/10/15/tech/base/IO模型/index.html">
+<meta property="og:site_name" content="这次我最快">
+<meta property="og:description" content="IO模型解惑 本文基于《构建高性能网站》整理。之前对于各种IO模型的理解不是很清晰，发现这本书里整理得比较好，这里记录下相关要点。 IO操作根据设备类型一般分为内存IO,网络IO,和磁盘IO。其中内存IO的速度大大快于后两者，计算机的性能瓶颈一般不在于内存IO. 尽管网络IO可通过购买独享带宽和高速网卡来提升速度，可以使用RAID磁盘阵列来提升磁盘IO的速度，但是由于IO操作都是由系统内核调用来完">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-15T16:09:41.410Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="转 IO模型解惑">
+<meta name="twitter:description" content="IO模型解惑 本文基于《构建高性能网站》整理。之前对于各种IO模型的理解不是很清晰，发现这本书里整理得比较好，这里记录下相关要点。 IO操作根据设备类型一般分为内存IO,网络IO,和磁盘IO。其中内存IO的速度大大快于后两者，计算机的性能瓶颈一般不在于内存IO. 尽管网络IO可通过购买独享带宽和高速网卡来提升速度，可以使用RAID磁盘阵列来提升磁盘IO的速度，但是由于IO操作都是由系统内核调用来完">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2019/10/15/tech/base/IO模型/"/>
+
+
+
+
+
+  <title>转 IO模型解惑 | 这次我最快</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">这次我最快</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">飞的起来<br>应该飞的起来<br>碧海蓝天<br>只等风的到来</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/10/15/tech/base/IO模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这次我最快">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">转 IO模型解惑</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-15T23:47:27+08:00">
+                2019-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/10/15/tech/base/IO模型/" class="leancloud_visitors" data-flag-title="转 IO模型解惑">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>IO模型解惑</p>
+<p>本文基于《构建高性能网站》整理。之前对于各种IO模型的理解不是很清晰，发现这本书里整理得比较好，这里记录下相关要点。</p>
+<p>IO操作根据设备类型一般分为内存IO,网络IO,和磁盘IO。其中内存IO的速度大大快于后两者，计算机的性能瓶颈一般不在于内存IO. 尽管网络IO可通过购买独享带宽和高速网卡来提升速度，可以使用RAID磁盘阵列来提升磁盘IO的速度，但是由于IO操作都是由系统内核调用来完成，而系统调用是通过cpu来调度的，而cpu的速度远远快于IO操作，导致会浪费cpu的宝贵时间来等待慢速的IO操作。为了让cpu和慢速的IO设备更好的协调工作，减少CPU在IO调用上的消耗，逐渐发展出各种IO模型。</p>
+<a id="more"></a>
+<h2 id="同步阻塞I-O"><a href="#同步阻塞I-O" class="headerlink" title="同步阻塞I/O"></a><strong>同步阻塞I/O</strong></h2><p>阻塞是指当前发起IO操作的进程被阻塞。同步阻塞IO是指当进程调用某些IO操作的系统调用或者库函数时，比如accept(),send(),revc()等，进程会暂停下来，等待IO操作结束后再继续运行。</p>
+<p>这种IO模型比较简单，可以和多进程结合起来有效的利用CPU资源，但这样的代价是需要多进程的内存开销。</p>
+<h2 id="同步非阻塞I-O"><a href="#同步非阻塞I-O" class="headerlink" title="同步非阻塞I/O"></a><strong>同步非阻塞I/O</strong></h2><p>同步阻塞IO中，进程的等待时间可能包括两个部分，一个是等待数据就绪，比如等待数据可以读和可以写；另一个是等待数据的复制，当数据准备好后，读写操作的耗时。</p>
+<p>同步非阻塞IO的调用的区别在于，不会去等待数据的就绪，如果数据不可读或者不可写，相关系统调用会立即告诉进程（立即返回）。 比如使用非阻塞recv()接受网络数据后，函数就及时返回，告诉进程没有数据可读了。</p>
+<p>其好处是如果结合反复轮询来尝试数据是否就绪，那么在一个进程里可以同时处理多个IO操作。问题在于需要进程来轮询查看数据是否就绪，进程处于忙碌等待状态。</p>
+<p>非阻塞IO一般只针对网络IO有效，当我们在socket的选项设置中使用O_NONBLOCK时，这个socket的send()或者recv()就会采用非阻塞方式。 对于磁盘IO非阻塞IO并不产生效果。</p>
+<h2 id="多路I-O就绪通知"><a href="#多路I-O就绪通知" class="headerlink" title="多路I/O就绪通知"></a><strong>多路I/O就绪通知</strong></h2><p>多路IO就绪通知模型下，允许进程通过一种方法来同时监视所有文件描述符，并且可以快速获得所有就绪的文件描述符，然后只针对这些描述符来进行数据访问。它提供了对大量文件描述符就绪检查的高性能方案。</p>
+<p>要注意的是，IO就绪模型只是解决了快速获得就绪的文件描述符的问题，在得知数据就绪后，就数据访问本身而言，还是需要选择阻塞或者非阻塞的访问方式。</p>
+<p>由于平台和历史的原因，多路IO就绪通知有多种不同的实现，性能也存在一定的差异。</p>
+<ul>
+<li>select</li>
+</ul>
+<p>select最早出现于1983年4.2BSD中，通过一个select()系统调用来监视包含多个文件描述符的数组，当select()返回后，这个数组中就绪的文件描述符会被内核修改标志位，使得进程可以获得这些文件描述符从而进行后续的读写操作。</p>
+<p>其缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在linux上一般为1024，不过可以通过修改宏定义或者重新编译内核的方式提升这一限制。所以假如使用的select()的服务器已经维持了1024个连接，后续的请求可能会被拒绝。</p>
+<p>另外，select()维护着的存储大量文件描述符的数据结构，随着文件描述符数量的增长，其复制开销也线性增长。</p>
+<p>另一方面，由于网络延迟使得大量tcp连接处于非活跃状态，但调用select()会对所有socket进行一次线性扫描，会浪费一定的开销。</p>
+<ul>
+<li>poll</li>
+</ul>
+<p>poll在1986年诞生于System V Release3.显然unix不愿意直接沿用BSD的select,而是重新实现了一遍。poll和select在本质上没有太多区别，但是poll没有最大文件描述符数量的限制。</p>
+<p>poll和select的一个共同缺点是，包含大量文件描述符的数组在用户态和内核的地址空间被整体复制，而不论这些文件描述符是否就绪，其开销随文件描述符数量的增加而线性增长。</p>
+<p>另外，select()和poll()将就绪的文件描述符告诉进程后，如果进程没有对其进行IO操作，那么下次调用select()或者poll()时会再次报告这些文件描述符， 所以他们一般不会丢失就绪的消息，这种方式成为水平触发(Level Triggered)。</p>
+<ul>
+<li>SIGIO</li>
+</ul>
+<p>linux2.4上提供了SIGIO, 它通过实时信号（Real Time Signal）来实现select/poll的通知方法。不同在于，select/poll告诉我们哪些文件描述符是就绪的，直到我们读写它之前，每次select/poll都会告诉我们；而SIGIO则仅仅告诉我们哪些文件描述符刚刚变为就绪状态，它之说一遍，如果我们没有采取行动，SIGIO不会再次告知，这种方式被称为边缘触发（Edge Triggered）. SIGIO几乎是linux2.4下性能最好的多路IO就绪通知方法。</p>
+<p>SIGIO的缺点在于，代表事件信号由内核中的事件队列来维护，信号按照顺序执行通知，这可能导致一个信号到达时，该事件已经过期，其所描述的文件描述符已经被关闭。另一方面，事件队列的长度是有限制的，有可能被事件装满，很容易发生事件丢失，所以需要采用其他方法来弥补损失。</p>
+<ul>
+<li>/dev/poll</li>
+</ul>
+<p>sun在Salaris中提供了新的实现方法，它使用虚拟的/dev/poll设备，我们可以将需要监视的文件描述符数组写入这个设备，然后调用loctl()来等待时间通知。当loctl()返回就绪的文件描述符后，我们可以从/dev/poll中读取所有就绪的文件描述符数组，这点类似SIGIO节省了扫描所有文件描述符的开销。</p>
+<p>在linux下有很多方法可以实现类似/dev/poll的设备，但都没有提供直接的内核支持，这些方法在服务器负载较大时性能不够稳定。</p>
+<ul>
+<li>/dev/epoll</li>
+</ul>
+<p>名为/dev/epoll的设备以补丁的形式出现在linux2.4上，它提供了类似/dev/poll的功能，而且增加了内存映射（mmap）技术，在一定程度上提高了性能。</p>
+<p>但是/dev/epoll仍然只是一个补丁，linux2.4并没有将它的实现加入内核。</p>
+<ul>
+<li>epoll</li>
+</ul>
+<p>linux2.6出现了由内核直接支持的实现方法epoll,它几乎具备了之前所说的一切优点，被公认为是linux2.6下性能最好的多路IO就绪通知方法。</p>
+<p>epoll可以同时支持水平触发和边缘触发，理论上边缘触发的性能会高一些，但是代码实现相当复杂，因为任何意外的丢失事件都会造成请求处理错误。在默认情况下epoll采用水平触发，如果使用边缘触发，则需要在事件注册时增加EPOLLET选项。</p>
+<p>在Lighttpd中的epoll模型代码中注释掉了EPOLLET,没有使用边缘触发方式:</p>
+<p><em>ee.events |= EPOLLIN|EPOLLOUT /\</em>|EPOLLET<em>/;</em></p>
+<p>而在nginx的epoll模型代码里使用了边缘触发:</p>
+<p><em>ee.events = EPOLLIN|EPOLLOUT|EPOLLET;</em></p>
+<p>在epoll中同样只告知那些就绪的文件描述符，而且当我们调用epoll_wait()获得就绪文件描述符时并不是返回实际的描述符，而是一个代表就绪描述符数量的值，需要取epoll指定的一个数组中依次取的相应数量的文件描述符。这里也使用了内存映射技术，这样便彻底省掉了在系统调用时复制这些文件描述符的开销。</p>
+<p>另一个本质的改进在于epoll采用基于时间的通知方式。在select/poll中，进程只有在调用一定的方法后，内核才将所有的文件描述符进行扫描。而epoll事先通过epoll_ctl()来注册每一个文件描述符，一旦某个文件描述符就绪，内核会采用类似callback的回调机制，迅速激活这个文件描述符，当进程调用epoll_wait()时就会获得通知。</p>
+<ul>
+<li>kqueue</li>
+</ul>
+<p>FreeBSD中实现了kqueue,kqueue像epoll一样可设置水平触发或者边缘触发，同时kqueue可以用来监视磁盘文件和目录，但是它的api在很多平台上不支持，而且文档匮乏。kqueue和epoll的性能非常接近。</p>
+<p><strong>原创文章，转载请注明：</strong> 转载自<a href="http://ifeve.com/" target="_blank" rel="noopener">并发编程网 – ifeve.com</a><strong>本文链接地址:</strong> <a href="http://ifeve.com/io%e6%a8%a1%e5%9e%8b%e8%a7%a3%e6%83%91/" target="_blank" rel="noopener">IO模型解惑</a></p>
+<p><a href="http://ifeve.com/io%E6%A8%A1%E5%9E%8B%E8%A7%A3%E6%83%91/" target="_blank" rel="noopener">http://ifeve.com/io%E6%A8%A1%E5%9E%8B%E8%A7%A3%E6%83%91/</a></p>
+<p><a href="https://blog.51cto.com/14101466/2417543" target="_blank" rel="noopener">https://blog.51cto.com/14101466/2417543</a></p>
+<p><a href="https://www.jianshu.com/p/215a7094ebd8" target="_blank" rel="noopener">https://www.jianshu.com/p/215a7094ebd8</a></p>
+<p><a href="https://www.jianshu.com/p/cff711421d0e" target="_blank" rel="noopener">https://www.jianshu.com/p/cff711421d0e</a></p>
+<ol>
+<li>IO模型</li>
+<li>linux内核态、用户态</li>
+<li>文件描述符</li>
+<li>reactor模型</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="http://img.javalemon.com/dyh.jpg" alt="lemon wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎大家关注我的订阅号 SeeMoonUp</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>写的不错？鼓励一下？不差钱？</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://img.javalemon.com/wechatmoney.png" alt="lemon 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://img.javalemon.com/alimoney.png" alt="lemon 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/03/tech/java/序列化/" rel="next" title="序列化">
+                <i class="fa fa-chevron-left"></i> 序列化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/15/tech/base/通识/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://img.javalemon.com/20190223155093529270178.jpg"
+                alt="lemon" />
+            
+              <p class="site-author-name" itemprop="name">lemon</p>
+              <p class="site-description motion-element" itemprop="description">坚信我们为爱</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/SeeMoonUp" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://juejin.im/user/57d034de0e3dd90069b96e65" target="_blank" title="掘金">
+                      
+                        <i class="fa fa-fw fa-bookmark"></i>掘金</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.youleyu.com/" title="游乐鱼的博客" target="_blank">游乐鱼的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://bangqi.github.io/" title="吖吖邦的博客" target="_blank">吖吖邦的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步阻塞I-O"><span class="nav-number">1.</span> <span class="nav-text">同步阻塞I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步非阻塞I-O"><span class="nav-number">2.</span> <span class="nav-text">同步非阻塞I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多路I-O就绪通知"><span class="nav-number">3.</span> <span class="nav-text">多路I/O就绪通知</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lemon</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("3vyvYfCKi5AMiMeCW85XGJDT-gzGzoHsz", "zu3T53N3NCre22L6NOlG3slL");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
