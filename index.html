@@ -262,6 +262,178 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/12/15/tech/redis/redis整体架构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这次我最快">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/15/tech/redis/redis整体架构/" itemprop="url">Redis整体架构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-15T17:07:29+08:00">
+                2019-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/12/15/tech/redis/redis整体架构/" class="leancloud_visitors" data-flag-title="Redis整体架构">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>#Redis简介</p>
+<p>##简介概览</p>
+<p>作者：</p>
+<p><img src="http://img.javalemon.com/20191215157640097328152.png" alt="antirez.png"></p>
+<p>Redis 由意大利人 Salvatore Sanfilippo（网名 Antirez） 开发，上图是他的个人照片。Antirez 不仅帅的不像实力派，也非常有趣。Antirez 今年已经四十岁了，依旧在孜孜不倦地写代码，为 Redis 的开源事业持续贡献力量。</p>
+<p>Redis是一个开放源代码（BSD许可）内存中的数据结构存储，用作数据库、缓存和消息代理。它支持字符串、哈希、列表、集合、带范围查询的排序集合、位图、超日志和流的地理空间索引等数据结构<a href="https://missfresh.feishu.cn/space/doc/doccn0GpfP4aQf3BKBMKxadCzQc" target="_blank" rel="noopener">Redis基本数据结构&amp;内部编码</a> 。Redis具有内置的复制、lua脚本、lru回收、事务和不同级别的磁盘上持久性，并通过Redis Sentinel和Redis集群的自动分区提供高可用性。</p>
+<p>源码github:<a href="https://github.com/antirez/redis" target="_blank" rel="noopener">https://github.com/antirez/redis</a></p>
+<h2 id="Redis为什么这么快？"><a href="#Redis为什么这么快？" class="headerlink" title="Redis为什么这么快？"></a>Redis为什么这么快？</h2><p>正常情况下，Redis执行命令的速度非常快，官方给出的数字是读写性能可以达到10万/秒，当然这也取决于机器的性能，但这里先不讨论机器性能上的差异，只分析一下是什么造就了Redis除此之快的速度，可以大致归纳为以下五点：</p>
+<ol>
+<li>Redis是用C语言实现的，一般来说C语言实现的程序“距离”操作系统更近，执行速度相对会更快。</li>
+<li>完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O(1)；正因为 Redis 是单线程，所以要小心使用 Redis 指令，对于那些时间复杂度为 O(n) 级别的指令，一定要谨慎使用，一不小心就可能会导致 Redis 卡顿。</li>
+<li>数据结构简单，对数据操作也简单，Redis中的数据结构是专门进行设计的；采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU，不用去考虑各种锁的问题，不存在加锁释放锁操作，没有因为可能出现死锁而导致的性能消耗；</li>
+<li>使用多路I/O复用模型，非阻塞IO，Redis 单线程处理大量的并发客户端连接的模型。 使用底层模型不同，它们之间底层实现方式以及与客户端之间通信的应用协议不一样，Redis直接自己构建了VM 机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求；</li>
+<li>作者对于Redis源代码可以说是精打细磨，曾经有人评价Redis是少有的集性能和优雅于一身的开源代码。</li>
+<li>Redis为什么单线程？<a href="https://missfresh.feishu.cn/space/doc/doccnxq6Rk1JZu7PLr5yP5ovoCh" target="_blank" rel="noopener">为什么Redis单线程</a></li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/12/15/tech/redis/redis整体架构/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/10/15/tech/计算机基础/内核态用户态/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -365,8 +537,7 @@
 
       
         
-          
-            <p>cpu：相当于计算机的大脑负责运算和发送命令；</p>
+          <p>cpu：相当于计算机的大脑负责运算和发送命令；</p>
 <p>寄存器：寄存器是cpu当中的一个有限存储部件，cpu从内存调用数据时，寄存器会将从内存调用的数据进行更新在寄存器中以一个字或变量进行存储。</p>
 <p>​        寄存器总共分为四种：</p>
 <p>​                1.通用寄存器：用来保存变量与临时结果</p>
@@ -376,66 +547,13 @@
 <p>内核态与用户态的切换：</p>
 <p>​        <strong>内核态:</strong> CPU可以访问内存所有数据, 包括外围设备, 例如硬盘, 网卡. CPU也可以将自己从一个程序切换到另一个程序</p>
 <p>​        <strong>用户态:</strong> 只能受限的访问内存, 且不允许访问外围设备. 占用CPU的能力被剥夺, CPU资源可以被其他程序获取</p>
-<h3 id="为什么要有用户态和内核态"><a href="#为什么要有用户态和内核态" class="headerlink" title="为什么要有用户态和内核态"></a>为什么要有用户态和内核态</h3><p>由于需要限制不同的程序之间的访问能力, 防止他们获取别的程序的内存数据, 或者获取外围设备的数据, 并发送到网络, CPU划分出两个权限等级 – <strong>用户态</strong> 和 <strong>内核态</strong></p>
-<p>​       </p>
-<p>所有用户程序都是运行在用户态的, 但是有时候程序确实需要做一些内核态的事情, 例如从硬盘读取数据（比如从硬盘读取游戏进度）, 或者从键盘获取输入等. 而唯一可以做这些事情的就是操作系统, 所以此时程序就需要先操作系统请求以程序的名义来执行这些操作.</p>
-<p>这时需要一个这样的机制: 用户态程序切换到内核态, 但是不能控制在内核态中执行的指令</p>
-<p>这种机制叫<strong>系统调用</strong>, 在CPU中的实现称之为<strong>陷阱指令</strong>(Trap Instruction)</p>
-<p>他们的工作流程如下:</p>
-<ol>
-<li>用户态程序将一些数据值放在寄存器中, 或者使用参数创建一个堆栈(stack frame), 以此表明需要操作系统提供的服务.</li>
-<li>用户态程序执行陷阱指令</li>
-<li>CPU切换到内核态, 并跳到位于内存指定位置的指令, 这些指令是操作系统的一部分, 他们具有内存保护, 不可被用户态程序访问</li>
-<li>这些指令称之为陷阱(trap)或者系统调用处理器(system call handler). 他们会读取程序放入内存的数据参数, 并执行程序请求的服务</li>
-<li>系统调用完成后, 操作系统会重置CPU为用户态并返回系统调用的结果</li>
-</ol>
-<h3 id="一-定义"><a href="#一-定义" class="headerlink" title="一.定义"></a>一.定义</h3><blockquote>
-<p><strong>1.内核态：当一个任务（进程）执行系统调用而陷入内核代码中执行时，我们就称进程处于内核运行态（或简称为内核态）。此时处理器处于特权级最高的（0级）内核代码中执行。当进程处于内核态时，执行的内核代码会使用当前进程的内核栈。每个进程都有自己的内核栈。</strong></p>
-<p><strong>2.用户态：当进程在执行用户自己的代码时，则称其处于用户运行态（用户态）。即此时处理器在特权级最低的（3级）用户代码中运行。当正在执行用户程序而突然被中断程序中断时，此时用户程序也可以象征性地称为处于进程的内核态。因为中断处理程序将使用当前进程的内核栈。这与处于内核态的进程的状态有些类似。</strong></p>
-</blockquote>
-<blockquote>
-<p><strong>简单来讲一个进程由于执行系统调用而开始执行内核代码,我们称该进程处于内核态中.例如：调用read( ),write( ),open( )等系统函数就是系统调用。</strong> </p>
-<p><strong>一个进程执行应用程序自身代码则称该进程处于用户态.</strong><br><strong>1. intel x86 架构的 CPU 分为好几个运行级别,从 0–3 , 0 为最高级别, 3 为最低级别2. 针对不同的级别,有很多的限制,比如说传统的 in ,out 指令,就是端口的输入输出指令,在 0 级下是可以用的,但在 3 级下就不能用,你用就产生陷阱,告诉你出错了,当然限制还有很多了,不只是这一点。3. 操作系统下是利用这个特点,当操作系统自己的代码运行时, CPU 就切成 0 级,当用户的程序运行是就只让它在 3 级运行,这样如果用户的程序想做什么破坏系统的事情的话,也没办法做到4. 当然,低级别的程序是没法把自己升到高级别的,也就是说 用户程序运行在 3 级,他想把自己变成 0 级自己是做不到的,除非是操作系统帮忙,利用这个特性,操作系统就可以控制所有的程序的运行,确保系统的安全了. 平时把操作系统运行时的级别就叫内核态(因为是操作系统内核运行时的状态),而且普通用户程序运行时的那个级别叫用户态…5. 当操作系统刚引导时, CPU 处于实模式,这时就相当于是 0 级,于是操作系统就自动得到最高权限,然后切到保护模式时就是0级,这时操作系统就占了先机,成为了最高级别的运行者,由于你的程序都是由操作系统来加载的,所以当它把你加载上来后,就把你的运行状态设为 3 级,即最低级,然后才让你运行,所以没办法,你只能在最低级运行了,因为没办法把自己从低级上升到高级, 这就是操作系统在内核态可以管理用户程序,杀死用户程序的原因。</strong></p>
-</blockquote>
-<blockquote>
-<p><strong>6.运行级别：</strong></p>
-<p>​        <strong>熟悉Unix/Linux系统的人都知道，fork的工作实际上是以系统调用的方式完成相应功能的，具体的工作是由sys_fork负责实施。其实无论是不是Unix或者Linux，对于任何操作系统来说，创建一个新的进程都是属于核心功能，因为它要做很多底层细致地工作，消耗系统的物理资源，比如分配物理内存，从父进程拷贝相关信息，拷贝设置页目录页表等等，这些显然不能随便让哪个程序就能去做，于是就自然引出特权级别的概念，显然，最关键性的权力必须由高特权级的程序来执行，这样才可以做到集中管理，减少有限资源的访问和使用冲突。</strong></p>
-<p>​       <strong>内核态与用户态是操作系统的两种运行级别,Intel x86架构提供Ring0-Ring3四种级别的运行模式，Ring0级别最高，Ring3最低。Linux使用了Ring3级别运行用户态，Ring0作为 内核态，没有使用Ring1和Ring2。Ring3状态不能访问Ring0的地址空间，包括代码和数据。程序特权级别的不同，其所拥有的权力也不同。</strong></p>
-</blockquote>
-<blockquote>
-<p><strong>1.现在我们也可以这样理解内核态和用户态的：</strong></p>
-<ul>
-<li><strong>当程序运行在3级特权级上时，就可以称之为运行在用户态，因为这是最低特权级，是普通的用户进程运行的特权级，大部分用户直接面对的程序都是运行在用户态。</strong></li>
-<li><strong>当程序运行在0级特权级上时，就可以称之为运行在内核态。</strong></li>
-</ul>
-<p><strong>2.用户态和内核态的区别：</strong></p>
-<p>​       <strong>虽然用户态下和内核态下工作的程序有很多差别，但最重要的差别就在于特权级的不同，即权力的不同。运行在用户态下的程序不能直接访问操作系统内核数据结构和程序，比如上面例子中的testfork()就不能直接调用sys_fork()，因为前者是工作在用户态，属于用户态程序，而sys_fork()是工作在内核态，属于内核态程序。</strong></p>
-<p>​        <strong>当我们在系统中执行一个程序时，大部分时间是运行在用户态下的，在其需要操作系统帮助完成某些它没有权力和能力完成的工作时就会切换到内核态，比如testfork()最初运行在用户态进程下，当它调用fork()最终触发sys_fork()的执行时，就切换到了内核态。</strong></p>
-</blockquote>
-<h3 id="二-从用户态如何转化到内核态"><a href="#二-从用户态如何转化到内核态" class="headerlink" title="二.从用户态如何转化到内核态"></a><strong>二.从用户态如何转化到内核态</strong></h3><blockquote>
-<ul>
-<li><strong>系统调用</strong></li>
-</ul>
-<p><strong>这是用户态进程主动要求切换到内核态的一种方式，用户态进程通过系统调用申请使用操作系统提供的服务程序完成工作，比如fork()实际上就是执行了一个创建新进程的系统调用。而系统调用的机制其核心还是使用了操作系统为用户特别开放的一个中断来实现，例如Linux的int 80h中断。</strong></p>
-<ul>
-<li><strong>异常</strong></li>
-</ul>
-<p><strong>当CPU在执行运行在用户态下的程序时，发生了某些事先不可知的异常，这时会触发由当前运行进程切换到处理此异常的内核相关程序中，也就转到了内核态，比如缺页异常。</strong></p>
-<ul>
-<li><strong>外围设备的中断</strong></li>
-</ul>
-<p><strong>当外围设备完成用户请求的操作后，会向CPU发出相应的中断信号，这时CPU会暂停执行下一条即将要执行的指令转而去执行与中断信号对应的处理程序，如果先前执行的指令是用户态下的程序，那么这个转换的过程自然也就发生了由用户态到内核态的切换。比如硬盘读写操作完成，系统会切换到硬盘读写的中断处理程序中执行后续操作等。</strong></p>
-<p><strong>这3种方式是系统在运行时由用户态转到内核态的最主要方式，其中系统调用可以认为是用户进程主动发起的，异常和外围设备中断则是被动的</strong></p>
-</blockquote>
-<h3 id="三-用户空间和内核空间"><a href="#三-用户空间和内核空间" class="headerlink" title="三.用户空间和内核空间"></a>三.用户空间和内核空间</h3><blockquote>
-<p><strong>用户空间就是用户进程所在的内存区域，相对的，系统空间就是操作系统占据的内存区域。用户进程和系统进程的所有数据都在内存中。1.  是谁来划分内存空间的呢？</strong></p>
-<p>​       <strong>在电脑开机之前，内存就是一块原始的物理内存。什么也没有。开机加电，系统启动后，就对物理内存进行了划分。当然，这是系统的规定，物理内存条上并没有划分好的地址和空间范围。这些划分都是操作系统在逻辑上的划分。不同版本的操作系统划分的结果都是不一样的。  2.为什么要划分用户空间和系统空间呢？</strong></p>
-<p>​       <strong>当然是有必要的。操作系统的数据都是存放于系统空间的，用户进程的数据是存放于用户空间的。这是第一点，不同的身份，数据放置的位置必然不一样，否则大混战就会导致系统的数据和用户的数据混在一起，系统就不能很好的运行了。分开来存放，就让系统的数据和用户的数据互不干扰，保证系统的稳定性。分开存放，管理上很方便，而更重要的是，将用户的数据和系统的数据隔离开，就可以对两部分的数据的访问进行控制。这样就可以确保用户程序不能随便操作系统的数据，这样防止用户程序误操作或者是恶意破坏系统。</strong></p>
-</blockquote>
-<p><a href="https://blog.csdn.net/alidada_blog/article/details/83903555" target="_blank" rel="noopener">https://blog.csdn.net/alidada_blog/article/details/83903555</a></p>
-<p><a href="https://www.cnblogs.com/Sargreis/p/6874866.html" target="_blank" rel="noopener">https://www.cnblogs.com/Sargreis/p/6874866.html</a></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/10/15/tech/计算机基础/内核态用户态/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -597,136 +715,6 @@
 <li>Reactor编程的优点和缺点<br>7.1. 优点<br>7.2. 缺点</li>
 </ol>
 
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/10/15/tech/计算机基础/通识/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lemon">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="这次我最快">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/10/15/tech/计算机基础/通识/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-15T23:47:51+08:00">
-                2019-10-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/10/15/tech/计算机基础/通识/" class="leancloud_visitors" data-flag-title="">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
           
         
       

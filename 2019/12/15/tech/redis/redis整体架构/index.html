@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="redis," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="#Redis简介 ##简介概览 作者：  Redis 由意大利人 Salvatore Sanfilippo（网名 Antirez） 开发，上图是他的个人照片。Antirez 不仅帅的不像实力派，也非常有趣。Antirez 今年已经四十岁了，依旧在孜孜不倦地写代码，为 Redis 的开源事业持续贡献力量。 Redis是一个开放源代码（BSD许可）内存中的数据结构存储，用作数据库、缓存和消息代理。它支">
+<meta name="keywords" content="redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis整体架构">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2019/12/15/tech/redis/redis整体架构/index.html">
+<meta property="og:site_name" content="这次我最快">
+<meta property="og:description" content="#Redis简介 ##简介概览 作者：  Redis 由意大利人 Salvatore Sanfilippo（网名 Antirez） 开发，上图是他的个人照片。Antirez 不仅帅的不像实力派，也非常有趣。Antirez 今年已经四十岁了，依旧在孜孜不倦地写代码，为 Redis 的开源事业持续贡献力量。 Redis是一个开放源代码（BSD许可）内存中的数据结构存储，用作数据库、缓存和消息代理。它支">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.javalemon.com/20191215157640097328152.png">
+<meta property="og:image" content="http://img.javalemon.com/20191215157640117532062.png">
+<meta property="og:image" content="http://img.javalemon.com/2019121515764011904795.png">
+<meta property="og:image" content="http://img.javalemon.com/20191215157640121938938.png">
+<meta property="og:image" content="http://img.javalemon.com/2019121515764012422191.png">
+<meta property="og:image" content="http://img.javalemon.com/20191215157640126623986.png">
+<meta property="og:image" content="http://img.javalemon.com/2019121515764012876577.png">
+<meta property="og:image" content="http://img.javalemon.com/2019121515764037271410.png">
+<meta property="og:image" content="http://img.javalemon.com/20191215157640374787621.png">
+<meta property="og:image" content="http://img.javalemon.com/20191215157640381925004.png">
+<meta property="og:image" content="http://img.javalemon.com/20191215157640387098685.png">
+<meta property="og:image" content="http://img.javalemon.com/20191215157640389156735.png">
+<meta property="og:image" content="http://img.javalemon.com/2019121515764039118031.png">
+<meta property="og:image" content="http://img.javalemon.com/20191215157640392823409.png">
+<meta property="og:updated_time" content="2019-12-15T10:12:37.262Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis整体架构">
+<meta name="twitter:description" content="#Redis简介 ##简介概览 作者：  Redis 由意大利人 Salvatore Sanfilippo（网名 Antirez） 开发，上图是他的个人照片。Antirez 不仅帅的不像实力派，也非常有趣。Antirez 今年已经四十岁了，依旧在孜孜不倦地写代码，为 Redis 的开源事业持续贡献力量。 Redis是一个开放源代码（BSD许可）内存中的数据结构存储，用作数据库、缓存和消息代理。它支">
+<meta name="twitter:image" content="http://img.javalemon.com/20191215157640097328152.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2019/12/15/tech/redis/redis整体架构/"/>
+
+
+
+
+
+  <title>Redis整体架构 | 这次我最快</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">这次我最快</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">飞的起来<br>应该飞的起来<br>碧海蓝天<br>只等风的到来</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/12/15/tech/redis/redis整体架构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这次我最快">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis整体架构</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-15T17:07:29+08:00">
+                2019-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/12/15/tech/redis/redis整体架构/" class="leancloud_visitors" data-flag-title="Redis整体架构">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#Redis简介</p>
+<p>##简介概览</p>
+<p>作者：</p>
+<p><img src="http://img.javalemon.com/20191215157640097328152.png" alt="antirez.png"></p>
+<p>Redis 由意大利人 Salvatore Sanfilippo（网名 Antirez） 开发，上图是他的个人照片。Antirez 不仅帅的不像实力派，也非常有趣。Antirez 今年已经四十岁了，依旧在孜孜不倦地写代码，为 Redis 的开源事业持续贡献力量。</p>
+<p>Redis是一个开放源代码（BSD许可）内存中的数据结构存储，用作数据库、缓存和消息代理。它支持字符串、哈希、列表、集合、带范围查询的排序集合、位图、超日志和流的地理空间索引等数据结构<a href="https://missfresh.feishu.cn/space/doc/doccn0GpfP4aQf3BKBMKxadCzQc" target="_blank" rel="noopener">Redis基本数据结构&amp;内部编码</a> 。Redis具有内置的复制、lua脚本、lru回收、事务和不同级别的磁盘上持久性，并通过Redis Sentinel和Redis集群的自动分区提供高可用性。</p>
+<p>源码github:<a href="https://github.com/antirez/redis" target="_blank" rel="noopener">https://github.com/antirez/redis</a></p>
+<h2 id="Redis为什么这么快？"><a href="#Redis为什么这么快？" class="headerlink" title="Redis为什么这么快？"></a>Redis为什么这么快？</h2><p>正常情况下，Redis执行命令的速度非常快，官方给出的数字是读写性能可以达到10万/秒，当然这也取决于机器的性能，但这里先不讨论机器性能上的差异，只分析一下是什么造就了Redis除此之快的速度，可以大致归纳为以下五点：</p>
+<ol>
+<li>Redis是用C语言实现的，一般来说C语言实现的程序“距离”操作系统更近，执行速度相对会更快。</li>
+<li>完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O(1)；正因为 Redis 是单线程，所以要小心使用 Redis 指令，对于那些时间复杂度为 O(n) 级别的指令，一定要谨慎使用，一不小心就可能会导致 Redis 卡顿。</li>
+<li>数据结构简单，对数据操作也简单，Redis中的数据结构是专门进行设计的；采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU，不用去考虑各种锁的问题，不存在加锁释放锁操作，没有因为可能出现死锁而导致的性能消耗；</li>
+<li>使用多路I/O复用模型，非阻塞IO，Redis 单线程处理大量的并发客户端连接的模型。 使用底层模型不同，它们之间底层实现方式以及与客户端之间通信的应用协议不一样，Redis直接自己构建了VM 机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求；</li>
+<li>作者对于Redis源代码可以说是精打细磨，曾经有人评价Redis是少有的集性能和优雅于一身的开源代码。</li>
+<li>Redis为什么单线程？<a href="https://missfresh.feishu.cn/space/doc/doccnxq6Rk1JZu7PLr5yP5ovoCh" target="_blank" rel="noopener">为什么Redis单线程</a></li>
+</ol>
+<a id="more"></a>
+<h1 id="Redis压力测试"><a href="#Redis压力测试" class="headerlink" title="Redis压力测试"></a>Redis压力测试</h1><p>Redis 自带了一个压力测试工具redis-benchmark，使用这个工具就可以进行管道测试。</p>
+<p>首先我们对一个普通的 set 指令进行压测，QPS 大约 5w/s。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; redis-benchmark -t set -q</span><br><span class="line">SET: 51975.05 requests per second</span><br></pre></td></tr></table></figure>
+<p>我们加入管道选项-P参数，它表示单个管道内并行的请求数量，看下面P=2，QPS 达到了 9w/s。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; redis-benchmark -t set -P 2 -q</span><br><span class="line">SET: 91240.88 requests per second</span><br></pre></td></tr></table></figure>
+<p>再看看P=3，QPS 达到了 10w/s。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET: 102354.15 requests per second</span><br></pre></td></tr></table></figure>
+<p>但如果再继续提升 P 参数，发现 QPS 已经上不去了。这是为什么呢？</p>
+<p>因为这里 CPU 处理能力已经达到了瓶颈，Redis 的单线程 CPU 已经飙到了 100%，所以无法再继续提升了。</p>
+<h1 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h1><p><img src="http://img.javalemon.com/20191215157640117532062.png" alt="20191215157640117532062.png"></p>
+<p><img src="http://img.javalemon.com/2019121515764011904795.png" alt="2019121515764011904795.png"></p>
+<h1 id="源码导读"><a href="#源码导读" class="headerlink" title="源码导读"></a>源码导读</h1><p>redis-cli.c</p>
+<p>客户端入口方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">int main(int argc, char **argv) &#123;</span><br><span class="line">     /* 省略各种模式...*/</span><br><span class="line">    if (argc == 0 &amp;&amp; !config.eval) &#123;</span><br><span class="line">        /* 发起服务端链接*/</span><br><span class="line">        cliConnect(0);</span><br><span class="line">        /* 发送命令，接收响应主入口 */</span><br><span class="line">        repl();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/* 监听客户端输入 */</span><br><span class="line">linenoise(context ? config.prompt : &quot;not connected&gt; &quot;))</span><br><span class="line"></span><br><span class="line">/* 处理命令 resp协议转换 写入redisContext的buf */</span><br><span class="line">redisAppendCommandArgv(context,argc,(const char**)argv,argvlen);</span><br><span class="line"></span><br><span class="line">/* 获取响应 */</span><br><span class="line"></span><br><span class="line">if (cliReadReply(output_raw) != REDIS_OK) &#123;</span><br></pre></td></tr></table></figure>
+<p>hiredis.c</p>
+<p>实现了redis-cli重要接口的C库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">redisContext *redisConnect(const char *ip, int port);</span><br><span class="line">int redisGetReply(redisContext *c, void **reply);</span><br><span class="line">void *redisCommand(redisContext *c, const char *format, ...);</span><br><span class="line">int redisBufferRead(redisContext *c);</span><br><span class="line">int redisBufferWrite(redisContext *c, int *done);</span><br></pre></td></tr></table></figure>
+<p>net.c</p>
+<p>通信相关</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 建立socket连接，并等待服务端响应</span><br><span class="line">if ((s = socket(p-&gt;ai_family,p-&gt;ai_socktype,p-&gt;ai_protocol)) == -1)</span><br><span class="line"></span><br><span class="line">// 写入命令 获取响应</span><br><span class="line">int redisGetReply(redisContext *c, void **reply)</span><br></pre></td></tr></table></figure>
+<p>server.c</p>
+<p>服务端程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/*入口*/</span><br><span class="line">int main(int argc, char **argv) </span><br><span class="line">/* 初始化服务器，包括打开监听端口，创建epoll_create()，创建文件事件（连接应答处理器） */</span><br><span class="line">initServer();</span><br><span class="line">/* 时间循环入口 实现主要分享两个 一个select() ae.c 一个为ae_epoll.c */</span><br><span class="line">aeMain(server.el);</span><br></pre></td></tr></table></figure>
+<p>ae.c</p>
+<p>事件驱动程序库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">aeEventLoop *aeCreateEventLoop(int setsize);</span><br><span class="line">int aeCreateFileEvent(aeEventLoop *eventLoop, int fd, int mask,</span><br><span class="line">        aeFileProc *proc, void *clientData);</span><br><span class="line">long long aeCreateTimeEvent(aeEventLoop *eventLoop, long long milliseconds,</span><br><span class="line">        aeTimeProc *proc, void *clientData,</span><br><span class="line">        aeEventFinalizerProc *finalizerProc);</span><br><span class="line">int aeProcessEvents(aeEventLoop *eventLoop, int flags);</span><br><span class="line">void aeMain(aeEventLoop *eventLoop);</span><br></pre></td></tr></table></figure>
+<p>networking.c</p>
+<p>服务端应答处理器等程序库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">client *createClient(int fd)</span><br><span class="line">static void acceptCommonHandler(int fd, int flags, char *ip)</span><br><span class="line">void readQueryFromClient(aeEventLoop *el, int fd, void *privdata, int mask)</span><br><span class="line">void sendReplyToClient(aeEventLoop *el, int fd, void *privdata, int mask)</span><br></pre></td></tr></table></figure>
+<h1 id="Redis事件"><a href="#Redis事件" class="headerlink" title="Redis事件"></a>Redis事件</h1><h2 id="文件事件"><a href="#文件事件" class="headerlink" title="文件事件"></a>文件事件</h2><p>Redis通过套接字与客户端（或者其他服务器）进行连接，而文件事件就是服务器对套接字操作的抽象。服务器与客户端的通信会产生相应的文件事件，而服务器则通过监听并处理这些事件来完成一系列的网络通信操作。</p>
+<p>Redis基于Reactor模式开发了自己的网络事件处理器：这个处理器则被称为文件时间处理器。</p>
+<p>文件事件处理器使用I/O多路复用程序来同时监听多个套接字，并根据套接字目前执行的任务来为套接字关联不同的时间处理器。</p>
+<p>当被监听的套接字准备好执行连接应答accept、读取read、写入write、关闭close等操作时，与操作相对应的文件事件就会产生，这时文件事件处理器就会调用套接字之前关联好的事件处理器来处理这些事件。</p>
+<p>​                          <img src="http://img.javalemon.com/20191215157640121938938.png" alt="20191215157640121938938.png"></p>
+<h2 id="时间事件"><a href="#时间事件" class="headerlink" title="时间事件"></a>时间事件</h2><p>Redis服务器中一些操作（比如serverCron的函数）则需要在给定的时间点执行，时间事件就是服务器对这类定时操作的抽象。默认一秒执行10次，即100ms执行一次。配置在redis.conf中的hz</p>
+<p>serverCron函数的主要工作：</p>
+<ol>
+<li>更新服务器的各类统计信息，比如内存占用、数据库占用情况等。</li>
+<li>清理数据库中的过期键值对。</li>
+<li>关闭和清理链接失效的客户端。</li>
+<li>尝试进行AOF或RDB持久化操作。</li>
+<li>如果服务器是主服务器，对从服务器进行定时同步。</li>
+<li>集群模式，对集群进行定期同步和连接测试。</li>
+</ol>
+<p>​                          <img src="http://img.javalemon.com/2019121515764012422191.png" alt="2019121515764012422191.png"></p>
+<h2 id="处理器"><a href="#处理器" class="headerlink" title="处理器"></a>处理器</h2><p>​        <img src="http://img.javalemon.com/20191215157640126623986.png" alt="20191215157640126623986.png"></p>
+<ol>
+<li><p>连接应答处理器</p>
+<p>服务端启动时，创建文件事件绑定此处理器</p>
+</li>
+<li><p>命令请求处理器</p>
+<p>获取到客户端连接后创建文件事件绑定此处理器</p>
+</li>
+<li><p>命令回复处理器</p>
+<p>处理完命令后，创建文件事件绑定此处理器</p>
+</li>
+<li><p>服务时间处理器</p>
+<p>服务器启动时，创建时间处理器，绑定此处理器</p>
+</li>
+</ol>
+<h1 id="服务端客户端通信"><a href="#服务端客户端通信" class="headerlink" title="服务端客户端通信"></a>服务端客户端通信</h1><p>通信流程图</p>
+<p>​                          <img src="http://img.javalemon.com/2019121515764012876577.png" alt="2019121515764012876577.png"></p>
+<p>Redis client/server 交互步骤分为以下6个步骤：</p>
+<p>​                          <img src="http://img.javalemon.com/2019121515764037271410.png" alt="2019121515764037271410.png"></p>
+<h2 id="Client-发起socket-连接"><a href="#Client-发起socket-连接" class="headerlink" title="Client 发起socket 连接"></a>Client 发起socket 连接</h2><p>​     <img src="http://img.javalemon.com/20191215157640374787621.png" alt="20191215157640374787621.png"></p>
+<p>这里以redis-cli 客户端为例，当执行以下语句时：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/src/redis-cli -p 6379 -h 127.0.0.1</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+<p>客户端会做如下操作：</p>
+<p>1、获取客户端参数，如端口、ip地址、dbnum、socket等</p>
+<p>2、根据用户指定参数确定客户端处于哪种模式</p>
+<p>目前共有：</p>
+<p>Latency mode/Slave mode/Get RDB mode/Pipe mode/Find </p>
+<p>big keys/Stat mode/Scan mode/Intrinsic latency mode</p>
+<p>我们这里没有指定，就是默认的模式。</p>
+<p>3、进入上图中step1的cliConnect 方法，cliConnect主要包含redisConnect、redisConnectUnix方法。这两个方法分别用于TCP Socket连接以及Unix Socket连接，Unix Socket用于同一主机进程间的通信。我们上面是采用的TCP Socket连接方式也就是我们平常生产环境常用的方式</p>
+<p>4、进入redisContextInit方法，redisContextInit方法用于创建一个Context结构体保存在内存中，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/* Context for a connection to Redis */</span><br><span class="line">typedef struct redisContext &#123;</span><br><span class="line">    int err; /* Error flags, 0 when there is no error */</span><br><span class="line">    char errstr[128]; /* String representation of error when applicable */</span><br><span class="line">    int fd;</span><br><span class="line">    int flags;</span><br><span class="line">    char *obuf; /* Write buffer */</span><br><span class="line">    redisReader *reader; /* Protocol reader */</span><br><span class="line">&#125; redisContext;</span><br></pre></td></tr></table></figure>
+<p>主要用于保存客户端的一些东西，最重要的就是 write buffer和redisReader，write buffer 用于保存客户端的写入，redisReader用于保存协议解析器的一些状态。</p>
+<p>5、进入redisContextConnectTcp 方法，开始获取IP地址和端口用于建立连接，主要方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = socket(p-&gt;ai_family,p-&gt;ai_socktype,p-&gt;ai_protocol</span><br><span class="line">connect(s,p-&gt;ai_addr,p-&gt;ai_addrlen)</span><br></pre></td></tr></table></figure>
+<p>到此客户端向服务端发起建立socket连接，并且等待服务器端响应</p>
+<h2 id="Server-接受socket连接"><a href="#Server-接受socket连接" class="headerlink" title="Server 接受socket连接"></a>Server 接受socket连接</h2><p>​                         <img src="http://img.javalemon.com/20191215157640381925004.png" alt="20191215157640381925004.png"></p>
+<p>beforeSleep方法主要做以下几件事：</p>
+<ol>
+<li>执行一次快速的主动过期检查，检查是否有过期的key<a href="https://missfresh.feishu.cn/space/doc/doccnmmRTvBcwqqU2SL2Ocvj7ae" target="_blank" rel="noopener">Redis内存管理策略</a> </li>
+</ol>
+<ol>
+<li>将AOF缓冲区的内容写入到AOF文件中<a href="https://missfresh.feishu.cn/space/doc/doccnH8WtN4evmSkCr0M40q4ske" target="_blank" rel="noopener">Redis持久化-missfresh</a> </li>
+</ol>
+<ol>
+<li>……</li>
+</ol>
+<p>1、打开TCP监听端口</p>
+<p><code>listenToPort(server.port,server.ipfd,&amp;server.ipfd_count)</code></p>
+<p>2、为TCP连接关联连接应答处理器(accept)</p>
+<p><code>aeCreateFileEvent(server.el, server.ipfd[j], AE_READABLE,acceptTcpHandler,NULL)</code></p>
+<p>3、触发连接</p>
+<p>用aeCreateFileEvent 方法创建相关的连接应答处理器，在客户端请求连接的时候触发。</p>
+<p>所以现在整个socket连接建立流程就比较清楚了，如下：</p>
+<ol>
+<li>服务器初始化建立socket监听</li>
+<li>服务器初始化创建相关连接应答处理器,通过epoll_ctl注册事件</li>
+<li>客户端初始化创建socket connect 请求</li>
+<li>服务器接受到请求，用epoll_wait方法取出事件</li>
+<li>服务器执行事件中的方法(acceptTcpHandler/acceptUnixHandler)并接受socket连接</li>
+</ol>
+<p>至此客户端和服务器端的socket连接已经建立，但是此时服务器端还继续做了2件事：</p>
+<ol>
+<li>采用createClient方法在服务器端为客户端创建一个client，因为I/O复用所以需要为每个客户端维持一个状态。这里的client也在内存中分配了一块区域，用于保存它的一些信息，如套接字描述符、默认数据库、查询缓冲区、命令参数、认证状态、回复缓冲区等。这里提醒一下DBA同学关于client-output-buffer-limit设置，设置不恰当将会引起客户端中断。</li>
+<li>采用aeCreateFileEvent方法在服务器端创建一个文件读事件并且绑定readQueryFromClient方法。</li>
+</ol>
+<h2 id="客户端-开始写入"><a href="#客户端-开始写入" class="headerlink" title="客户端 开始写入"></a>客户端 开始写入</h2><p>​       <img src="http://img.javalemon.com/20191215157640387098685.png" alt="20191215157640387098685.png"></p>
+<p>客户端写入流程分为以下几步：</p>
+<p>1、linenoise等待接受用户输入</p>
+<p>2、linenoise 将用户输入内容传入cliSendCommand方法</p>
+<p>3、cliSendCommand方法会调用redisAppendCommandArgv方法，redisAppendCommandArgv方法会调用redisFormatCommandArgv和__redisAppendCommand方法</p>
+<p>redisFormatCommandArgv方法用于将客户端输入的内容格式化成redis协议：</p>
+<p>例如:</p>
+<p>set zbdba jingbo</p>
+<p>*3\r\n$3\r\n set\r\n $5\r\n zbdba\r\n $6\r\n jingbo</p>
+<p>__redisAppendCommand方法用于将命令写入到outbuf中</p>
+<p>接着客户端进入下一个流程，将outbuf内容写入到套接字描述符上并传输到服务器端。</p>
+<p>4、进入redisGetReply方法，该方法下主要有redisGetReplyFromReader和redisBufferWrite 方法，redisGetReplyFromReader主要用于读取挂起的回复，redisBufferWrite 方法用于将当前outbuf中的内容写入到套接字描述符中，并传输内容。</p>
+<p>主要方法如下：</p>
+<p>nwritten = write(c-&gt;fd,c-&gt;obuf,sdslen(c-&gt;obuf));</p>
+<p>此时客户端等待服务器端接收写入。</p>
+<p>debug：<a href="https://draveness.me/redis-cli" target="_blank" rel="noopener">https://draveness.me/redis-cli</a></p>
+<p>resp：<a href="https://juejin.im/book/5afc2e5f6fb9a07a9b362527/section/5afc39496fb9a07ab458d0f1" target="_blank" rel="noopener">https://juejin.im/book/5afc2e5f6fb9a07a9b362527/section/5afc39496fb9a07ab458d0f1</a></p>
+<h2 id="server-端接收写入"><a href="#server-端接收写入" class="headerlink" title="server 端接收写入"></a>server 端接收写入</h2><p>​                         <img src="http://img.javalemon.com/20191215157640389156735.png" alt="20191215157640389156735.png"></p>
+<p>服务器端依然在进行事件循环，在客户端发来内容的时候触发，对应的文件读取事件。这就是之前创建socket连接的时候建立的事件，该事件绑定的方法是readQueryFromClient 。此时进入step4的readQueryFromClient 方法。</p>
+<p>readQueryFromClient 方法用于读取客户端的发送的内容。它的执行步骤如下：</p>
+<p>１、在readQueryFromClient方法中从服务器端套接字描述符中读取客户端的内容到服务器端初始化client的查询缓冲中，主要方法如下：</p>
+<p>nread = read(fd, c-&gt;querybuf+qblen, readlen);</p>
+<p>２、交给processInputBuffer处理，processInputBuffer　主要包含两个方法，processInlineBuffer和processCommand。processInlineBuffer方法用于采用redis协议解析客户端内容并生成对应的命令并传给processCommand 方法，processCommand方法则用于执行该命令</p>
+<p>3、进入call方法。</p>
+<p>call方法会调用setCommand，因为这里我们执行的set missfresh miss，set 命令对应setCommand 方法</p>
+<p>4、setCommand方法，setCommand方法会调用setGenericCommand方法，该方法首先会判断该key是否已经过期，最后调用setKey方法。</p>
+<p>5、进入setKey方法，setKey方法最终会调用dbAdd方法，其实最终就是将该键值对存入服务器端维护的一个字典中，该字典是在服务器初始化的时候创建，用于存储服务器的相关信息，其中包括各种数据类型的键值存储。完成了写入方法时候，此时服务器端会给客户端返回结果。</p>
+<p>6、进入prepareClientToWrite方法然后通过调用_addReplyToBuffer方法将返回结果写入到outbuf中（客户端连接时创建的client）</p>
+<p>7、通过aeCreateFileEvent方法注册文件写事件并绑定sendReplyToClient方法</p>
+<h2 id="server-返回写入结果"><a href="#server-返回写入结果" class="headerlink" title="server 返回写入结果"></a>server 返回写入结果</h2><p>​                         <img src="http://img.javalemon.com/2019121515764039118031.png" alt="2019121515764039118031.png"></p>
+<p>aeMain主函数循环，监测到新注册的事件，调用sendReplyToClient方法。sendReplyToClient方法主要包含两个操作：</p>
+<p>1、将outbuf内容写入到套接字描述符并传输到客户端，主要方法如下：</p>
+<p><code>nwritten = write(fd,c-&gt;buf+c-&gt;sentlen,c-&gt;bufpos-c-&gt;sentlen);</code></p>
+<p>2、aeDeleteFileEvent 用于删除 文件写事件</p>
+<h2 id="Client收到返回结果"><a href="#Client收到返回结果" class="headerlink" title="Client收到返回结果"></a>Client收到返回结果</h2><p>​          <img src="http://img.javalemon.com/20191215157640392823409.png" alt="20191215157640392823409.png"></p>
+<p>客户端接收到服务器端的返回调用redisBufferRead方法，该方法主要用于从socket中读取数据。主要方法如下：</p>
+<p><code>nread = read(c-&gt;fd,buf,sizeof(buf));</code></p>
+<p>并且将读取的数据交由redisReaderFeed方法，该方法主要用于将数据交给回复解析器处理，也就是cliFormatReplyRaw，该方法将回复内容格式化。最终通过</p>
+<p><code>fwrite(out,sdslen(out),1,stdout);</code></p>
+<p>方法返回给客户端并打印展示给用户。</p>
+<p>至此整个写入流程完成。以上还有很多细节没有说到，感兴趣的朋友可以自行阅读源码。</p>
+<h1 id="epoll-I-O-多路复用技术"><a href="#epoll-I-O-多路复用技术" class="headerlink" title="epoll I/O 多路复用技术"></a>epoll I/O 多路复用技术</h1><p>epoll详解参照资料：</p>
+<ol>
+<li>详解：<a href="http://blog.chinaunix.net/uid-24517549-id-4051156.html" target="_blank" rel="noopener">http://blog.chinaunix.net/uid-24517549-id-4051156.html</a></li>
+</ol>
+<ol>
+<li>实现机制：<a href="https://blog.csdn.net/shenya1314/article/details/73691088" target="_blank" rel="noopener">https://blog.csdn.net/shenya1314/article/details/73691088</a></li>
+</ol>
+<ol>
+<li>多种线程模型比对：<a href="https://missfresh.feishu.cn/space/doc/doccn7KIBMI8p7P84mZ1kCCXQDg" target="_blank" rel="noopener">IO模型解惑</a> </li>
+</ol>
+<p>介绍一下epoll，Redis事件管理器核心实现基本依赖于它。</p>
+<p>首先来看epoll是什么，它能做什么？</p>
+<p>epoll是在Linux 2.6内核中引进的，是一种强大的I/O多路复用技术，上面我们已经说到在进行网络操作的时候是通过文件描述符来进行读写的，那么平常我们就是一个进程操作一个文件描述符。然而epoll可以通过一个文件描述符管理多个文件描述符，并且不阻塞I/O。这使得我们单进程可以操作多个文件描述符，这就是redis在高并发性能还如此强大的原因之一。</p>
+<p>下面简单介绍epoll 主要的三个方法：</p>
+<ol>
+<li>int epoll_create(int size) //创建一个epoll句柄用于监听文件描述符FD，size用于告诉内核这个监听的数目一共有多大。该epoll句柄创建后在操作系统层面只会占用一个fd值，但是它可以监听size+1 个文件描述符。</li>
+</ol>
+<ol>
+<li>int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event) //epoll事件注册函数,在创建文件事件的时候进行调用注册</li>
+</ol>
+<ol>
+<li>int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout)//等待事件的产生</li>
+</ol>
+<p>Redis 的事件管理器主要是基于epoll机制，先采用 epoll_ctl方法 注册事件，然后再使用epoll_wait方法取出已经注册的事件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="http://img.javalemon.com/dyh.jpg" alt="lemon wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎大家关注我的订阅号 SeeMoonUp</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>写的不错？鼓励一下？不差钱？</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://img.javalemon.com/wechatmoney.png" alt="lemon 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://img.javalemon.com/alimoney.png" alt="lemon 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag"># redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/15/tech/计算机基础/内核态用户态/" rel="next" title="转 cpu 寄存器 内核态 用户态">
+                <i class="fa fa-chevron-left"></i> 转 cpu 寄存器 内核态 用户态
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://img.javalemon.com/20190223155093529270178.jpg"
+                alt="lemon" />
+            
+              <p class="site-author-name" itemprop="name">lemon</p>
+              <p class="site-description motion-element" itemprop="description">坚信我们为爱</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/SeeMoonUp" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://juejin.im/user/57d034de0e3dd90069b96e65" target="_blank" title="掘金">
+                      
+                        <i class="fa fa-fw fa-bookmark"></i>掘金</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.youleyu.com/" title="游乐鱼的博客" target="_blank">游乐鱼的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://bangqi.github.io/" title="吖吖邦的博客" target="_blank">吖吖邦的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis为什么这么快？"><span class="nav-number">1.</span> <span class="nav-text">Redis为什么这么快？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis压力测试"><span class="nav-number"></span> <span class="nav-text">Redis压力测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#整体架构"><span class="nav-number"></span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码导读"><span class="nav-number"></span> <span class="nav-text">源码导读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis事件"><span class="nav-number"></span> <span class="nav-text">Redis事件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件事件"><span class="nav-number">1.</span> <span class="nav-text">文件事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间事件"><span class="nav-number">2.</span> <span class="nav-text">时间事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理器"><span class="nav-number">3.</span> <span class="nav-text">处理器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#服务端客户端通信"><span class="nav-number"></span> <span class="nav-text">服务端客户端通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-发起socket-连接"><span class="nav-number">1.</span> <span class="nav-text">Client 发起socket 连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server-接受socket连接"><span class="nav-number">2.</span> <span class="nav-text">Server 接受socket连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端-开始写入"><span class="nav-number">3.</span> <span class="nav-text">客户端 开始写入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#server-端接收写入"><span class="nav-number">4.</span> <span class="nav-text">server 端接收写入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#server-返回写入结果"><span class="nav-number">5.</span> <span class="nav-text">server 返回写入结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client收到返回结果"><span class="nav-number">6.</span> <span class="nav-text">Client收到返回结果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll-I-O-多路复用技术"><span class="nav-number"></span> <span class="nav-text">epoll I/O 多路复用技术</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lemon</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("3vyvYfCKi5AMiMeCW85XGJDT-gzGzoHsz", "zu3T53N3NCre22L6NOlG3slL");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

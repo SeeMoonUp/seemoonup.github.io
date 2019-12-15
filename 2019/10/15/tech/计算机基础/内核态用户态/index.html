@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="这次我最快">
 <meta property="og:description" content="cpu：相当于计算机的大脑负责运算和发送命令； 寄存器：寄存器是cpu当中的一个有限存储部件，cpu从内存调用数据时，寄存器会将从内存调用的数据进行更新在寄存器中以一个字或变量进行存储。 ​        寄存器总共分为四种： ​                1.通用寄存器：用来保存变量与临时结果 ​                2.程序寄存器：保存了将要取下的一条指令的内存地址 ​">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-16T16:34:20.796Z">
+<meta property="og:updated_time" content="2019-12-15T09:05:11.365Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="转 cpu 寄存器 内核态 用户态">
 <meta name="twitter:description" content="cpu：相当于计算机的大脑负责运算和发送命令； 寄存器：寄存器是cpu当中的一个有限存储部件，cpu从内存调用数据时，寄存器会将从内存调用的数据进行更新在寄存器中以一个字或变量进行存储。 ​        寄存器总共分为四种： ​                1.通用寄存器：用来保存变量与临时结果 ​                2.程序寄存器：保存了将要取下的一条指令的内存地址 ​">
@@ -373,6 +373,7 @@
 <p>内核态与用户态的切换：</p>
 <p>​        <strong>内核态:</strong> CPU可以访问内存所有数据, 包括外围设备, 例如硬盘, 网卡. CPU也可以将自己从一个程序切换到另一个程序</p>
 <p>​        <strong>用户态:</strong> 只能受限的访问内存, 且不允许访问外围设备. 占用CPU的能力被剥夺, CPU资源可以被其他程序获取</p>
+<a id="more"></a>
 <h3 id="为什么要有用户态和内核态"><a href="#为什么要有用户态和内核态" class="headerlink" title="为什么要有用户态和内核态"></a>为什么要有用户态和内核态</h3><p>由于需要限制不同的程序之间的访问能力, 防止他们获取别的程序的内存数据, 或者获取外围设备的数据, 并发送到网络, CPU划分出两个权限等级 – <strong>用户态</strong> 和 <strong>内核态</strong></p>
 <p>​       </p>
 <p>所有用户程序都是运行在用户态的, 但是有时候程序确实需要做一些内核态的事情, 例如从硬盘读取数据（比如从硬盘读取游戏进度）, 或者从键盘获取输入等. 而唯一可以做这些事情的就是操作系统, 所以此时程序就需要先操作系统请求以程序的名义来执行这些操作.</p>
@@ -507,6 +508,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/15/tech/redis/redis整体架构/" rel="prev" title="Redis整体架构">
+                Redis整体架构 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
