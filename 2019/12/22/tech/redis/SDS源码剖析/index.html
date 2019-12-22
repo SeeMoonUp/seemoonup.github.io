@@ -79,19 +79,16 @@
 
 
 
-<meta name="description" content="Redis sds源码详解  redisObject在redis中任何一个结构都会包含redisObject这样一个结构头。 123456789typedef struct redisObject &amp;#123;    unsigned type:4;    unsigned encoding:4;    unsigned lru:LRU_BITS; /* LRU time (relative to">
 <meta name="keywords" content="redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis知识概览">
+<meta property="og:title" content="Redis sds源码详解">
 <meta property="og:url" content="http://SeeMoonUp.github.io/2019/12/22/tech/redis/SDS源码剖析/index.html">
 <meta property="og:site_name" content="这次我最快">
-<meta property="og:description" content="Redis sds源码详解  redisObject在redis中任何一个结构都会包含redisObject这样一个结构头。 123456789typedef struct redisObject &amp;#123;    unsigned type:4;    unsigned encoding:4;    unsigned lru:LRU_BITS; /* LRU time (relative to">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.javalemon.com/20191222157701368251284.png">
-<meta property="og:updated_time" content="2019-12-22T11:32:48.431Z">
+<meta property="og:updated_time" content="2019-12-22T11:34:34.527Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis知识概览">
-<meta name="twitter:description" content="Redis sds源码详解  redisObject在redis中任何一个结构都会包含redisObject这样一个结构头。 123456789typedef struct redisObject &amp;#123;    unsigned type:4;    unsigned encoding:4;    unsigned lru:LRU_BITS; /* LRU time (relative to">
+<meta name="twitter:title" content="Redis sds源码详解">
 <meta name="twitter:image" content="http://img.javalemon.com/20191222157701368251284.png">
 
 
@@ -128,7 +125,7 @@
 
 
 
-  <title>Redis知识概览 | 这次我最快</title>
+  <title>Redis sds源码详解 | 这次我最快</title>
   
 
 
@@ -282,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Redis知识概览</h1>
+          <h1 class="post-title" itemprop="name headline">Redis sds源码详解</h1>
         
 
         <div class="post-meta">
@@ -334,7 +331,7 @@
 
           
           
-             <span id="/2019/12/22/tech/redis/SDS源码剖析/" class="leancloud_visitors" data-flag-title="Redis知识概览">
+             <span id="/2019/12/22/tech/redis/SDS源码剖析/" class="leancloud_visitors" data-flag-title="Redis sds源码详解">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -365,8 +362,8 @@
       
 
       
-        <p>Redis sds源码详解</p>
-<p><img src="http://img.javalemon.com/20191222157701368251284.png" alt="20191222157701368251284.png"></p>
+        <p><img src="http://img.javalemon.com/20191222157701368251284.png" alt="20191222157701368251284.png"></p>
+<a id="more"></a>
 <h1 id="redisObject"><a href="#redisObject" class="headerlink" title="redisObject"></a>redisObject</h1><p>在redis中任何一个结构都会包含redisObject这样一个结构头。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef struct redisObject &#123;</span><br><span class="line">    unsigned type:4;</span><br><span class="line">    unsigned encoding:4;</span><br><span class="line">    unsigned lru:LRU_BITS; /* LRU time (relative to global lru_clock) or</span><br><span class="line">                            * LFU data (least significant 8 bits frequency</span><br><span class="line">                            * and most significant 16 bits access time). */</span><br><span class="line">    int refcount;</span><br><span class="line">    void *ptr;</span><br><span class="line">&#125; robj;</span><br></pre></td></tr></table></figure>
 <p>占用内存大小为16byte</p>
