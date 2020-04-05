@@ -82,7 +82,7 @@
 <meta name="description" content="坚信我们为爱">
 <meta property="og:type" content="website">
 <meta property="og:title" content="这次我最快">
-<meta property="og:url" content="http://SeeMoonUp.github.io/tags/mysql/index.html">
+<meta property="og:url" content="http://SeeMoonUp.github.io/tags/MySql/index.html">
 <meta property="og:site_name" content="这次我最快">
 <meta property="og:description" content="坚信我们为爱">
 <meta property="og:locale" content="zh-Hans">
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://SeeMoonUp.github.io/tags/mysql/"/>
+  <link rel="canonical" href="http://SeeMoonUp.github.io/tags/MySql/"/>
 
 
 
 
 
-  <title>标签: mysql | 这次我最快</title>
+  <title>标签: MySql | 这次我最快</title>
   
 
 
@@ -254,7 +254,7 @@
 
     <div id="posts" class="posts-collapse">
       <div class="collection-title">
-        <h1>mysql<small>标签</small>
+        <h1>MySql<small>标签</small>
         </h1>
       </div>
 
@@ -266,37 +266,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2018/08/25/tech/java/库存问题/" itemprop="url">
+            <a class="post-title-link" href="/2018/12/14/tech/data/mysql知识点必知必会/" itemprop="url">
               
-                <span itemprop="name">并发库存问题</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-25T18:11:06+08:00"
-              content="2018-08-25" >
-          08-25
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/25/tech/java/搜索suggest/" itemprop="url">
-              
-                <span itemprop="name">搜索suggest</span>
+                <span itemprop="name">MySql知识点必知必会</span>
               
             </a>
         
@@ -304,9 +276,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2018-08-25T18:03:43+08:00"
-              content="2018-08-25" >
-          08-25
+              datetime="2018-12-14T19:54:54+08:00"
+              content="2018-12-14" >
+          12-14
         </time>
       </div>
 
@@ -370,7 +342,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -381,7 +353,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -392,7 +364,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -463,7 +435,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -714,6 +686,47 @@
               success: function(newcounter) {
                 var $element = $(document.getElementById(url));
                 $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+').text(newcounter.get('time'));
               },
               error: function(newcounter, error) {
                 console.log('Failed to create');
