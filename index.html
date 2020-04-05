@@ -262,6 +262,150 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2020/04/05/tech/cleancode/谈一谈依赖反转/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这次我最快">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/05/tech/cleancode/谈一谈依赖反转/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-05T18:58:43+08:00">
+                2020-04-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/04/05/tech/cleancode/谈一谈依赖反转/" class="leancloud_visitors" data-flag-title="">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>依赖反转：</p>
+<p>DIP：依赖反转原则 Dependence Inversion Principle</p>
+<p>依赖反转原则主要想告诉我们的是，如果想要设计一个灵活的系统，在源代码层次的依赖关系中就应该多引用抽象类型，而非具体实现。</p>
+<p>为什么需要多引用抽象类型：</p>
+<p>我们每次修改抽象接口的时候，一定会修改具体实现。</p>
+<p>修改具体实现的时候，很少需要修改对应的抽象接口。</p>
+<p>优秀的软件设计师和架构师会花费很大精力来设计接口，以减少未来对其进行改动。如果想要在软件架构设计上追求稳定，就必须多使用稳定的抽象接口，少依赖多变的具体实现。</p>
+<p>依赖反转设计原则归结为以下几条具体的编码守则：</p>
+<ol>
+<li>多使用稳定的抽象接口，少依赖多变的具体实现。</li>
+<li>不要在具体实现类上创建衍生类</li>
+<li>不要覆盖包含具体实现的函数</li>
+<li>应避免在代码中写入与任何具体实现相关的名字，或者是其他容易变动的事物的名字。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2020/04/05/tech/程序员/程序员是什么/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -531,6 +675,7 @@
 <p>应用程序框架是实现细节</p>
 <p>本文的核心：</p>
 <p>业务和实现细节分离。即实现细节不应该影响到业务架构。</p>
+<p>谈一谈依赖反转</p>
 
           
         
@@ -1698,165 +1843,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/10/15/tech/计算机基础/IO模型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lemon">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="这次我最快">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/10/15/tech/计算机基础/IO模型/" itemprop="url">转 IO模型解惑</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-15T23:47:27+08:00">
-                2019-10-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/计算机基础/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机基础</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/10/15/tech/计算机基础/IO模型/" class="leancloud_visitors" data-flag-title="转 IO模型解惑">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>IO模型解惑</p>
-<p>本文基于《构建高性能网站》整理。之前对于各种IO模型的理解不是很清晰，发现这本书里整理得比较好，这里记录下相关要点。</p>
-<p>IO操作根据设备类型一般分为内存IO,网络IO,和磁盘IO。其中内存IO的速度大大快于后两者，计算机的性能瓶颈一般不在于内存IO. 尽管网络IO可通过购买独享带宽和高速网卡来提升速度，可以使用RAID磁盘阵列来提升磁盘IO的速度，但是由于IO操作都是由系统内核调用来完成，而系统调用是通过cpu来调度的，而cpu的速度远远快于IO操作，导致会浪费cpu的宝贵时间来等待慢速的IO操作。为了让cpu和慢速的IO设备更好的协调工作，减少CPU在IO调用上的消耗，逐渐发展出各种IO模型。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/10/15/tech/计算机基础/IO模型/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1911,7 +1897,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
