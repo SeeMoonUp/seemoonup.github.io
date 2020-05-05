@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="电商," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="新功能上线20180701上线新功能平台用户钱包管理 订单收入、销售奖励收入、系统奖励收入 三个收入模块（分别有单独的明细和提现记录）进行合并即统一入口，增加了新的表account和account_log来记录对应的用户账户信息，上线时对之前的系统流水进行了接口一次性同步数据进入上述两张表中，系统上线，可以休息了">
+<meta name="keywords" content="电商">
+<meta property="og:type" content="article">
+<meta property="og:title" content="生产数据update没加where条件（从执行到恢复）">
+<meta property="og:url" content="http://SeeMoonUp.github.io/2018/09/04/tech/存储/mysql/生产数据的update没加where条件（从执行到恢复）/index.html">
+<meta property="og:site_name" content="这次我最快">
+<meta property="og:description" content="新功能上线20180701上线新功能平台用户钱包管理 订单收入、销售奖励收入、系统奖励收入 三个收入模块（分别有单独的明细和提现记录）进行合并即统一入口，增加了新的表account和account_log来记录对应的用户账户信息，上线时对之前的系统流水进行了接口一次性同步数据进入上述两张表中，系统上线，可以休息了">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6a195423gw1evl1ka6gi6g208w06nhdw.gif">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/6a195423gw1evl1iab6q1g205k059dwa.gif">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/6a195423gw1evl1ha10hng208w06o4qp.gif">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6a195423gw1ey20ja4mgog208c08c4pc.gif">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/6a195423gw1evl1m3gnjkg207i03mu0x.gif">
+<meta property="og:updated_time" content="2018-09-06T08:10:55.539Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="生产数据update没加where条件（从执行到恢复）">
+<meta name="twitter:description" content="新功能上线20180701上线新功能平台用户钱包管理 订单收入、销售奖励收入、系统奖励收入 三个收入模块（分别有单独的明细和提现记录）进行合并即统一入口，增加了新的表account和account_log来记录对应的用户账户信息，上线时对之前的系统流水进行了接口一次性同步数据进入上述两张表中，系统上线，可以休息了">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/6a195423gw1evl1ka6gi6g208w06nhdw.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://SeeMoonUp.github.io/2018/09/04/tech/存储/mysql/生产数据的update没加where条件（从执行到恢复）/"/>
+
+
+
+
+
+  <title>生产数据update没加where条件（从执行到恢复） | 这次我最快</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">这次我最快</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">飞的起来<br>应该飞的起来<br>碧海蓝天<br>只等风的到来</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2018/09/04/tech/存储/mysql/生产数据的update没加where条件（从执行到恢复）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这次我最快">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">生产数据update没加where条件（从执行到恢复）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T17:16:51+08:00">
+                2018-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/data/" itemprop="url" rel="index">
+                    <span itemprop="name">data</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/04/tech/存储/mysql/生产数据的update没加where条件（从执行到恢复）/" class="leancloud_visitors" data-flag-title="生产数据update没加where条件（从执行到恢复）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="新功能上线"><a href="#新功能上线" class="headerlink" title="新功能上线"></a>新功能上线</h2><p>20180701上线新功能<br>平台用户钱包管理</p>
+<p>订单收入、销售奖励收入、系统奖励收入 三个收入模块（分别有单独的明细和提现记录）进行合并即统一入口，增加了新的表account和account_log来记录对应的用户账户信息，上线时对之前的系统流水进行了接口一次性同步数据进入上述两张表中，系统上线，可以休息了</p>
+<p><img src="http://ww1.sinaimg.cn/large/6a195423gw1evl1ka6gi6g208w06nhdw.gif" alt=""></p>
+<a id="more"></a>
+<h2 id="问题出现"><a href="#问题出现" class="headerlink" title="问题出现"></a>问题出现</h2><p>系统上线三天之后 发现数据出现问题，检查问题源头，发现同步数据接口中出现问题导致数据不一致</p>
+<p>发现了问题开始处理吧，因为只是部分数据出现问题只需要操作数据库更新几个用户的数据就可以，好的，下面开始操作 重点来了：</p>
+<ol>
+<li><p>连接上数据库</p>
+</li>
+<li><p>书写sql</p>
+</li>
+<li><p>update account_log set leftMoney = 8888;</p>
+</li>
+<li><p>回车</p>
+</li>
+<li><p>卧槽 什么鬼where条件呢 卧槽。。。</p>
+<p><img src="http://ww4.sinaimg.cn/large/6a195423gw1evl1iab6q1g205k059dwa.gif" alt="卧槽"></p>
+</li>
+<li><p>ctrl+c 卧槽 完蛋了 来不及了</p>
+</li>
+<li><p>卧槽 慌得一笔</p>
+</li>
+<li><p>检查数据库 select count(1) where leftMoney = 8888;</p>
+</li>
+<li><p>凉了。。。。</p>
+<p><img src="http://ww3.sinaimg.cn/large/6a195423gw1evl1ha10hng208w06o4qp.gif" alt="凉了。。。"></p>
+</li>
+</ol>
+<h2 id="数据恢复"><a href="#数据恢复" class="headerlink" title="数据恢复"></a>数据恢复</h2><p>好了 怎么办吧 赶快想一下现在的影响</p>
+<ol>
+<li>用户看到的余额是有问题的</li>
+<li>现在是晚上11点 用户在线数不高 </li>
+<li>赶快恢复数据</li>
+</ol>
+<p>开始解决</p>
+<ol>
+<li>联系负责人 询问数据库是否可以回滚（被告知不行 只能回滚到某一个时间点 会早上线上数据丢失）</li>
+<li>是否可以同步？可以同步 但是上线后两天的数据都在新表中 没有记录 怎么去同步 部分数据会丢失</li>
+</ol>
+<p>好吧 第一种方案直接不能走通了 看来只能使用第二种方案了</p>
+<p>改造同步数据接口，支持上线后产生的account_log信息的同步</p>
+<p>因业务原因，需要确认哪些提现是上线后产生的，逐一去日志文件中根据关键词来筛选提现记录（大概300多条）想想都眼睛痛</p>
+<p>接下来就是执行接口，测试数据了，线上数据量较大，需同步数据较多，大概百万数量级，同步一次数据耗时2个半小时左右</p>
+<p>耐心等待执行中。。。。</p>
+<p>好了 执行完了 检查一下 卧槽有个条件写错了</p>
+<p>需要重新同步</p>
+<p><img src="http://ww1.sinaimg.cn/large/6a195423gw1ey20ja4mgog208c08c4pc.gif" alt="想死的心都有了"></p>
+<p>来吧 修改代码 再同步一次</p>
+<p>终于在凌晨6点同步完了（此时我的同事已经扛不住睡一会了）。。。</p>
+<p>检查数据 一切正常，啊，终于可以睡觉了，跟负责人申请休息，睡觉，感谢我的小伙伴跟我一块解决了这个问题。</p>
+<p>现在线上库执行sql必须确认三遍，稳得很。。。</p>
+<p>大家引以为戒。哈哈哈</p>
+<p><img src="http://ww2.sinaimg.cn/large/6a195423gw1evl1m3gnjkg207i03mu0x.gif" alt="收官大吉"></p>
+<blockquote>
+<p>欢迎大家关注我的<a href="https://seemoonup.github.io/">技术博客 </a></p>
+<p>图片摘自<a href="https://droidyue.com/blog/2015/08/08/funny-programmer-season-one/?droid_refer=series" target="_blank" rel="noopener">技术小黑屋</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="http://img.javalemon.com/dyh.jpg" alt="lemon wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎大家关注我的订阅号 SeeMoonUp</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>写的不错？鼓励一下？不差钱？</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://img.javalemon.com/wechatmoney.png" alt="lemon 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://img.javalemon.com/alimoney.png" alt="lemon 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/电商/" rel="tag"># 电商</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/25/tech/语言/js/微信浏览器调起App/" rel="next" title="微信浏览器调起App">
+                <i class="fa fa-chevron-left"></i> 微信浏览器调起App
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/10/life/怀念啊我们的青春啊/" rel="prev" title="幼儿园到大学的糗事 都在这了">
+                幼儿园到大学的糗事 都在这了 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://img.javalemon.com/20190223155093529270178.jpg"
+                alt="lemon" />
+            
+              <p class="site-author-name" itemprop="name">lemon</p>
+              <p class="site-description motion-element" itemprop="description">坚信我们为爱</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/SeeMoonUp" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://juejin.im/user/57d034de0e3dd90069b96e65" target="_blank" title="掘金">
+                      
+                        <i class="fa fa-fw fa-bookmark"></i>掘金</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.youleyu.com/" title="游乐鱼的博客" target="_blank">游乐鱼的博客</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://bangqi.github.io/" title="吖吖邦的博客" target="_blank">吖吖邦的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#新功能上线"><span class="nav-number">1.</span> <span class="nav-text">新功能上线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题出现"><span class="nav-number">2.</span> <span class="nav-text">问题出现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据恢复"><span class="nav-number">3.</span> <span class="nav-text">数据恢复</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lemon</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("3vyvYfCKi5AMiMeCW85XGJDT-gzGzoHsz", "zu3T53N3NCre22L6NOlG3slL");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

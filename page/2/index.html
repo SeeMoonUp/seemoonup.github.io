@@ -262,6 +262,802 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/12/15/tech/存储/redis/redis整体架构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这次我最快">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/15/tech/存储/redis/redis整体架构/" itemprop="url">Redis整体架构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-15T17:07:29+08:00">
+                2019-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/12/15/tech/存储/redis/redis整体架构/" class="leancloud_visitors" data-flag-title="Redis整体架构">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h1><h2 id="简介概览"><a href="#简介概览" class="headerlink" title="简介概览"></a>简介概览</h2><p>作者：</p>
+<p><img src="http://img.javalemon.com/20191215157640097328152.png" alt="antirez.png"></p>
+<p>Redis 由意大利人 Salvatore Sanfilippo（网名 Antirez） 开发，上图是他的个人照片。Antirez 不仅帅的不像实力派，也非常有趣。Antirez 今年已经四十岁了，依旧在孜孜不倦地写代码，为 Redis 的开源事业持续贡献力量。</p>
+<p>Redis是一个开放源代码（BSD许可）内存中的数据结构存储，用作数据库、缓存和消息代理。它支持字符串、哈希、列表、集合、带范围查询的排序集合、位图、超日志和流的地理空间索引等数据结构<a href="https://missfresh.feishu.cn/space/doc/doccn0GpfP4aQf3BKBMKxadCzQc" target="_blank" rel="noopener">Redis基本数据结构&amp;内部编码</a> 。Redis具有内置的复制、lua脚本、lru回收、事务和不同级别的磁盘上持久性，并通过Redis Sentinel和Redis集群的自动分区提供高可用性。</p>
+<p>源码github:<a href="https://github.com/antirez/redis" target="_blank" rel="noopener">https://github.com/antirez/redis</a></p>
+<h2 id="Redis为什么这么快？"><a href="#Redis为什么这么快？" class="headerlink" title="Redis为什么这么快？"></a>Redis为什么这么快？</h2><p>正常情况下，Redis执行命令的速度非常快，官方给出的数字是读写性能可以达到10万/秒，当然这也取决于机器的性能，但这里先不讨论机器性能上的差异，只分析一下是什么造就了Redis除此之快的速度，可以大致归纳为以下五点：</p>
+<ol>
+<li>Redis是用C语言实现的，一般来说C语言实现的程序“距离”操作系统更近，执行速度相对会更快。</li>
+<li>完全基于内存，绝大部分请求是纯粹的内存操作，非常快速。数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O(1)；正因为 Redis 是单线程，所以要小心使用 Redis 指令，对于那些时间复杂度为 O(n) 级别的指令，一定要谨慎使用，一不小心就可能会导致 Redis 卡顿。</li>
+<li>数据结构简单，对数据操作也简单，Redis中的数据结构是专门进行设计的；采用单线程，避免了不必要的上下文切换和竞争条件，也不存在多进程或者多线程导致的切换而消耗 CPU，不用去考虑各种锁的问题，不存在加锁释放锁操作，没有因为可能出现死锁而导致的性能消耗；</li>
+<li>使用多路I/O复用模型，非阻塞IO，Redis 单线程处理大量的并发客户端连接的模型。 使用底层模型不同，它们之间底层实现方式以及与客户端之间通信的应用协议不一样，Redis直接自己构建了VM 机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求；</li>
+<li>作者对于Redis源代码可以说是精打细磨，曾经有人评价Redis是少有的集性能和优雅于一身的开源代码。</li>
+<li>Redis为什么单线程？<a href="https://missfresh.feishu.cn/space/doc/doccnxq6Rk1JZu7PLr5yP5ovoCh" target="_blank" rel="noopener">为什么Redis单线程</a></li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/12/15/tech/存储/redis/redis整体架构/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/11/30/tech/方法论/技术学习方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这次我最快">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/11/30/tech/方法论/技术学习方法/" itemprop="url">学习方法之技术学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-30T18:38:45+08:00">
+                2019-11-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/方法论/" itemprop="url" rel="index">
+                    <span itemprop="name">方法论</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/11/30/tech/方法论/技术学习方法/" class="leancloud_visitors" data-flag-title="学习方法之技术学习">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这个技术出现的背景、初衷和要达到什么样的目标或是要解决什么样的问题**。这个问题非常关键，也就是说，你在学习一个技术的时候，需要知道这个技术的成因和目标，也就是这个技术的灵魂。如果不知道这些的话，那么你会看不懂这个技术的一些设计理念。</p>
+<p><strong>这个技术的优势和劣势分别是什么</strong>，或者说，这个技术的 trade-off 是什么。任何技术都有其好坏，在解决一个问题的时候，也会带来新的问题。另外，一般来说，任何设计都有 trade-off（要什么和不要什么），所以，你要清楚这个技术的优势和劣势，以及带来的挑战。</p>
+<p><strong>这个技术适用的场景</strong>。任何技术都有其适用的场景，离开了这个场景，这个技术可能会有很多槽点，所以学习技术不但要知道这个技术是什么，还要知道其适用的场景。没有任何一个技术是普适的。注意，所谓场景一般分别两个，一个是业务场景，一个是技术场景。</p>
+<p><strong>技术的组成部分和关键点</strong>。这是技术的核心思想和核心组件了，也是这个技术的灵魂所在了。学习技术的核心部分是快速掌握的关键。</p>
+<p><strong>技术的底层原理和关键实现。</strong>任何一个技术都有其底层的关键基础技术，这些关键技术很有可能也是其它技术的关键基础技术。所以，学习这些关键的基础底层技术，可以让你未来很快地掌握其它技术。可以参看我在 CoolShell 上写的 Docker 底层技术那一系列文章。</p>
+<p><strong>已有的实现和它之间的对比</strong>。一般来说，任何一个技术都会有不同的实现，不同的实现都会有不同的侧重。学习不同的实现，可以让你得到不同的想法和思路，对于开阔思维，深入细节是非常重要的。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/11/20/tech/方法论/学习方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这次我最快">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/11/20/tech/方法论/学习方法/" itemprop="url">学习方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-20T18:38:45+08:00">
+                2019-11-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/方法论/" itemprop="url" rel="index">
+                    <span itemprop="name">方法论</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/11/20/tech/方法论/学习方法/" class="leancloud_visitors" data-flag-title="学习方法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="主动学-amp-被动学"><a href="#主动学-amp-被动学" class="headerlink" title="主动学&amp;被动学"></a>主动学&amp;被动学</h1><p>主动学习和被动学习1946 年，美国学者埃德加·戴尔（Edgar Dale）提出了「学习金字塔」（Cone of Learning）的理论。之后，美国缅因州国家训练实验室也做了相同的实验，并发布了「学习金字塔」报告。</p>
+<p><img src="http://img.javalemon.com/2020050415885903564000.png" alt="2020050415885903564000.png"></p>
+<p>人的学习分为「被动学习」和「主动学习」两个层次。</p>
+<ul>
+<li>被动学习：如听讲、阅读、视听、演示，学习内容的平均留存率为 5%、10%、20% 和 30%。</li>
+<li>主动学习：如通过讨论、实践、教授给他人，会将原来被动学习的内容留存率从 5% 提升到 50%、75% 和 90%。</li>
+</ul>
+<p>这个模型很好地展示了不同学习深度和层次之间的对比。我们可以看到，你听别人讲，或是自己看书，或是让别人演示给你，这些都不能让你真正获得学习能力，因为你是在被别人灌输，在听别人说。只有你开始自己思考，开始自己总结和归纳，开始找人交流讨论，开始践行，并开始对外输出，你才会掌握到真正的学习能力。</p>
+<h1 id="知识地图"><a href="#知识地图" class="headerlink" title="知识地图"></a>知识地图</h1><p>从知识树的主干开始做广度或是深度遍历，于是我就得到了一整棵的知识树。这种“顺藤摸瓜”的记忆方式让我记住了很多知识。<strong>最重要的是，当出现一些我不知道的知识点时，我就会往这棵知识树上</strong></p>
+<p>挂，而这样一来，也使得我的学习更为系统和全面。这种画知识图的方式可以让你从一个技术最重要最主干的地方出发开始遍历所有的技术细节，也就是画地图的方式。如果你不想在知识的海洋中迷路，你需要有一份地图，所以，<strong>学习并不是为了要记忆那些知识点，而是为了要找到一个知识的地图，你在这个地图上能通过关键路径找到你想要的答案</strong>。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/10/15/tech/计算机基础/内核态用户态/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这次我最快">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/15/tech/计算机基础/内核态用户态/" itemprop="url">转 cpu 寄存器 内核态 用户态</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-15T23:53:02+08:00">
+                2019-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机基础/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/10/15/tech/计算机基础/内核态用户态/" class="leancloud_visitors" data-flag-title="转 cpu 寄存器 内核态 用户态">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>cpu：相当于计算机的大脑负责运算和发送命令；</p>
+<p>寄存器：寄存器是cpu当中的一个有限存储部件，cpu从内存调用数据时，寄存器会将从内存调用的数据进行更新在寄存器中以一个字或变量进行存储。</p>
+<p>​        寄存器总共分为四种：</p>
+<p>​                1.通用寄存器：用来保存变量与临时结果</p>
+<p>​                2.程序寄存器：保存了将要取下的一条指令的内存地址</p>
+<p>​                3.堆栈指针：它指向内存当前栈的顶端。该栈包含已经进入但是还没有退出的每个过程中的一个框架。在一个过程的堆栈框架中保存了有关输入参数，局部变量以及那写没有及时保存在寄存器中的临时变量。</p>
+<p>​                4.程序状态寄存器：这个寄存器包含了条码位（由比较指令设置），cpu优先级，模式（用户态或内核态），以及各种其他控制位。用户通常读入整个psw，但是只对其少量的字段写入。在系统调用和I/O中，psw非常重要。</p>
+<p>内核态与用户态的切换：</p>
+<p>​        <strong>内核态:</strong> CPU可以访问内存所有数据, 包括外围设备, 例如硬盘, 网卡. CPU也可以将自己从一个程序切换到另一个程序</p>
+<p>​        <strong>用户态:</strong> 只能受限的访问内存, 且不允许访问外围设备. 占用CPU的能力被剥夺, CPU资源可以被其他程序获取</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/10/15/tech/计算机基础/内核态用户态/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/10/15/tech/计算机基础/Reactor模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lemon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这次我最快">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/15/tech/计算机基础/Reactor模型/" itemprop="url">转 Reactor模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-15T23:52:48+08:00">
+                2019-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/10/15/tech/计算机基础/Reactor模型/" class="leancloud_visitors" data-flag-title="转 Reactor模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://www.cnblogs.com/crazymakercircle/p/9833847.html" target="_blank" rel="noopener">https://www.cnblogs.com/crazymakercircle/p/9833847.html</a></p>
+<ol>
+<li>为什么是Reactor模式</li>
+<li>Reactor模式简介</li>
+<li>多线程IO的致命缺陷</li>
+<li>单线程Reactor模型<br>4.1. 什么是单线程Reactor呢？<br>4.2. 单线程Reactor的参考代码<br>4.3. 单线程模式的缺点:</li>
+<li>多线程的Reactor<br>5.1. 基于线程池的改进<br>5.2. 改进后的完整示意图<br>5.3. 多线程Reactor的参考代码</li>
+<li>Reactor持续改进</li>
+<li>Reactor编程的优点和缺点<br>7.1. 优点<br>7.2. 缺点</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/10/15/tech/计算机基础/IO模型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -421,7 +1217,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/08/03/tech/java/序列化/">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/08/03/tech/语言/java/序列化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lemon">
@@ -440,7 +1236,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/08/03/tech/java/序列化/" itemprop="url">序列化</a></h1>
+                <a class="post-title-link" href="/2019/08/03/tech/语言/java/序列化/" itemprop="url">序列化</a></h1>
         
 
         <div class="post-meta">
@@ -492,7 +1288,7 @@
 
           
           
-             <span id="/2019/08/03/tech/java/序列化/" class="leancloud_visitors" data-flag-title="序列化">
+             <span id="/2019/08/03/tech/语言/java/序列化/" class="leancloud_visitors" data-flag-title="序列化">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -529,7 +1325,7 @@
 <p>对象的序列化可以利用它实现轻量级持久化。“持久性”意味着一个对象的生存周期并不取决于程序是否正在执行；它可以生存于程序的调用之间。通过将一个序列化对象写入磁盘，然后在重新调用程序时恢复该对象，就能够实现持久性的效果。之前写到的<a href="https://seemoonup.github.io/2017/12/18/tech/java/Session%E7%9A%84%E6%8C%81%E4%B9%85%E5%8C%96%E7%AD%96%E7%95%A5/">Session的持久化策略</a>就是使用了序列化的方式进行了实现（保持对象的状态）。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/08/03/tech/java/序列化/#more" rel="contents">
+            <a class="btn" href="/2019/08/03/tech/语言/java/序列化/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -634,8 +1430,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/categories/电商/" itemprop="url" rel="index">
+                    <span itemprop="name">电商</span>
                   </a>
                 </span>
 
@@ -746,7 +1542,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/06/02/tech/tools/svn分支协同开发流程/">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/06/02/tech/工具/svn分支协同开发流程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lemon">
@@ -765,7 +1561,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/02/tech/tools/svn分支协同开发流程/" itemprop="url">svn分支协同开发流程</a></h1>
+                <a class="post-title-link" href="/2019/06/02/tech/工具/svn分支协同开发流程/" itemprop="url">svn分支协同开发流程</a></h1>
         
 
         <div class="post-meta">
@@ -817,7 +1613,7 @@
 
           
           
-             <span id="/2019/06/02/tech/tools/svn分支协同开发流程/" class="leancloud_visitors" data-flag-title="svn分支协同开发流程">
+             <span id="/2019/06/02/tech/工具/svn分支协同开发流程/" class="leancloud_visitors" data-flag-title="svn分支协同开发流程">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -857,7 +1653,7 @@
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/02/tech/tools/svn分支协同开发流程/#more" rel="contents">
+            <a class="btn" href="/2019/06/02/tech/工具/svn分支协同开发流程/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -908,7 +1704,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/06/02/tech/redis/redis分布式锁/">
+    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/06/02/tech/存储/redis/redis分布式锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lemon">
@@ -927,7 +1723,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/02/tech/redis/redis分布式锁/" itemprop="url">redis分布式锁</a></h1>
+                <a class="post-title-link" href="/2019/06/02/tech/存储/redis/redis分布式锁/" itemprop="url">redis分布式锁</a></h1>
         
 
         <div class="post-meta">
@@ -979,7 +1775,7 @@
 
           
           
-             <span id="/2019/06/02/tech/redis/redis分布式锁/" class="leancloud_visitors" data-flag-title="redis分布式锁">
+             <span id="/2019/06/02/tech/存储/redis/redis分布式锁/" class="leancloud_visitors" data-flag-title="redis分布式锁">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1016,785 +1812,7 @@
 <p>实际操作如下：</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/02/tech/redis/redis分布式锁/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/06/02/tech/redis/Redis线程IO模型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lemon">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="这次我最快">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/06/02/tech/redis/Redis线程IO模型/" itemprop="url">Redis线程模型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-02T20:47:15+08:00">
-                2019-06-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/06/02/tech/redis/Redis线程IO模型/" class="leancloud_visitors" data-flag-title="Redis线程模型">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Redis-是个单线程程序"><a href="#Redis-是个单线程程序" class="headerlink" title="Redis 是个单线程程序"></a>Redis 是个单线程程序</h2><p>这点必须铭记。</p>
-<p>也许你会怀疑高并发的 Redis 中间件怎么可能是单线程。很抱歉，它就是单线程，你的怀疑暴露了你基础知识的不足。莫要瞧不起单线程，除了 Redis 之外，Node.js 也是单线程，Nginx 也是单线程，但是它们都是服务器高性能的典范。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/06/02/tech/redis/Redis线程IO模型/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/03/03/tech/redis/Redis持久化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lemon">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="这次我最快">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/03/tech/redis/Redis持久化/" itemprop="url">redis持久化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-03T11:51:37+08:00">
-                2019-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/03/03/tech/redis/Redis持久化/" class="leancloud_visitors" data-flag-title="redis持久化">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Redis持久化的方式"><a href="#Redis持久化的方式" class="headerlink" title="Redis持久化的方式"></a>Redis持久化的方式</h2><p>两种持久化方式：</p>
-<ol>
-<li>rdb</li>
-<li>aof</li>
-</ol>
-<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><table>
-<thead>
-<tr>
-<th></th>
-<th>rdb</th>
-<th>aof</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>恢复速度</td>
-<td>快</td>
-<td>慢</td>
-</tr>
-<tr>
-<td>占用内存大小</td>
-<td>小</td>
-<td>大</td>
-</tr>
-<tr>
-<td>实时性/秒级持久化</td>
-<td>不支持</td>
-<td>支持</td>
-</tr>
-<tr>
-<td>版本兼容</td>
-<td>不支持</td>
-<td>支持</td>
-</tr>
-</tbody>
-</table>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/03/03/tech/redis/Redis运维常见命令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lemon">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="这次我最快">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/03/tech/redis/Redis运维常见命令/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-03T11:51:18+08:00">
-                2019-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/03/03/tech/redis/Redis运维常见命令/" class="leancloud_visitors" data-flag-title="">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/02/23/tech/redis/Redis内部编码/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lemon">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="这次我最快">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/23/tech/redis/Redis内部编码/" itemprop="url">Redis内部编码</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-23T10:45:01+08:00">
-                2019-02-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/02/23/tech/redis/Redis内部编码/" class="leancloud_visitors" data-flag-title="Redis内部编码">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Redis内部编码"><a href="#Redis内部编码" class="headerlink" title="Redis内部编码"></a>Redis内部编码</h1><p>前文已经学习了<a href="https://seemoonup.github.io/2018/08/19/tech/redis/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">Redis的基本数据结构</a>，那么数据结构背后的存储类型又是什么呢，下图总结了Redis的内部编码</p>
-<p><img src="http://img.javalemon.com/20190223155089018978468.png" alt="20190223155089018978468.png"></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/02/23/tech/redis/Redis内部编码/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://SeeMoonUp.github.io/2019/01/03/tech/java/面试/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lemon">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://img.javalemon.com/20190223155093529270178.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="这次我最快">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/03/tech/java/面试/" itemprop="url">Java面试贴</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-03T15:46:16+08:00">
-                2019-01-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/01/03/tech/java/面试/" class="leancloud_visitors" data-flag-title="Java面试贴">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Java面试贴"><a href="#Java面试贴" class="headerlink" title="Java面试贴"></a>Java面试贴</h1><h2 id="面试方向"><a href="#面试方向" class="headerlink" title="面试方向"></a>面试方向</h2><p>职位：Java开发工程师（中高级）</p>
-<p>面试范围</p>
-<ol>
-<li>Java基础、集合、多线程、JVM</li>
-<li>算法 排序算法 树结构 栈/队列 链表/数组</li>
-<li>web框架 Spring、MyBatis </li>
-<li>中间件 redis、mq</li>
-<li>数据库mysql 优化、引擎、索引</li>
-<li>项目</li>
-</ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/01/03/tech/java/面试/#more" rel="contents">
+            <a class="btn" href="/2019/06/02/tech/存储/redis/redis分布式锁/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1886,7 +1904,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1897,7 +1915,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1908,7 +1926,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
